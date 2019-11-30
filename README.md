@@ -13,7 +13,7 @@ git clone https://github.com/pnlbwh/eddy-squeeze
 
 - TODO
 - Dependencies
-- How to use
+- How to use the script
 
 
 ## TODO
