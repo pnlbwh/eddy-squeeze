@@ -1,0 +1,51 @@
+#!/usr/bin/env python
+
+import kcho_eddy
+import eddy_plots
+from pathlib import Path
+import os
+import argparse
+
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description='''\
+        eddy_squeeze.
+        Visualize extra information from FSL eddy outputs.
+        ''', epilog="Kevin Cho November 30, 2019")
+
+    argparser.add_argument("--eddy_dir", "-ed",
+                           type=str,
+                           default=os.getcwd(),
+                           help='Eddy output directory. Default = current '
+                                'directory')
+
+    argparser.add_argument("--out_dir", "-od",
+                           type=str,
+                           help='Eddy output directory. Default = '
+                                '/PATH/TO/EDDY/outlier_figures')
+
+    argparser.add_argument("--print_only", "-po",
+                           action='store_true',
+                           help='Eddy output directory')
+
+    args = argparser.parse_args()
+
+    # set output directories
+    if not args.out_dir:
+        args.out_dir = Path(args.eddy_dir) / 'outlier_figures'
+
+    if args.eddy_dir and not args.print_only:
+        eddyOut = eddy_plots.EddyFigure(
+            args.eddy_dir,
+            args.out_dir)
+        eddyOut.save_all_outlier_slices()
+
+    elif args.eddy_dir and args.print_only:
+        eddyOut = eddy_plots.EddyFigure(
+            args.eddy_dir,
+            args.out_dir)
+
+        eddyOut.summary_df()
+        print(eddyOut.df_motion)
+        print(eddyOut.df)
