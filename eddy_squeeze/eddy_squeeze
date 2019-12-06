@@ -29,6 +29,12 @@ if __name__ == '__main__':
                            action='store_true',
                            help='Eddy output directory')
 
+    argparser.add_argument("--study_dir", "-sd",
+                           type=str,
+                           default=os.getcwd(),
+                           help='Directory path pattern where are more than '
+                                'one Eddy output directories')
+
     args = argparser.parse_args()
 
     # set output directories

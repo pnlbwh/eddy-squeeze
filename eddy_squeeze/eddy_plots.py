@@ -570,7 +570,7 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser(prog='Lupus project script',
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description='''\
-    /data/pnl/kcho/anaconda3/bin/python lupus_project.py --subject_dir /example/subject/dir/
+    eddy_squeeze -ed eddy/out/dir
 ''',epilog="Kevin Cho Monday, May 6, 2019")
 
     argparser.add_argument("--eddy_path_pattern","-ep",

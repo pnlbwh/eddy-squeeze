@@ -7,6 +7,9 @@ import sys
 import nibabel as nb
 import re
 
+# plot
+import seaborn as sns
+
 
 class EddyOut:
     def load_movement_arrays(self):
@@ -119,6 +122,39 @@ class EddyRun(EddyOut):
         self.get_info_movement_arrays()
         self.get_info_outlier_arrays()
         self.get_info_post_eddy()
+        self.collect_all_info()
+
+    def collect_all_info(self):
+        df = pd.Series()
+
+        df['ep'] = self.ep
+        df['eddy_dir'] = self.eddy_dir
+        df['eddy_input'] = self.nifti_input
+
+        # bvalue
+        df['number of volumes'] = len(self.bvalue_arr)
+        df['max b value'] = self.bvalue_arr.max()
+        df['min b value'] = self.bvalue_arr.min()
+        df['unique b values'] = np.unique(self.bvalue_arr)
+        df['number of b0s'] = len(self.bvalue_arr[self.bvalue_arr == 0])
+
+        # outlier information
+        df['number of outlier slices'] = self.number_of_outlier_slices
+        df['Sum of standard deviations in outlier slices'] = \
+            self.outlier_std_total
+        df['Mean of standard deviations in outlier slices'] = \
+            self.outlier_std_mean
+        df['Standard deviation of standard deviations in outlier slices'] = \
+            self.outlier_std_std
+
+        # movement information
+        df['absolute restricted movement'] = self.restricted_movement_avg[0]
+        df['relative restricted movement'] = self.restricted_movement_avg[1]
+        df['absolute movement'] = self.movement_avg[0]
+        df['relative movement'] = self.movement_avg[1]
+
+        self.df = df
+
 
 
 class EddyDirectory(EddyRun):
@@ -139,18 +175,68 @@ class EddyStudy:
         else:
             self.eddy_dirs = list(Path('.').glob(glob_pattern[1:]))
 
+        print(f'Summarizing {len(self.eddy_dirs)} subjects')
+
         self.study_eddy_runs = []
         self.eddy_dir_error = []
         self.ep_list = []
+        self.eddyRuns = []
         for eddy_dir in self.eddy_dirs:
-            ep_list = get_unique_eddy_prefixes(eddy_dir)
-            for ep in ep_list:
-                self.ep_list.append(ep)
-                try:
-                    self.study_eddy_runs.append(EddyRun(ep))
-                except:
-                    self.eddy_dir_error.append(ep)
+            eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
+            self.ep_list.append(eddy_dir_ep)
+            eddyRun = EddyRun(eddy_dir_ep)
+            self.eddyRuns.append(eddyRun)
+            # self.df = pd.concat([self.df, eddyRun.df])
 
+        self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
+
+    def clean_up_data_frame(self):
+        self.df.index = self.df.ep.apply(
+            lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+        self.df.index.name = 'subject'
+        self.df = self.df.reset_index()
+
+    def get_basic_diff_info(self):
+        self.df.groupby(
+            ['number of volumes',
+             'max b value',
+             'min b value',
+             'number of b0s']).count()['subject'].to_frame()
+
+    def get_unique_bvalues(self):
+        unique_b_values = np.stack(self.df['unique b values'])
+        return np.unique(unique_b_values, axis=0)
+
+    def plot_subjects(self, var, std_outlier=2):
+        g = sns.catplot(x='subject', y=var, data=self.df)
+        g.fig.set_size_inches(20, 5)
+        g.fig.set_dpi(200)
+        g.ax.set_xticklabels(g.ax.get_xticklabels(), rotation=90)
+        g.ax.set_xlabel('Subjects')
+
+        g.fig.suptitle(f'{var[0].upper()}{var[1:]}')
+
+        threshold = self.df[var].mean() + (self.df[var].std() * std_outlier)
+        g.ax.axhline(y=threshold, color='red', alpha=0.4)
+        g.ax.text(
+            x=len(self.df),
+            y=threshold+0.1,
+            s=f'mean + std * {std_outlier}',
+            ha='right', color='red', alpha=0.9)
+        g.fig.show()
+
+        df_tmp = self.df[self.df[var] > threshold]
+        x_size = len(df_tmp) * 1.2
+
+        g = sns.catplot(x='subject', y=var, data=df_tmp)
+        g.fig.set_size_inches(x_size, 5)
+        g.fig.set_dpi(200)
+        g.ax.set_xticklabels(g.ax.get_xticklabels())
+        g.ax.set_xlabel('Subjects')
+
+        g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
+                       'than (mean + 2*std)', y=1.02)
+        g.fig.show()
 
 def get_unique_eddy_prefixes(eddy_dir):
     '''
@@ -172,6 +258,8 @@ def get_unique_eddy_prefixes(eddy_dir):
     if len(dot_eddy_prefix_unique) == 1:
         return dot_eddy_prefix_unique[0]
     elif len(dot_eddy_prefix_unique) > 1:
+        print(eddy_dir)
+        print('There are more than two unique eddy prefix')
         return dot_eddy_prefix_unique[0]
     else:
         sys.exit(f'There is no eddy related files in {eddy_dir}')
