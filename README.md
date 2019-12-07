@@ -38,10 +38,8 @@ tabulate==0.8.5
 ```
 
 
-## How to use the script
 
-
-### Print motion (restricted) along with other eddy information
+## Subject-wise summary of the eddy output
 
 ```shell
 
@@ -50,7 +48,7 @@ tabulate==0.8.5
 ```
 
 
-#### Example outputs
+### Example outputs
 
 
 |    |   restricted_absolute_motion |   restricted_relative_motion |   number_of_outlier_slices |   outlier_std_total |   outlier_std_mean |   outlier_std_std |
@@ -116,7 +114,7 @@ tabulate==0.8.5
 |               52 |       46 |      51 |  -4.01692 |    5.64939 |     52 |
 
 
-### Study-wise summary of the eddy outputs
+## Study-wise summary of the eddy outputs
 
 ```shell
 
@@ -124,7 +122,7 @@ tabulate==0.8.5
 
 ```
 
-#### Example output
+### Example output
 
 
 |    | subject   |   number of volumes |   max b value |   min b value | unique b values                       |   number of b0s |   number of outlier slices |   Sum of standard deviations in outlier slices |   Mean of standard deviations in outlier slices |   Standard deviation of standard deviations in outlier slices |   absolute restricted movement |   relative restricted movement |   absolute movement |   relative movement |
@@ -163,7 +161,9 @@ tabulate==0.8.5
 | 31 | subject_367c  |                  74 |          3000 |             0 | [   0.  200.  500. 1000. 2950. 3000.] |               5 |                         17 |                                        103.621 |                                         6.09538 |                                                       2.71522 |                       0.737561 |                       0.213888 |            0.867543 |            0.436459 |
 
 
-### Jupyter notebook
+## Create figures to detect outliers
+
+### example use in jupyter notebook
 
 ```py
 from eddy_squeeze import kcho_eddy
@@ -191,13 +191,11 @@ eddyStudy.plot_subjects('Standard deviation of standard deviations in outlier sl
 
 ```
 
-#### [Jupyter notebook example link](docs/eddy_summary_study_example.ipynb)
+## [Jupyter notebook example link](docs/eddy_summary_study_example.ipynb)
 
 
 
-
-
-### Save outlier slices as figures
+## Save outlier slices as figures
 
 ```shell
 ./eddy_squeeze --eddy_directory ../test/eddy_out
