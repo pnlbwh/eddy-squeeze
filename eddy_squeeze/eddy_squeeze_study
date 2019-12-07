@@ -69,7 +69,7 @@ if __name__ == '__main__':
     else:
         sys.exit('Please specify either --study_dir or --eddy_pattern')
 
-    print(tabulate(df, headers='keys', tablefmt='psql'))
+    print(tabulate(df, headers='keys', tablefmt='github'))
 
     if args.out:
         print('Saving the summary outputs to {args.out}')
