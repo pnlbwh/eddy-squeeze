@@ -6,6 +6,8 @@ import numpy as np
 import sys
 import nibabel as nb
 import re
+from tabulate import tabulate
+import matplotlib.pyplot as plt
 
 # plot
 import seaborn as sns
@@ -122,6 +124,8 @@ class EddyRun(EddyOut):
         self.get_info_movement_arrays()
         self.get_info_outlier_arrays()
         self.get_info_post_eddy()
+        # print(tabulate(self.post_eddy_shell_alignment_df, headers='keys', tablefmt='psql'))
+        # print(tabulate(self.post_eddy_shell_PE_translation_parameters_df, headers='keys', tablefmt='psql'))
         self.collect_all_info()
 
     def collect_all_info(self):
@@ -154,12 +158,15 @@ class EddyRun(EddyOut):
         df['relative movement'] = self.movement_avg[1]
 
         self.df = df
+        self.post_eddy_shell_alignment_df['ep'] = self.ep
+        self.post_eddy_shell_PE_translation_parameters_df['ep'] = self.ep
 
 
 class EddyDirectory(EddyRun):
     def __init__(self, eddy_dir):
         self.ep = get_unique_eddy_prefixes(eddy_dir)
         EddyRun.__init__(self, self.ep)
+
 
 class EddyStudy:
     '''
@@ -187,12 +194,34 @@ class EddyStudy:
             # self.df = pd.concat([self.df, eddyRun.df])
 
         self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
+        self.post_eddy_shell_alignment_df = pd.concat(
+            [x.post_eddy_shell_alignment_df for x in self.eddyRuns],
+            axis=0)
+        self.post_eddy_shell_PE_translation_parameters_df = pd.concat(
+            [x.post_eddy_shell_PE_translation_parameters_df for x
+                in self.eddyRuns],
+            axis=0)
 
     def clean_up_data_frame(self):
         self.df.index = self.df.ep.apply(
             lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
         self.df.index.name = 'subject'
         self.df = self.df.reset_index()
+
+        self.post_eddy_shell_alignment_df.index = \
+            self.post_eddy_shell_alignment_df.ep.apply(
+                lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+        self.post_eddy_shell_alignment_df.index.name = 'subject'
+        self.post_eddy_shell_alignment_df = \
+            self.post_eddy_shell_alignment_df.reset_index()
+
+        self.post_eddy_shell_PE_translation_parameters_df.index = \
+            self.post_eddy_shell_PE_translation_parameters_df.ep.apply(
+                lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+        self.post_eddy_shell_PE_translation_parameters_df.index.name = \
+                'subject'
+        self.post_eddy_shell_PE_translation_parameters_df = \
+            self.post_eddy_shell_PE_translation_parameters_df.reset_index()
 
     def get_basic_diff_info(self):
         self.df.groupby(
@@ -236,6 +265,81 @@ class EddyStudy:
                        'than (mean + 2*std)', y=1.02)
         g.fig.show()
 
+    def figure_post_eddy_shell_PE(self):
+        for (title, subtitle), table in \
+            self.post_eddy_shell_PE_translation_parameters_df.groupby(
+                ['title', 'subtitle']):
+            self.figure_post_eddy_shell_PE_suptitle(title, subtitle, table)
+
+    def figure_post_eddy_shell(self):
+        for (title, subtitle), table in \
+            self.post_eddy_shell_alignment_df.groupby(
+                ['title', 'subtitle']):
+            self.figure_post_eddy_shell_suptitle(title, subtitle, table)
+
+    def figure_post_eddy_shell_suptitle(self, title, subtitle, t):
+        shell_infos = t['shell_info'].unique()
+        fig, axes = plt.subplots(
+            ncols=len(shell_infos),
+            figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
+            dpi=200)
+
+        for ax, shell_info in zip(np.ravel(axes), shell_infos):
+            t_tmp = t.groupby('shell_info').get_group(shell_info)
+            t_tmp = t_tmp.reset_index()
+
+            std = t_tmp['sum'].std()
+            mean = t_tmp['sum'].mean()
+
+            ax.plot(np.arange(len(t_tmp)), t_tmp['sum'], 'ro',
+                    alpha=0.3, label='z-rot (deg)')
+            ax.axhline(y=mean+2*std, color='r', alpha=0.4)
+            ax.text(x=len(t_tmp), y=mean+2*std, s='mean + 2 * std',
+                    ha='right', va='top', color='r', alpha=0.4)
+
+            outlier_df = t_tmp[t_tmp['sum'] > (mean + 2*std)]
+            for num, row in outlier_df.iterrows():
+                ax.text(num, row['sum'],
+                        Path(row['ep']).name.split('-eddy_out')[0],
+                        ha='center', fontsize=7)
+            print(' '.join(outlier_df.subject.tolist()))
+            ax.set_title(shell_info)
+
+        axes[0].set_ylabel('Sum of xyz translations and rotations')
+        fig.suptitle(f'{title}\n{subtitle}', y=1)
+        fig.show()
+
+    def figure_post_eddy_shell_PE_suptitle(self, title, subtitle, t):
+        shell_infos = t['shell_info'].unique()
+        fig, axes = plt.subplots(
+            ncols=len(shell_infos),
+            figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
+            dpi=200)
+
+        for ax, shell_info in zip(np.ravel(axes), shell_infos):
+            t_tmp = t.groupby('shell_info').get_group(shell_info)
+            t_tmp = t_tmp.reset_index()
+
+            std = t_tmp[0].std()
+            mean = t_tmp[0].mean()
+
+            ax.plot(np.arange(len(t_tmp)), t_tmp[0], 'ro',
+                    alpha=0.3, label='z-rot (deg)')
+            ax.axhline(y=mean+2*std, color='r', alpha=0.4)
+            ax.text(x=len(t_tmp), y=mean+2*std, s='mean + 2 * std',
+                    ha='right', va='top', color='r', alpha=0.4)
+
+            outlier_df = t_tmp[t_tmp[0] > (mean + 2*std)]
+            for num, row in outlier_df.iterrows():
+                ax.text(num, row[0],
+                        Path(row['ep']).name.split('-eddy_out')[0],
+                        ha='center', fontsize=7)
+            print(' '.join(outlier_df.subject.tolist()))
+            ax.set_title(shell_info)
+
+        axes[0].set_ylabel('PE translation in mm')
+        fig.suptitle(f'{title}\n{subtitle}', y=1)
+        fig.show()
 
 class EddyDirectories(EddyStudy):
     def __init__(self, eddy_dirs):
@@ -253,6 +357,13 @@ class EddyDirectories(EddyStudy):
             self.eddyRuns.append(eddyRun)
 
         self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
+        self.post_eddy_shell_alignment_df = pd.concat(
+            [x.post_eddy_shell_alignment_df for x in self.eddyRuns],
+            axis=0)
+        self.post_eddy_shell_PE_translation_parameters_df = pd.concat(
+            [x.post_eddy_shell_PE_translation_parameters_df for x
+                in self.eddyRuns],
+            axis=0)
 
 
 def get_unique_eddy_prefixes(eddy_dir):
@@ -369,6 +480,13 @@ def get_post_eddy_shell_alignment_in_df(
 
     df = make_df_from_lines_post_eddy_shell_alignment(lines)
 
+    for axis in ['x', 'y', 'z']:
+        for var in ['-tr (mm)', '-rot (deg)']:
+            df[axis+var] = df[axis+var].astype(float).apply(np.absolute)
+
+    df['sum'] = df['x-tr (mm)'] + df['y-tr (mm)'] + df['z-tr (mm)'] + \
+        df['x-rot (deg)'] + df['y-rot (deg)'] + df['z-rot (deg)']
+
     return df
 
 
@@ -386,7 +504,8 @@ def make_df_from_lines_post_eddy_shell_PE_translation_parameters(lines):
         elif line.startswith('Shell'):
             shell_info = line.split(':')[0]
             try:
-                pe_translation = re.search(r'(\S+\.|)\S+\ mm', line).group(0)
+                pe_translation = re.search(r'(\S+\.|\S+)\ mm', line).group(1)
+                pe_translation = np.absolute(float(pe_translation))
             except:
                 pe_translation = ''
             df_tmp = pd.DataFrame([pe_translation])

@@ -7,12 +7,12 @@ import os
 import argparse
 from tabulate import tabulate
 
-from picotui.screen import Screen
-from picotui.defs import *
-from picotui.widgets import *
 import sys
 
 
+from picotui.screen import Screen
+from picotui.defs import *
+from picotui.widgets import *
 def gui(eddyStudy):
 
     s = Screen()
@@ -111,6 +111,8 @@ if __name__ == '__main__':
              'relative restricted movement'], ascending=False).drop(
                  ['ep', 'eddy_dir', 'eddy_input'],
                  axis=1).reset_index().drop('index', axis=1)
+        print(eddyDirectories.post_eddy_shell_alignment_df)
+        print(eddyDirectories.post_eddy_shell_PE_translation_parameters_df)
 
     elif args.eddy_pattern:
         print('Looking for eddy output directories that matches the pattern '
@@ -124,6 +126,7 @@ if __name__ == '__main__':
              'relative restricted movement'], ascending=False).drop(
                  ['ep', 'eddy_dir', 'eddy_input'],
                  axis=1).reset_index().drop('index', axis=1)
+        print(eddyStudy.post_eddy_shell_alignment_df)
 
     else:
         sys.exit('Please specify either --study_dir or --eddy_pattern')
