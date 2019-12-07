@@ -43,10 +43,13 @@ matplotlib==3.0.3
 ### Print motion (restricted) along with other eddy information
 
 ```shell
+
 ./eddy_squeeze --eddy_dir ../test/eddy_out -po
-```
 
 ```
+
+
+```shell
 restricted_absolute_motion  restricted_relative_motion  number_of_outlier_slices  outlier_std_total  outlier_std_mean  outlier_std_std
 0                    0.179872                    0.124634                        53          400.39664          7.554654         2.616683
                 Volume  Slice      Stds  Sqr_stds  rank
@@ -112,10 +115,13 @@ Outlier slices
 ### Study-wise summary of the eddy outputs
 
 ```shell
+
 ./eddy_squeeze_study -ed /study/path/subject*/eddy
+
 ```
 
-`Summarizing 32 subjects
+```
+Summarizing 32 subjects
 +----+-----------+---------------------+---------------+---------------+---------------------------------------+-----------------+----------------------------+------------------------------------------------+--------------------------
 -----------------------+---------------------------------------------------------------+--------------------------------+--------------------------------+---------------------+---------------------+
 |    | subject   |   number of volumes |   max b value |   min b value | unique b values                       |   number of b0s |   number of outlier slices |   Sum of standard deviations in outlier slices |   Mean of standard deviat
