@@ -4,22 +4,15 @@
 
 Summarize and Visualize Information from FSL Eddy Outputs
 
-```py
+```py 
 git clone https://github.com/pnlbwh/eddy-squeeze
 ```
 
 
 ## Contents
 
-- TODO
 - Dependencies
 - How to use the script
-
-
-## TODO
-
-- move plot functions to the nifti-snapshot
-- more information from eddy outputs
 
 
 ## Dependencies
