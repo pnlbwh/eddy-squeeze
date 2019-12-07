@@ -187,8 +187,8 @@ eddyStudy.plot_subjects('Standard deviation of standard deviations in outlier sl
 
 ```
 
+#### [Jupyter notebook example link](docs/eddy_summary_study_example.ipynb)
 
-![output](docs/eddy_summary_study_example.ipynb)
 
 
 
