@@ -9,7 +9,6 @@ git clone https://github.com/pnlbwh/eddy-squeeze
 ```
 
 
-<br>
 ## Contents
 
 - TODO
@@ -17,13 +16,11 @@ git clone https://github.com/pnlbwh/eddy-squeeze
 - How to use the script
 
 
-<br>
 ## TODO
 
 - move plot functions to the nifti-snapshot
 - more information from eddy outputs
 
-<br>
 
 ## Dependencies
 
@@ -42,7 +39,6 @@ tabulate==0.8.5
 
 
 
-<br>
 ## Subject-wise summary of the eddy output
 
 ```shell
@@ -83,7 +79,6 @@ tabulate==0.8.5
 |               17 |       65 |      52 |  -8.43979 |   21.6078  |     17 |
 
 
-<br>
 ## Study-wise summary of the eddy outputs
 
 ```shell
@@ -110,7 +105,6 @@ tabulate==0.8.5
 | 10 | subject_356c  |                  74 |          3000 |             0 | [   0.  200.  500. 1000. 2950. 3000.] |               5 |                         49 |                                        386.715 |                                         7.89214 |                                                       3.56298 |                       0.313836 |                       0.247726 |            0.55314  |            0.448548 |
 
 
-<br>
 ## Create figures to detect outliers
 
 ### example use in jupyter notebook
@@ -145,7 +139,6 @@ eddyStudy.plot_subjects('Standard deviation of standard deviations in outlier sl
 
 
 
-<br>
 ## Save outlier slices as figures
 
 ```shell
