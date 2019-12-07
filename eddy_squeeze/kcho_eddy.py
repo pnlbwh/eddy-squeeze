@@ -156,12 +156,10 @@ class EddyRun(EddyOut):
         self.df = df
 
 
-
 class EddyDirectory(EddyRun):
     def __init__(self, eddy_dir):
         self.ep = get_unique_eddy_prefixes(eddy_dir)
         EddyRun.__init__(self, self.ep)
-
 
 class EddyStudy:
     '''
@@ -237,6 +235,25 @@ class EddyStudy:
         g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
                        'than (mean + 2*std)', y=1.02)
         g.fig.show()
+
+
+class EddyDirectories(EddyStudy):
+    def __init__(self, eddy_dirs):
+        self.eddy_dirs = eddy_dirs
+        print(f'Summarizing {len(self.eddy_dirs)} subjects')
+
+        self.study_eddy_runs = []
+        self.eddy_dir_error = []
+        self.ep_list = []
+        self.eddyRuns = []
+        for eddy_dir in self.eddy_dirs:
+            eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
+            self.ep_list.append(eddy_dir_ep)
+            eddyRun = EddyRun(eddy_dir_ep)
+            self.eddyRuns.append(eddyRun)
+
+        self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
+
 
 def get_unique_eddy_prefixes(eddy_dir):
     '''
