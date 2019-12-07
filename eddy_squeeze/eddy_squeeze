@@ -5,6 +5,7 @@ import eddy_plots
 from pathlib import Path
 import os
 import argparse
+from tabulate import tabulate
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(
@@ -53,5 +54,5 @@ if __name__ == '__main__':
             args.out_dir)
 
         eddyOut.summary_df()
-        print(eddyOut.df_motion)
-        print(eddyOut.df)
+        print(tabulate(eddyOut.df_motion, headers='keys', tablefmt='github'))
+        print(tabulate(eddyOut.df, headers='keys', tablefmt='github'))
