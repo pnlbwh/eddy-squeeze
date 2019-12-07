@@ -300,7 +300,7 @@ class EddyStudy:
             outlier_df = t_tmp[t_tmp['sum'] > (mean + 2*std)]
             for num, row in outlier_df.iterrows():
                 ax.text(num, row['sum'],
-                        Path(row['ep']).name.split('-eddy_out')[0],
+                        row['subject'],
                         ha='center', fontsize=7)
             print(' '.join(outlier_df.subject.tolist()))
             ax.set_title(shell_info)
@@ -332,7 +332,7 @@ class EddyStudy:
             outlier_df = t_tmp[t_tmp[0] > (mean + 2*std)]
             for num, row in outlier_df.iterrows():
                 ax.text(num, row[0],
-                        Path(row['ep']).name.split('-eddy_out')[0],
+                        row['subject'],
                         ha='center', fontsize=7)
             print(' '.join(outlier_df.subject.tolist()))
             ax.set_title(shell_info)
