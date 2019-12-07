@@ -120,8 +120,8 @@ Outlier slices
 
 ```
 
+#### Example output
 
-Summarizing 32 subjects
 
 |    | subject   |   number of volumes |   max b value |   min b value | unique b values                       |   number of b0s |   number of outlier slices |   Sum of standard deviations in outlier slices |   Mean of standard deviations in outlier slices |   Standard deviation of standard deviations in outlier slices |   absolute restricted movement |   relative restricted movement |   absolute movement |   relative movement |
 |----|-----------|---------------------|---------------|---------------|---------------------------------------|-----------------|----------------------------|------------------------------------------------|-------------------------------------------------|---------------------------------------------------------------|--------------------------------|--------------------------------|---------------------|---------------------|
