@@ -34,6 +34,7 @@ nibabel==2.4.0
 numpy==1.16.2
 pathlib2==2.3.3
 matplotlib==3.0.3
+tabulate==0.8.5
 ```
 
 
