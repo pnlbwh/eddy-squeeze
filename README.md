@@ -2,7 +2,7 @@
 
 # eddy-squeeze
 
-Visualize extra information from FSL eddy outputs
+Summarize and Visualize Information from FSL Eddy Outputs
 
 ```py
 git clone https://github.com/pnlbwh/eddy-squeeze
