@@ -30,6 +30,10 @@ if __name__ == '__main__':
                            action='store_true',
                            help='Eddy output directory')
 
+    argparser.add_argument("--save_csv", "-sc",
+                           action='store_true',
+                           help='Save motion information to csv file')
+
     argparser.add_argument("--study_dir", "-sd",
                            type=str,
                            default=os.getcwd(),
@@ -56,3 +60,8 @@ if __name__ == '__main__':
         eddyOut.summary_df()
         print(tabulate(eddyOut.df_motion, headers='keys', tablefmt='github'))
         print(tabulate(eddyOut.df, headers='keys', tablefmt='github'))
+
+        if args.save_csv:
+            eddyOut.df_motion.to_csv(args.out_dir / 'motion.csv')
+            eddyOut.df.to_csv(args.out_dir / 'outlier_slices.csv')
+

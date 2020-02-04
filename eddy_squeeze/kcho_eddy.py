@@ -118,7 +118,14 @@ class EddyRun(EddyOut):
         for name, file_loc in eddy_files_dict.items():
             setattr(self, name, file_loc)
 
-        self.read_and_register_raw_files()
+        try:
+            self.read_and_register_raw_files()
+        except:
+            self.nifti_input = str(self.eddy_dir / 'dti_0107_base.nii.gz')
+            self.bvalue_txt = self.eddy_dir / 'dti_0107_base.bval'
+            self.bvalue_arr = np.loadtxt(self.bvalue_txt)
+            self.mask = str(self.eddy_dir / 'mask_hifi_mask.nii.gz')
+            
         self.load_movement_arrays()
         self.load_outlier_arrays()
         self.get_info_movement_arrays()
