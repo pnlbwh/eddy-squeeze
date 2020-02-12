@@ -1,0 +1,92 @@
+{% extends 'template.html' %}
+
+{% block title %}
+Eddy summary
+{% endblock title %}
+
+{% block subtitle %}
+<h3><code>{{ eddyOut.ep }}</code></h4>
+<p>{{ eddyOut.ep }}</p>
+{% endblock subtitle %}
+
+{% block linkline %}
+<a class="btn btn-primary btn-lg" href="#}" role="button">More about our team &raquo;</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<!-- Example row of columns -->
+<div class="row">
+  <div class="col-md-12">
+    <h2>Motion summary</h2>
+    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
+    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
+
+        <table class="table">
+            <tr>
+            {% for key, value in eddyOut.df_motion.items() %}
+                <td scope="col">{{ key }}</td>
+            {% endfor %}
+            </tr>
+            <tr>
+            {% for key, value in eddyOut.df_motion.items() %}
+                <td scope="col">{{ value.0 }}</td>
+            {% endfor %}
+            </tr>
+        </table>
+
+    <p><a class="btn btn-light" href="#" role="button">View list of analysis pipelines &raquo;</a></p>
+
+    <h2>Outlier slice summary</h2>
+    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
+    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
+
+        <table class="table">
+            <tr>
+            {% for key, value in eddyOut.df.items() %}
+                <td scope="col">{{ key }}</td>
+            {% endfor %}
+            </tr>
+            <tr>
+            {% for key, value in eddyOut.df.items() %}
+                <td scope="col">{{ value.0 }}</td>
+            {% endfor %}
+            </tr>
+        </table>
+
+    <h2>Post eddy shell alignment information</h2>
+    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
+    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
+
+        <table class="table">
+            <tr>
+            {% for key, value in eddyOut.post_eddy_shell_alignment_df.items() %}
+                <td scope="col">{{ key }}</td>
+            {% endfor %}
+            </tr>
+            <tr>
+            {% for key, value in eddyOut.post_eddy_shell_alignment_df.items() %}
+                <td scope="col">{{ value.0 }}</td>
+            {% endfor %}
+            </tr>
+        </table>
+
+    <h2>Post eddy shell PE translation information</h2>
+    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
+    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
+
+        <table class="table">
+            <tr>
+            {% for key, value in eddyOut.post_eddy_shell_PE_translation_parameters_df.items() %}
+                <td scope="col">{{ key }}</td>
+            {% endfor %}
+            </tr>
+            <tr>
+            {% for key, value in eddyOut.post_eddy_shell_PE_translation_parameters_df.items() %}
+                <td scope="col">{{ value.0 }}</td>
+            {% endfor %}
+            </tr>
+        </table>
+  </div>
+</div>
+{% endblock content %}
