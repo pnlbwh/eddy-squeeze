@@ -2,6 +2,10 @@
 
 # eddy-squeeze
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3600531.svg)](https://doi.org/10.5281/zenodo.3600531)
+
+
+
 Summarize and Visualize Information from FSL Eddy Outputs
 
 ```py 
