@@ -70,7 +70,6 @@ class EddyOut:
             np.where(self.outlier_array == 1)].sum()
         self.outlier_std_total = np.absolute(self.outlier_std_total)
 
-        # I expect to see RuntimeWarnings in this block
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=RuntimeWarning)
             self.outlier_std_mean = self.outlier_std_array[
