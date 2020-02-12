@@ -57,9 +57,16 @@ if __name__ == '__main__':
             args.eddy_dir,
             args.out_dir)
 
+
         eddyOut.summary_df()
         print(tabulate(eddyOut.df_motion, headers='keys', tablefmt='github'))
         print(tabulate(eddyOut.df, headers='keys', tablefmt='github'))
+
+        # post eddy shell alignment information
+        print(tabulate(eddyOut.post_eddy_shell_alignment_df, headers='keys', tablefmt='psql'))
+
+        # post eddy shell PE translation information
+        print(tabulate(eddyOut.post_eddy_shell_PE_translation_parameters_df, headers='keys', tablefmt='psql'))
 
         if args.save_csv:
             eddyOut.df_motion.to_csv(args.out_dir / 'motion.csv')

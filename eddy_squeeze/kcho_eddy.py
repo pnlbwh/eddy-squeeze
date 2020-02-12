@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 # plot
 import seaborn as sns
 
+# warning
+import warnings
+
 
 class EddyOut:
     def load_movement_arrays(self):
@@ -67,10 +70,16 @@ class EddyOut:
             np.where(self.outlier_array == 1)].sum()
         self.outlier_std_total = np.absolute(self.outlier_std_total)
 
-        self.outlier_std_mean = self.outlier_std_array[
-            np.where(self.outlier_array == 1)].mean()
-        self.outlier_std_std = self.outlier_std_array[
-            np.where(self.outlier_array == 1)].std()
+        # I expect to see RuntimeWarnings in this block
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            self.outlier_std_mean = self.outlier_std_array[
+                np.where(self.outlier_array == 1)].mean()
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            self.outlier_std_std = self.outlier_std_array[
+                np.where(self.outlier_array == 1)].std()
 
         self.outlier_std_mean = np.absolute(self.outlier_std_mean)
         self.outlier_std_std = np.absolute(self.outlier_std_std)
@@ -131,11 +140,13 @@ class EddyRun(EddyOut):
         try:
             self.read_and_register_raw_files()
         except:
+            # TODO : edit here to give options to readin file paths
+            #        when there is no command_txt
             self.nifti_input = str(self.eddy_dir / 'dti_0107_base.nii.gz')
             self.bvalue_txt = self.eddy_dir / 'dti_0107_base.bval'
             self.bvalue_arr = np.loadtxt(self.bvalue_txt)
             self.mask = str(self.eddy_dir / 'mask_hifi_mask.nii.gz')
-            
+
         self.load_movement_arrays()
         self.load_outlier_arrays()
         self.get_info_movement_arrays()
