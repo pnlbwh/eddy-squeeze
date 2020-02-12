@@ -76,27 +76,37 @@ class EddyOut:
         self.outlier_std_std = np.absolute(self.outlier_std_std)
 
     def read_and_register_raw_files(self):
-        """Read eddy command.txt file to load raw data information
-        - TODO
-            - check whether the files exist
-        """
-        # Get raw dwi input the the eddy from command_txt
-        with open(self.command_txt, 'r') as f:
-            self.command = f.read()
-        self.nifti_input = re.search(r'--imain=(\S+)', self.command).group(1)
-        self.bvalue_txt = re.search(r'--bvals=(\S+)', self.command).group(1)
-        self.mask = re.search(r'--mask=(\S+)', self.command).group(1)
-        # quick fix for lupus project, Friday, August 09, 2019
-        if '.nii.nii.gz' in self.mask:
-            self.mask = re.sub('.nii.nii.gz', '.nii.gz', self.mask)
+        """Read eddy command.txt file to load raw data information"""
 
-        if Path(self.bvalue_txt).is_absolute():
-            pass
+        # If there is command_txt, get raw dwi input the the eddy from command_txt
+        if Path(self.command_txt).is_file():
+            with open(self.command_txt, 'r') as f:
+                self.command = f.read()
+
+            self.nifti_input = re.search(r'--imain=(\S+)',
+                                         self.command).group(1)
+            self.bvalue_txt = re.search(r'--bvals=(\S+)',
+                                        self.command).group(1)
+            self.mask = re.search(r'--mask=(\S+)',
+                                  self.command).group(1)
+
+            # quick fix for lupus project, Friday, August 09, 2019
+            if '.nii.nii.gz' in self.mask:
+                self.mask = re.sub('.nii.nii.gz', '.nii.gz', self.mask)
+
+            # if the file paths were saved as a relative path in the command
+            # text file, store them as the absolute path
+            for file_name in ['nifti_input', 'bvalue_txt', 'mask']:
+                path_in_command = getattr(self, file_name)
+                if Path(path_in_command).is_absolute():
+                    pass
+                else:
+                    path_in_command = str(
+                        Path(self.ep).parent / Path(path_in_command).name)
+                    setattr(self, file_name, path_in_command)
+
         else:
-            # if self.bvalue_txt is a relative path, assume bvalue_txt is one
-            # directory above the eddy output
-            self.bvalue_txt = str(
-                Path(self.ep).parent / Path(self.bvalue_txt).name)
+            sys.exit(f'{self.command_txt} is missing.')
 
         self.bvalue_arr = np.loadtxt(self.bvalue_txt)
 
