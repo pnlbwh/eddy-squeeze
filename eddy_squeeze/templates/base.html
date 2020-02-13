@@ -5,12 +5,12 @@ Eddy summary
 {% endblock title %}
 
 {% block subtitle %}
-<h3><code>{{ eddyOut.ep }}</code></h4>
+<h3><code>{{ eddyOut.eddy_dir }}</code></h4>
 <p>{{ eddyOut.ep }}</p>
 {% endblock subtitle %}
 
 {% block linkline %}
-<a class="btn btn-primary btn-lg" href="#}" role="button">More about our team &raquo;</a>
+<a class="btn btn-primary btn-lg" href="#}" role="button">Back to study level summary &raquo;</a>
 {% endblock %}
 
 {% block content %}
@@ -19,74 +19,106 @@ Eddy summary
 <div class="row">
   <div class="col-md-12">
     <h2>Motion summary</h2>
-    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
-    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
+    <p class="font-weight-bold">Motion parameters extracted from the Eddy output.</p> 
+    <p>Restricted : "This doesn't matter for the correction of the images, it makes no difference if we estimate a large constant EC components and small movement or if we estimate a small EC component and large movement. The corrected images will be (close to) identical. But it matters if one wants to know how much the subject moved. We therefore supplies this file that estimates the movement RMS as above, but which disregards translation in the PE direction."</p>
 
         <table class="table">
             <tr>
-            {% for key, value in eddyOut.df_motion.items() %}
-                <td scope="col">{{ key }}</td>
-            {% endfor %}
+                <th scope="col">Restricted absolute motion</th>
+                <th scope="col">Restricted relative motion</th>
+                <th scope="col">Number of outlier slices</th>
+                <th scope="col">Sum of standard deviations<br>in each outlier slice</th>
+                <th scope="col">Mean of standard deviations<br>in each outlier slice</th>
+                <th scope="col">Standard deviation of standard deviations<br>in each outlier slice</th>
             </tr>
             <tr>
             {% for key, value in eddyOut.df_motion.items() %}
-                <td scope="col">{{ value.0 }}</td>
+                {% if key == 'number_of_outlier_slices' %}
+                    <td scope="col">{{ value.0 }}</td>
+                {% else %}
+                    <td scope="col">{{ "%.2f"|format(value|float) }}</td>
+                {% endif %}
             {% endfor %}
             </tr>
         </table>
 
-    <p><a class="btn btn-light" href="#" role="button">View list of analysis pipelines &raquo;</a></p>
-
-    <h2>Outlier slice summary</h2>
-    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
-    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
+    <br>
+    <h2>Outlier slices</h2>
+    <p class="font-weight-bold">Information about the slices that were marked as outliers by Eddy.</p> 
+    <p>The table has been order to show the slice with the highest standard deviation from the Gaussian model.</p>
 
         <table class="table">
             <tr>
-            {% for key, value in eddyOut.df.items() %}
-                <td scope="col">{{ key }}</td>
-            {% endfor %}
+                <th scope="col">Volume Number</th>
+                <th scope="col">Slice number</th>
+                <th scope="col">Standard deviation</th>
+                <th scope="col">Square root of standard deviation</th>
+                <th scope="col">Rank</th>
             </tr>
-            <tr>
-            {% for key, value in eddyOut.df.items() %}
-                <td scope="col">{{ value.0 }}</td>
+            {% for row_num, row in eddyOut.df.iterrows() %}
+                <tr>
+                    <td scope="col">{{ "%.0f"|format(row.0|float) }}</td>
+                    <td scope="col">{{ "%.0f"|format(row.1|float) }}</td>
+                    <td scope="col">{{ "%.2f"|format(row.2|float) }}</td>
+                    <td scope="col">{{ "%.2f"|format(row.3|float) }}</td>
+                    <td scope="col">{{ "%.0f"|format(row.4|float) }}</td>
+                </tr>
             {% endfor %}
-            </tr>
         </table>
+    <br>
+
+    <h2>Outlier slice & replacement images</h2>
+    <p class="font-weight-bold">Show how each outlier slice was replaced by Eddy</p> 
+    {% for img_path in image_list %}
+        <div class="col-md-12">
+            <img src={{ img_path }} class="img-fluid" alt="Responsive image">  </img> 
+        </div>
+    {% endfor %}
+    <br>
 
     <h2>Post eddy shell alignment information</h2>
-    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
-    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
-
-        <table class="table">
-            <tr>
-            {% for key, value in eddyOut.post_eddy_shell_alignment_df.items() %}
-                <td scope="col">{{ key }}</td>
-            {% endfor %}
-            </tr>
-            <tr>
-            {% for key, value in eddyOut.post_eddy_shell_alignment_df.items() %}
-                <td scope="col">{{ value.0 }}</td>
-            {% endfor %}
-            </tr>
-        </table>
+        {% for subtitle, table in eddyOut.post_eddy_shell_alignment_df.groupby('subtitle') %} 
+        <p class="font-weight-bold">{{ subtitle }}</p> 
+            <table class="table">
+                <tr>
+                    <th scope="col">x-tr (mm)</th>
+                    <th scope="col">y-tr (mm)</th>
+                    <th scope="col">z-tr (mm)</th>
+                    <th scope="col">x-rot (deg)</th>
+                    <th scope="col">y-rot (deg)</th>
+                    <th scope="col">z-rot (deg)</th>
+                    <th scope="col">Sum</th>
+                    <th scope="col">Shell info</th>
+                </tr>
+                {% for row_num, row in table.iterrows() %}
+                    <tr>
+                        <td scope="col">{{ "%.0f"|format(row.0|float) }}</td>
+                        <td scope="col">{{ "%.0f"|format(row.1|float) }}</td>
+                        <td scope="col">{{ "%.2f"|format(row.2|float) }}</td>
+                        <td scope="col">{{ "%.2f"|format(row.3|float) }}</td>
+                        <td scope="col">{{ "%.0f"|format(row.4|float) }}</td>
+                        <td scope="col">{{ "%.0f"|format(row.5|float) }}</td>
+                        <td scope="col">{{ "%.0f"|format(row.7|float) }}</td>
+                        <td scope="col">{{ row.6 }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    <br>
 
     <h2>Post eddy shell PE translation information</h2>
-    <p class="font-weight-bold">Easily apply an analysis pipeline.</p> 
-    <p>Easily apply an analysis pipeline. By keeping the file structure consistent to the BIDS format, our web-framework allows running various neuroimaging pipielines with ease.</p>
-
-        <table class="table">
-            <tr>
-            {% for key, value in eddyOut.post_eddy_shell_PE_translation_parameters_df.items() %}
-                <td scope="col">{{ key }}</td>
+        {% for subtitle, table in eddyOut.post_eddy_shell_PE_translation_parameters_df.groupby('subtitle') %} 
+            <p class="font-weight-bold">{{ subtitle }}</p> 
+            <table class="table">
+            {% for row_num, row in table.iterrows() %}
+                <tr>
+                {% for col in row %}
+                    <td scope="col">{{ col }}</td>
+                {% endfor %}
+                </tr>
             {% endfor %}
-            </tr>
-            <tr>
-            {% for key, value in eddyOut.post_eddy_shell_PE_translation_parameters_df.items() %}
-                <td scope="col">{{ value.0 }}</td>
-            {% endfor %}
-            </tr>
-        </table>
+            </table>
+        {% endfor %}
   </div>
 </div>
 {% endblock content %}

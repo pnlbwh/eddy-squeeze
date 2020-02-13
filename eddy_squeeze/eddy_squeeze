@@ -6,6 +6,7 @@ from pathlib import Path
 import os
 import argparse
 from tabulate import tabulate
+import eddy_web
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(
@@ -88,3 +89,5 @@ if __name__ == '__main__':
             eddyOut.df_motion.to_csv(args.out_dir / 'motion.csv')
             eddyOut.df.to_csv(args.out_dir / 'outlier_slices.csv')
 
+        if args.save_html:
+            eddy_web.create_html(eddyOut, out_dir=args.out_dir)
