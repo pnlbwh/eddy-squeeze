@@ -319,10 +319,16 @@ class EddyStudy:
 
     def figure_post_eddy_shell_suptitle(self, title, subtitle, t):
         shell_infos = t['shell_info'].unique()
-        fig, axes = plt.subplots(
-            ncols=len(shell_infos),
-            figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
-            dpi=200)
+        if len(t) > 30:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
+                dpi=200)
+        else:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(10, 10),
+                dpi=200)
 
         for ax, shell_info in zip(np.ravel(axes), shell_infos):
             t_tmp = t.groupby('shell_info').get_group(shell_info)
@@ -345,16 +351,27 @@ class EddyStudy:
             print(' '.join(outlier_df.subject.tolist()))
             ax.set_title(shell_info)
 
-        axes[0].set_ylabel('Sum of xyz translations and rotations')
+        try:
+            axes[0].set_ylabel('Sum of xyz translations and rotations')
+        except:
+            axes.set_ylabel('Sum of xyz translations and rotations')
         fig.suptitle(f'{title}\n{subtitle}', y=1)
-        fig.show()
+
+        setattr(self, f'plot_post_eddy_shell_{subtitle}', fig)
+        # fig.show()
 
     def figure_post_eddy_shell_PE_suptitle(self, title, subtitle, t):
         shell_infos = t['shell_info'].unique()
-        fig, axes = plt.subplots(
-            ncols=len(shell_infos),
-            figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
-            dpi=200)
+        if len(t) > 30:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
+                dpi=200)
+        else:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(10, 10),
+                dpi=200)
 
         for ax, shell_info in zip(np.ravel(axes), shell_infos):
             t_tmp = t.groupby('shell_info').get_group(shell_info)
@@ -377,9 +394,13 @@ class EddyStudy:
             print(' '.join(outlier_df.subject.tolist()))
             ax.set_title(shell_info)
 
-        axes[0].set_ylabel('PE translation in mm')
+        try:
+            axes[0].set_ylabel('PE translation in mm')
+        except:
+            axes.set_ylabel('PE translation in mm')
         fig.suptitle(f'{title}\n{subtitle}', y=1)
-        fig.show()
+        setattr(self, f'plot_post_eddy_shell_PE_{subtitle}', fig)
+        # fig.show()
 
 class EddyDirectories(EddyStudy):
     def __init__(self, eddy_dirs):

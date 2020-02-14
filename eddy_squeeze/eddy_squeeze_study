@@ -34,29 +34,75 @@ if __name__ == '__main__':
                            type=str,
                            help='csv output')
 
+    argparser.add_argument("--save_html", "-sh",
+                           action='store_true',
+                           help='Save eddy information to html file')
+
     argparser.add_argument("--test", "-t",
                            action='store_true',
                            help='test')
 
     args = argparser.parse_args()
 
+    # Set out directory
+    if args.out_dir:
+        out_dir = Path(args.out_dir).absolute()
+        if not out_dir.is_dir():
+            out_dir.mkdir()
+    else:
+        out_dir = Path(os.getcwd())
+
+    # Get eddy runs using kcho_eddy classes
     if args.eddy_directories:
         print('Summarizing the eddy output directories :')
         print('\n'.join(args.eddy_directories))
-
         eddyDirectories = kcho_eddy.EddyDirectories(args.eddy_directories)
-        eddyDirectories.clean_up_data_frame()
-
     elif args.eddy_pattern:
         print('Looking for eddy output directories that matches the pattern '
               ': {args.eddy_pattern}')
         eddyDirectories = kcho_eddy.EddyStudy(args.eddy_pattern)
-        eddyDirectories.clean_up_data_frame()
     else:
         sys.exit('Please specify either --study_dir or --eddy_pattern')
 
+    # clean up dataframe
+    eddyDirectories.clean_up_data_frame()
+
+    # save figures
+    vars = ['absolute restricted movement', 'relative restricted movement',
+            'number of outlier slices',
+            'Sum of standard deviations in outlier slices',
+            'Mean of standard deviations in outlier slices',
+            'Standard deviation of standard deviations in outlier slices']
+    for var in vars:
+        eddyDirectories.plot_subjects(var)
+        g = getattr(eddyDirectories, f'plot_{var}')
+        g.fig.savefig(out_dir / f'plot_{var}.png')
+
+        # if there is outlier
+        try:
+            g = getattr(eddyDirectories, f'plot_outlier_only_{var}')
+            g.fig.savefig(out_dir / f'plot_outlier_only_{var}.png')
+        except:
+            pass
+
+    # Eddy shell alignment
+    eddyDirectories.figure_post_eddy_shell()
+    post_eddy_shell_graph_list = [x for x in dir(eddyDirectories)
+                                  if 'plot_post_eddy_shell' in x]
+    for post_eddy_shell_graph in post_eddy_shell_graph_list:
+        fig = getattr(eddyDirectories, post_eddy_shell_graph)
+        fig.savefig(out_dir / f'{post_eddy_shell_graph}.png')
+
+
+    eddyDirectories.figure_post_eddy_shell_PE()
+    post_eddy_shell_PE_graph_list = [x for x in dir(eddyDirectories)
+                                     if 'plot_post_eddy_shell_PE' in x]
+    for post_eddy_shell_PE_graph in post_eddy_shell_PE_graph_list:
+        fig = getattr(eddyDirectories, post_eddy_shell_PE_graph)
+        fig.savefig(out_dir / f'{post_eddy_shell_PE_graph}.png')
+
     # dataframe clean up
-    df = eddyDirectories.df.sort_values(
+    eddyDirectories.df = eddyDirectories.df.sort_values(
         ['number of outlier slices',
          'Sum of standard deviations in outlier slices',
          'absolute restricted movement',
@@ -64,15 +110,10 @@ if __name__ == '__main__':
              ['ep', 'eddy_dir', 'eddy_input'],
              axis=1).reset_index().drop('index', axis=1)
 
-    print(tabulate(df, headers='keys', tablefmt='github'))
+    # print(tabulate(df, headers='keys', tablefmt='github'))
 
-    if args.out_dir:
-        out_dir = Path(args.out_dir)
-    else:
-        out_dir = Path(os.getcwd())
-
-    print('Saving the summary outputs to {args.out}')
-    df.to_csv(out_dir / 'eddy_study_summary.csv')
+    # print('Saving the summary outputs to {args.out}')
+    eddyDirectories.df.to_csv(out_dir / 'eddy_study_summary.csv')
 
     if args.save_html:
-        eddy_web.create_study_html(eddyStudy, out_dir=out_dir)
+        eddy_web.create_study_html(eddyDirectories, out_dir=out_dir)
