@@ -46,29 +46,23 @@ if __name__ == '__main__':
 
         eddyDirectories = kcho_eddy.EddyDirectories(args.eddy_directories)
         eddyDirectories.clean_up_data_frame()
-        df = eddyDirectories.df.sort_values(
-            ['number of outlier slices',
-             'Sum of standard deviations in outlier slices',
-             'absolute restricted movement',
-             'relative restricted movement'], ascending=False).drop(
-                 ['ep', 'eddy_dir', 'eddy_input'],
-                 axis=1).reset_index().drop('index', axis=1)
 
     elif args.eddy_pattern:
         print('Looking for eddy output directories that matches the pattern '
               ': {args.eddy_pattern}')
-        eddyStudy = kcho_eddy.EddyStudy(args.eddy_pattern)
-        eddyStudy.clean_up_data_frame()
-        df = eddyStudy.df.sort_values(
-            ['number of outlier slices',
-             'Sum of standard deviations in outlier slices',
-             'absolute restricted movement',
-             'relative restricted movement'], ascending=False).drop(
-                 ['ep', 'eddy_dir', 'eddy_input'],
-                 axis=1).reset_index().drop('index', axis=1)
-
+        eddyDirectories = kcho_eddy.EddyStudy(args.eddy_pattern)
+        eddyDirectories.clean_up_data_frame()
     else:
         sys.exit('Please specify either --study_dir or --eddy_pattern')
+
+    # dataframe clean up
+    df = eddyDirectories.df.sort_values(
+        ['number of outlier slices',
+         'Sum of standard deviations in outlier slices',
+         'absolute restricted movement',
+         'relative restricted movement'], ascending=False).drop(
+             ['ep', 'eddy_dir', 'eddy_input'],
+             axis=1).reset_index().drop('index', axis=1)
 
     print(tabulate(df, headers='keys', tablefmt='github'))
 
