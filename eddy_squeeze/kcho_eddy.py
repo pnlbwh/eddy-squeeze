@@ -277,8 +277,11 @@ class EddyStudy:
             y=threshold+0.1,
             s=f'mean + std * {std_outlier}',
             ha='right', color='red', alpha=0.9)
-        g.fig.show()
 
+        setattr(self, f'plot_{var}', g)
+        # g.fig.show()
+
+        # plot outliers only
         df_tmp = self.df[self.df[var] > threshold]
         x_size = len(df_tmp) * 1.2
 
@@ -290,7 +293,8 @@ class EddyStudy:
 
         g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
                        'than (mean + 2*std)', y=1.02)
-        g.fig.show()
+        setattr(self, f'plot_outlier_only_{var}', g)
+        # g.fig.show()
 
     def figure_post_eddy_shell_PE(self):
         for (title, subtitle), table in \
