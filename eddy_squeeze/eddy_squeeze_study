@@ -6,6 +6,7 @@ from pathlib import Path
 import os
 import argparse
 from tabulate import tabulate
+import eddy_web
 
 import sys
 
@@ -29,7 +30,7 @@ if __name__ == '__main__':
                            type=str,
                            help='Pattern of eddy directories')
 
-    argparser.add_argument("--out", "-o",
+    argparser.add_argument("--out_dir", "-o",
                            type=str,
                            help='csv output')
 
@@ -71,6 +72,13 @@ if __name__ == '__main__':
 
     print(tabulate(df, headers='keys', tablefmt='github'))
 
-    if args.out:
-        print('Saving the summary outputs to {args.out}')
-        df.to_csv(args.out)
+    if args.out_dir:
+        out_dir = Path(args.out_dir)
+    else:
+        out_dir = Path(os.getcwd())
+
+    print('Saving the summary outputs to {args.out}')
+    df.to_csv(out_dir / 'eddy_study_summary.csv')
+
+    if args.save_html:
+        eddy_web.create_study_html(eddyStudy, out_dir=out_dir)
