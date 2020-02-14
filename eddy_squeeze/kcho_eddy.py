@@ -262,18 +262,26 @@ class EddyStudy:
         return np.unique(unique_b_values, axis=0)
 
     def plot_subjects(self, var, std_outlier=2):
+
+        # width for one number of subjects
+        width_per_subject = 0.5
+
         g = sns.catplot(x='subject', y=var, data=self.df)
-        g.fig.set_size_inches(20, 5)
+        if len(self.df) < 10:
+            g.fig.set_size_inches(5, 5)
+        else:
+            g.fig.set_size_inches(width_per_subject * len(self.df), 5)
+            g.ax.set_xticklabels(g.ax.get_xticklabels(), rotation=90)
         g.fig.set_dpi(200)
-        g.ax.set_xticklabels(g.ax.get_xticklabels(), rotation=90)
         g.ax.set_xlabel('Subjects')
 
+        g.fig.tight_layout()
         g.fig.suptitle(f'{var[0].upper()}{var[1:]}')
 
         threshold = self.df[var].mean() + (self.df[var].std() * std_outlier)
         g.ax.axhline(y=threshold, color='red', alpha=0.4)
         g.ax.text(
-            x=len(self.df),
+            x=len(self.df) - 0.5,
             y=threshold+0.1,
             s=f'mean + std * {std_outlier}',
             ha='right', color='red', alpha=0.9)
@@ -285,15 +293,16 @@ class EddyStudy:
         df_tmp = self.df[self.df[var] > threshold]
         x_size = len(df_tmp) * 1.2
 
-        g = sns.catplot(x='subject', y=var, data=df_tmp)
-        g.fig.set_size_inches(x_size, 5)
-        g.fig.set_dpi(200)
-        g.ax.set_xticklabels(g.ax.get_xticklabels())
-        g.ax.set_xlabel('Subjects')
+        if len(df_tmp) > 0:
+            g = sns.catplot(x='subject', y=var, data=df_tmp)
+            g.fig.set_size_inches(x_size, 5)
+            g.fig.set_dpi(200)
+            g.ax.set_xticklabels(g.ax.get_xticklabels())
+            g.ax.set_xlabel('Subjects')
 
-        g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
-                       'than (mean + 2*std)', y=1.02)
-        setattr(self, f'plot_outlier_only_{var}', g)
+            g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
+                           'than (mean + 2*std)', y=1.02)
+            setattr(self, f'plot_outlier_only_{var}', g)
         # g.fig.show()
 
     def figure_post_eddy_shell_PE(self):
