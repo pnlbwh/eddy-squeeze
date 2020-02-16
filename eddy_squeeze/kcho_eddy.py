@@ -217,6 +217,10 @@ class EddyStudy:
             eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
             self.ep_list.append(eddy_dir_ep)
             eddyRun = EddyRun(eddy_dir_ep)
+            # eddyRun = eddy_plots.EddyFigure(
+                # eddy_dir,
+                # eddy_dir / 'outlier_figure')
+            # eddyRun.save_all_outlier_slices()
             self.eddyRuns.append(eddyRun)
             # self.df = pd.concat([self.df, eddyRun.df])
 
