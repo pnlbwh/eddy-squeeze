@@ -101,6 +101,8 @@ class EddyOut:
             # quick fix for lupus project, Friday, August 09, 2019
             if '.nii.nii.gz' in self.mask:
                 self.mask = re.sub('.nii.nii.gz', '.nii.gz', self.mask)
+            elif '.nii.gz' not in self.mask:
+                self.mask = self.mask + '.nii.gz'
 
             # if the file paths were saved as a relative path in the command
             # text file, store them as the absolute path
