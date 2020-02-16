@@ -63,31 +63,31 @@ if __name__ == '__main__':
             args.out_dir)
 
 
-        eddyOut.summary_df()
-        print('Eddy head motion summary')
-        print('-'*50)
-        print(tabulate(eddyOut.df_motion, headers='keys', tablefmt='github'))
-        print()
-        print('Outlier slice summary')
-        print('-'*50)
-        print(tabulate(eddyOut.df, headers='keys', tablefmt='github'))
-        print()
+    eddyOut.summary_df()
+    print('Eddy head motion summary')
+    print('-'*50)
+    print(tabulate(eddyOut.df_motion, headers='keys', tablefmt='github'))
+    print()
+    print('Outlier slice summary')
+    print('-'*50)
+    print(tabulate(eddyOut.df, headers='keys', tablefmt='github'))
+    print()
 
-        # post eddy shell alignment information
-        print('Post eddy shell alignment information')
-        print('-'*50)
-        print(tabulate(eddyOut.post_eddy_shell_alignment_df, headers='keys', tablefmt='psql'))
-        print()
+    # post eddy shell alignment information
+    print('Post eddy shell alignment information')
+    print('-'*50)
+    print(tabulate(eddyOut.post_eddy_shell_alignment_df, headers='keys', tablefmt='psql'))
+    print()
 
-        # post eddy shell PE translation information
-        print('Post eddy shell PE translation information')
-        print('-'*50)
-        print(tabulate(eddyOut.post_eddy_shell_PE_translation_parameters_df, headers='keys', tablefmt='psql'))
-        print()
+    # post eddy shell PE translation information
+    print('Post eddy shell PE translation information')
+    print('-'*50)
+    print(tabulate(eddyOut.post_eddy_shell_PE_translation_parameters_df, headers='keys', tablefmt='psql'))
+    print()
 
-        if args.save_csv:
-            eddyOut.df_motion.to_csv(args.out_dir / 'motion.csv')
-            eddyOut.df.to_csv(args.out_dir / 'outlier_slices.csv')
+    if args.save_csv:
+        eddyOut.df_motion.to_csv(args.out_dir / 'motion.csv')
+        eddyOut.df.to_csv(args.out_dir / 'outlier_slices.csv')
 
-        if args.save_html:
-            eddy_web.create_html(eddyOut, out_dir=args.out_dir)
+    if args.save_html:
+        eddy_web.create_html(eddyOut, out_dir=args.out_dir)
