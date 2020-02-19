@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from kcho_eddy import EddyOut, EddyDirectory
+from kcho_eddy import EddyDirectory
 import pandas as pd
 from pathlib import Path
 import matplotlib.pyplot as plt
@@ -15,20 +15,25 @@ import matplotlib.gridspec as gridspec
 
 
 class EddyFigure(EddyDirectory):
+    """Eddy Figure class"""
     def __init__(self, eddy_dir, fig_outdir):
+        # initialize with EddyDirectory class
         EddyDirectory.__init__(self, eddy_dir)
 
+        # get detailed information of outlier slices
         self.get_outlier_info()
+
+        # load mask, pre and post-replace data
         self.load_data()
-        # outdir
-        # fig_outdir = self.eddy_dir / 'outlier_figures'
+
         self.fig_outdir = Path(fig_outdir)
         self.fig_outdir.mkdir(exist_ok=True)
 
-        # get-mid-slice
+        # get mid point of data x-axis
         self.mid_point = int(self.post_data.shape[0] / 2)
 
     def get_outlier_info(self):
+        #TODO add bvalue information to the outlier information
         # find a list of outlier slices
         self.outlier_vol, self.outlier_slice = \
             np.where(self.outlier_array == 1)
@@ -42,20 +47,29 @@ class EddyFigure(EddyDirectory):
             self.outlier_vol,
             self.outlier_slice]
 
+        # get bvalues
+        self.outlier_bvalues = self.bvalue_arr[self.outlier_vol]
+
         # get a order of stds
-        self.rank = (-np.absolute(self.stds)).argsort().argsort()
+        # get a order of sqr_stds
+        self.rank = (-np.absolute(self.sqr_stds)).argsort().argsort()
 
     def load_data(self):
         # load data
-        self.mask_data = nb.load(self.mask).get_data()
-        self.pre_data = nb.load(self.nifti_input).get_data()
-        self.post_data = nb.load(self.outlier_free_data).get_data()
+        self.mask_data = nb.load(self.mask).get_fdata()
+        self.pre_data = nb.load(self.nifti_input).get_fdata()
+        self.post_data = nb.load(self.outlier_free_data).get_fdata()
 
     def summary_df(self):
+        """Create summary dataframes
+        self.df: details of outlier slices
+        self.df_motion: average motion parameter
+        """
         df = pd.DataFrame()
 
         df['Volume'] = self.outlier_vol
         df['Slice'] = self.outlier_slice
+        df['B value'] = self.outlier_bvalues
         df['Stds'] = self.stds
         df['Sqr_stds'] = self.sqr_stds
         df['rank'] = self.rank
@@ -75,7 +89,6 @@ class EddyFigure(EddyDirectory):
                 'outlier_std_total', 'outlier_std_mean', 'outlier_std_std']:
             df_motion[var] = getattr(self, var)
         self.df_motion = df_motion
-
 
     def save_all_outlier_slices(self):
         # plot them
@@ -131,6 +144,7 @@ def plot_pre_post_correction_slice(
     pre_ax = fig.add_subplot(gs0[0:3, 0:2])
     post_ax = fig.add_subplot(gs0[0:3, 2:4])
     diff_ax = fig.add_subplot(gs0[0:3, 4:6])
+
     etc_ax = fig.add_subplot(gs0[3, :5])
     sagittal_ax = fig.add_subplot(gs0[3, 5])
     motion_ax = fig.add_subplot(gs0[4, :5])
@@ -208,9 +222,19 @@ def plot_pre_post_correction_slice(
                                vmax=post_ax_clim[1])
     pre_ax.set_title('Before Eddy outlier replacement')
 
-    # diff_map = (post_data - pre_data) / pre_data
     diff_map = np.sqrt((post_data - pre_data)**2)
     diff_ax_img = diff_ax.imshow(diff_map)
+
+    # diff map color bar
+    (x0, y0), (x1, y1) = diff_ax.get_position().get_points()
+
+    # [left, bottom, width, height]
+    # x0=0.9500000000000002, y0=0.37463177339901466, x1=0.9700000000000002, y1=0.8049889162561576
+    # Bbox(x0=0.9500000000000002, y0=0.37463177339901466, x1=0.9700000000000002, y1=0.7979889162561576)
+    cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
+
+    print(cbar_ax.get_position())
+    fig.colorbar(diff_ax_img, cax=cbar_ax)
     diff_ax.set_title('sqrt(diff_map^2)')
 
     for ax in post_ax, pre_ax, diff_ax:
@@ -223,7 +247,7 @@ def plot_pre_post_correction_slice(
 
     fig.suptitle(
         f'{subject}\n'
-        f'Bvalue {bvalue} : Volume {volume_number} Slice {slice_number}, \n'
+        f'Rank by sqr_stds:{rank} Bvalue {bvalue} : Volume {volume_number} Slice {slice_number}, \n'
         f'std {outlier_std:.2f}, sqr_std {outlier_sqr_std:.2f}',
         y=0.97, fontsize=15)
 

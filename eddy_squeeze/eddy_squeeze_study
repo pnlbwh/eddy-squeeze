@@ -116,4 +116,7 @@ if __name__ == '__main__':
     eddyDirectories.df.to_csv(out_dir / 'eddy_study_summary.csv')
 
     if args.save_html:
+        # for eddyRun in eddyDirectories.eddyRuns:
+            # eddy_web.create_html(eddyRun, out_dir=out_dir)
+
         eddy_web.create_study_html(eddyDirectories, out_dir=out_dir)

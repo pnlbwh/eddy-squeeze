@@ -31,8 +31,14 @@ class EddyOut:
 
         # outlier map, stdev, and n_sar_stdev
         self.outlier_array = np.loadtxt(self.outlier_map, skiprows=1)
+
+        # The numbers denote how many standard deviations off the mean
+        # difference between observation and prediction is.
         self.outlier_std_array = np.loadtxt(self.outlier_n_stdev_map,
                                             skiprows=1)
+
+        # The numbers denote how many standard deviations off the square root
+        # of the mean squared difference between observation and prediction is.
         self.outlier_sqr_std_array = np.loadtxt(self.outlier_n_sqr_stdev_map,
                                                 skiprows=1)
 
