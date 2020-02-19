@@ -242,7 +242,7 @@ def plot_pre_post_correction_slice(
 
     fig.suptitle(
         f'{subject}\n'
-        f'Rank by sqr_stds: {rank} Bvalue: {bvalue} Volume {volume_number} Slice {slice_number}\n'
+        f'Rank by sqr_stds: {rank} Bvalue: {bvalue:.0f} Volume: {volume_number} Slice: {slice_number}\n'
         f'std: {outlier_std:.2f}, sqr_std: {outlier_sqr_std:.2f}',
         y=0.97, fontsize=15)
 
