@@ -6,7 +6,7 @@ Eddy summary
 
 {% block subtitle %}
 <h3><code>{{ eddyOut.eddy_dir }}</code></h4>
-<p>{{ eddyOut.ep }}</p>
+<p>Eddy out file name prefix: {{ eddyOut.ep|basename }}</p>
 {% endblock subtitle %}
 
 {% block linkline %}
@@ -42,12 +42,29 @@ Eddy summary
             </tr>
         </table>
 
+        <br>
+        <h3>Outlier slice count for each B shell</h3>
+        <table class="table">
+            <tr>
+                <th scope="col">B-shells</th>
+                <th scope="col">Number of outlier slices</th>
+            </tr>
+            {% for bval, table in eddyOut.df.groupby('B value') %}
+            <tr>
+                <td scope="col">{{bval}}</td>
+                <td scope="col">{{table|length}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
     <br>
     <h2>Outlier slices</h2>
     <p class="font-weight-bold">Information about the slices that were marked as outliers by Eddy.</p> 
     <p><code>Standard deviation</code> : denotes how many standard deviations off the mean difference between observation and prediction is. </p>
     <p><code>standard deviation of the square root</code>: denote how many standard deviations off the square root of the mean squared difference between observation and prediction is.</p>
     <p>The table has been order to show the slice with the highest standard deviation of the square root.</p>
+
+
 
         <table class="table">
             <tr>

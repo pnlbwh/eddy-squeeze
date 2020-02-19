@@ -461,6 +461,7 @@ def get_unique_eddy_prefixes(eddy_dir):
     elif len(dot_eddy_prefix_unique) > 1:
         print(eddy_dir)
         print('There are more than two unique eddy prefix')
+        print(dot_eddy_prefix_unique)
         return dot_eddy_prefix_unique[0]
     else:
         sys.exit(f'There is no eddy related files in {eddy_dir}')

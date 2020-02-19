@@ -9,8 +9,13 @@ import time, datetime
 import pandas as pd
 
 
+def basename(path):
+    return Path(path).name
+
+
 def sorter(file_path):
     return int(file_path.name[:3])
+
 
 def create_study_html(eddyStudy, **kwargs):
     """Create html that summarizes eddy directoreis"""
@@ -27,6 +32,7 @@ def create_study_html(eddyStudy, **kwargs):
 
     templates_dir = os.path.join(root, 'templates')
     env = Environment(loader=FileSystemLoader(templates_dir))
+
     template = env.get_template('base_study.html')
 
     (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = \
@@ -71,6 +77,7 @@ def create_html(eddyOut, **kwargs):
 
     templates_dir = os.path.join(root, 'templates')
     env = Environment(loader=FileSystemLoader(templates_dir))
+    env.filters['basename'] = basename
     template = env.get_template('base.html')
 
     (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = \
