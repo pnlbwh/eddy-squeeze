@@ -8,6 +8,10 @@ import re
 import time, datetime
 import pandas as pd
 
+
+def sorter(file_path):
+    return int(file_path.name[:3])
+
 def create_study_html(eddyStudy, **kwargs):
     """Create html that summarizes eddy directoreis"""
     if 'out_dir' in kwargs:
@@ -50,7 +54,8 @@ def create_html(eddyOut, **kwargs):
     else:
         out_dir = eddyOut.eddy_dir / 'outlier_figures'
 
-    image_list = list(out_dir.glob('*png'))
+    image_list = list(sorted(out_dir.glob('*png'), key=sorter))
+
     
     # git version
     command = 'git rev-parse HEAD'

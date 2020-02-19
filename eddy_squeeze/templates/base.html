@@ -53,6 +53,7 @@ Eddy summary
             <tr>
                 <th scope="col">Volume Number</th>
                 <th scope="col">Slice number</th>
+                <th scope="col">B-value</th>
                 <th scope="col">Standard deviation</th>
                 <th scope="col">Square root standard deviation</th>
                 <th scope="col">Rank</th>
@@ -61,9 +62,10 @@ Eddy summary
                 <tr>
                     <td scope="col">{{ "%.0f"|format(row.0|float) }}</td>
                     <td scope="col">{{ "%.0f"|format(row.1|float) }}</td>
-                    <td scope="col">{{ "%.2f"|format(row.2|float) }}</td>
+                    <td scope="col">{{ "%.0f"|format(row.2|float) }}</td>
                     <td scope="col">{{ "%.2f"|format(row.3|float) }}</td>
-                    <td scope="col">{{ "%.0f"|format(row.4|float) }}</td>
+                    <td scope="col">{{ "%.2f"|format(row.4|float) }}</td>
+                    <td scope="col">{{ "%.0f"|format(row.5|float) }}</td>
                 </tr>
             {% endfor %}
         </table>

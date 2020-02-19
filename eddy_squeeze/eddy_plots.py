@@ -229,7 +229,8 @@ def plot_pre_post_correction_slice(
     # [left, bottom, width, height]
     cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
     fig.colorbar(diff_ax_img, cax=cbar_ax)
-    diff_ax.set_title('sqrt(diff_map^2)')
+    # diff_ax.set_title('sqrt(diff_map^2)')
+    diff_ax.set_title('√(post_data-pre_data)²')
 
     for ax in post_ax, pre_ax, diff_ax:
         ax.set_axis_off()
@@ -241,9 +242,11 @@ def plot_pre_post_correction_slice(
 
     fig.suptitle(
         f'{subject}\n'
-        f'Rank by sqr_stds:{rank} Bvalue {bvalue} : Volume {volume_number} Slice {slice_number}, \n'
-        f'std {outlier_std:.2f}, sqr_std {outlier_sqr_std:.2f}',
+        f'Rank by sqr_stds: {rank} Bvalue: {bvalue} Volume {volume_number} Slice {slice_number}\n'
+        f'std: {outlier_std:.2f}, sqr_std: {outlier_sqr_std:.2f}',
         y=0.97, fontsize=15)
+
+
 
     #plt.tight_layout()
     fig.savefig(outfile, dpi=fig.dpi)
