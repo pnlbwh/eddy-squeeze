@@ -225,15 +225,9 @@ def plot_pre_post_correction_slice(
     diff_map = np.sqrt((post_data - pre_data)**2)
     diff_ax_img = diff_ax.imshow(diff_map)
 
-    # diff map color bar
-    (x0, y0), (x1, y1) = diff_ax.get_position().get_points()
-
+    # colorbar to the diff map
     # [left, bottom, width, height]
-    # x0=0.9500000000000002, y0=0.37463177339901466, x1=0.9700000000000002, y1=0.8049889162561576
-    # Bbox(x0=0.9500000000000002, y0=0.37463177339901466, x1=0.9700000000000002, y1=0.7979889162561576)
     cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
-
-    print(cbar_ax.get_position())
     fig.colorbar(diff_ax_img, cax=cbar_ax)
     diff_ax.set_title('sqrt(diff_map^2)')
 

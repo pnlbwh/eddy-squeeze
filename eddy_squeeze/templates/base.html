@@ -45,14 +45,16 @@ Eddy summary
     <br>
     <h2>Outlier slices</h2>
     <p class="font-weight-bold">Information about the slices that were marked as outliers by Eddy.</p> 
-    <p>The table has been order to show the slice with the highest standard deviation from the Gaussian model.</p>
+    <p><code>Standard deviation</code> : denotes how many standard deviations off the mean difference between observation and prediction is. </p>
+    <p><code>standard deviation of the square root</code>: denote how many standard deviations off the square root of the mean squared difference between observation and prediction is.</p>
+    <p>The table has been order to show the slice with the highest standard deviation of the square root.</p>
 
         <table class="table">
             <tr>
                 <th scope="col">Volume Number</th>
                 <th scope="col">Slice number</th>
                 <th scope="col">Standard deviation</th>
-                <th scope="col">Square root of standard deviation</th>
+                <th scope="col">Square root standard deviation</th>
                 <th scope="col">Rank</th>
             </tr>
             {% for row_num, row in eddyOut.df.iterrows() %}
