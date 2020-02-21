@@ -647,7 +647,8 @@ def get_outlier_report(outlier_report):
     return df
 
 
-def eddy(echo_spacing, img_in, bvec, bval, mask, eddy_out_prefix):
+def eddy(echo_spacing, img_in, bvec, bval, mask,
+         eddy_out_prefix, repol_on=True):
     """
     Run FSL eddy
 
@@ -712,22 +713,39 @@ def eddy(echo_spacing, img_in, bvec, bval, mask, eddy_out_prefix):
     with open(acqp_loc, 'w') as f:
         f.write(acqp_line)
 
-    # eddy_command
-    eddy_command = '/data/pnl/soft/pnlpipe3/fsl/bin/eddy_openmp \
-        --imain={data} \
-        --mask={mask} \
-        --index={index} \
-        --acqp={acqp} \
-        --bvecs={bvecs} \
-        --bvals={bvals} \
-        --repol \
-        --out={out}'.format(data=img_in,
-                            mask=mask,
-                            index=index_loc,
-                            acqp=acqp_loc,
-                            bvecs=bvec,
-                            bvals=bval,
-                            out=eddy_out_prefix)
+    if repol_on:
+        # eddy_command
+        eddy_command = '/data/pnl/soft/pnlpipe3/fsl/bin/eddy_openmp \
+            --imain={data} \
+            --mask={mask} \
+            --index={index} \
+            --acqp={acqp} \
+            --bvecs={bvecs} \
+            --bvals={bvals} \
+            --repol \
+            --out={out}'.format(data=img_in,
+                                mask=mask,
+                                index=index_loc,
+                                acqp=acqp_loc,
+                                bvecs=bvec,
+                                bvals=bval,
+                                out=eddy_out_prefix)
+    else:
+        # eddy_command
+        eddy_command = '/data/pnl/soft/pnlpipe3/fsl/bin/eddy_openmp \
+            --imain={data} \
+            --mask={mask} \
+            --index={index} \
+            --acqp={acqp} \
+            --bvecs={bvecs} \
+            --bvals={bvals} \
+            --out={out}'.format(data=img_in,
+                                mask=mask,
+                                index=index_loc,
+                                acqp=acqp_loc,
+                                bvecs=bvec,
+                                bvals=bval,
+                                out=eddy_out_prefix)
 
     print(re.sub(r'\s+', ' ', eddy_command))
     run(eddy_command)
@@ -747,6 +765,7 @@ def eddy_qc(echo_spacing, bvec, bval, mask, eddy_out_prefix):
     quad_outdir = '{}.qc'.format(eddy_out_prefix)
     index_loc = join(eddy_out_dir, 'index.txt')
     acqp_loc = join(eddy_out_dir, 'acqp.txt')
+
     command = '/data/pnl/soft/pnlpipe3/fsl/bin/eddy_quad {eddy_out} \
             -idx {index} \
             -par {acqp} \
