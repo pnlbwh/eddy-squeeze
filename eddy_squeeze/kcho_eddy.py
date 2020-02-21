@@ -154,6 +154,11 @@ class EddyRun(EddyOut):
             self.bvalue_arr = np.loadtxt(self.bvalue_txt)
             self.mask = str(self.eddy_dir / 'mask_hifi_mask.nii.gz')
 
+        # return number of volume for each shell
+        self.volume_in_each_bshell = {}
+        for shell, count in np.unique(self.bvalue_arr, return_counts=True):
+            self.volume_in_each_bshell[shell] = count
+
         self.load_movement_arrays()
         self.load_outlier_arrays()
         self.get_info_movement_arrays()
