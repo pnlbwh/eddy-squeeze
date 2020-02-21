@@ -144,19 +144,21 @@ class EddyRun(EddyOut):
         for name, file_loc in eddy_files_dict.items():
             setattr(self, name, file_loc)
 
-        try:
-            self.read_and_register_raw_files()
-        except:
-            # TODO : edit here to give options to readin file paths
-            #        when there is no command_txt
-            self.nifti_input = str(self.eddy_dir / 'dti_0107_base.nii.gz')
-            self.bvalue_txt = self.eddy_dir / 'dti_0107_base.bval'
-            self.bvalue_arr = np.loadtxt(self.bvalue_txt)
-            self.mask = str(self.eddy_dir / 'mask_hifi_mask.nii.gz')
+        # try:
+        self.read_and_register_raw_files()
+        # except:
+            # # TODO : edit here to give options to readin file paths
+            # #        when there is no command_txt
+            # self.nifti_input = str(self.eddy_dir / 'dti_0107_base.nii.gz')
+            # self.bvalue_txt = self.eddy_dir / 'dti_0107_base.bval'
+            # self.bvalue_arr = np.loadtxt(self.bvalue_txt)
+            # self.mask = str(self.eddy_dir / 'mask_hifi_mask.nii.gz')
 
         # return number of volume for each shell
+
         self.volume_in_each_bshell = {}
-        for shell, count in np.unique(self.bvalue_arr, return_counts=True):
+        shell, count = np.unique(self.bvalue_arr, return_counts=True)
+        for shell, count in zip(shell, count):
             self.volume_in_each_bshell[shell] = count
 
         self.load_movement_arrays()

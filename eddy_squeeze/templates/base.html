@@ -48,11 +48,25 @@ Eddy summary
             <tr>
                 <th scope="col">B-shells</th>
                 <th scope="col">Number of outlier slices</th>
+                <th scope="col">Number of affected volumes</th>
+                <th scope="col">Affected volume</th>
+                <th scope="col">Number of total volumes in the shell</th>
             </tr>
             {% for bval, table in eddyOut.df.groupby('B value') %}
             <tr>
                 <td scope="col">{{bval}}</td>
                 <td scope="col">{{table|length}}</td>
+                <td scope="col">{{table.groupby('Volume')|length}}</td>
+                <td scope="col">
+                    {% for vol, vol_table in table.groupby('Volume') %}
+                    {{vol}} : 
+                        {% for index, row in vol_table.iterrows() %}
+                            {{ row.Slice }}
+                        {% endfor %}
+                        <br>
+                    {% endfor %}
+                </td>
+                <td scope="col">{{eddyOut.volume_in_each_bshell[bval]}}</td>
             </tr>
             {% endfor %}
         </table>
