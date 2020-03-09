@@ -214,7 +214,10 @@ class EddyRun(EddyOut):
 
         self.df = df
         self.post_eddy_shell_alignment_df['ep'] = self.ep
+        self.post_eddy_shell_alignment_df['subject'] = self.subject_name
         self.post_eddy_shell_PE_translation_parameters_df['ep'] = self.ep
+        self.post_eddy_shell_PE_translation_parameters_df['subject'] = \
+                self.subject_name
 
 
 class EddyDirectory(EddyRun):
@@ -264,16 +267,17 @@ class EddyStudy:
     def clean_up_data_frame(self):
         if 'name_set' in self.df.columns:
             self.df.index = self.df.name_set
-            self.df.index.name = 'subject'
         else:
             self.df.index = self.df.ep.apply(
                 lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
-            self.df.index.name = 'subject'
+
+        self.df.index.name = 'subject'
         self.df = self.df.reset_index()
 
         self.post_eddy_shell_alignment_df.index = \
             self.post_eddy_shell_alignment_df.ep.apply(
                 lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+
         self.post_eddy_shell_alignment_df.index.name = 'subject'
         self.post_eddy_shell_alignment_df = \
             self.post_eddy_shell_alignment_df.reset_index()
