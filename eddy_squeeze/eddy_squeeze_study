@@ -30,6 +30,10 @@ if __name__ == '__main__':
                            type=str,
                            help='Pattern of eddy directories')
 
+    argparser.add_argument("--name_pattern", "-np",
+                           type=str,
+                           help='pattern in regrex to catch subject name')
+
     argparser.add_argument("--out_dir", "-o",
                            type=str,
                            help='csv output')
@@ -60,12 +64,18 @@ if __name__ == '__main__':
         # the name kwarg
         # add ing name kwargs forces the index of the dataframe to be 
         # the directory name
-        eddyDirectories = kcho_eddy.EddyDirectories(
-                args.eddy_directories, 
-                name=True)
+        if args.name_pattern:
+            eddyDirectories = kcho_eddy.EddyDirectories(
+                    args.eddy_directories,
+                    name_pattern=args.name_pattern)
+        else:
+            eddyDirectories = kcho_eddy.EddyDirectories(args.eddy_directories)
+
     elif args.eddy_pattern:
         print('Looking for eddy output directories that matches the pattern '
               ': {args.eddy_pattern}')
+        # TODO: change here later to use subject_name patterns rather than
+        # the name kwarg
         eddyDirectories = kcho_eddy.EddyStudy(args.eddy_pattern)
     else:
         sys.exit('Please specify either --study_dir or --eddy_pattern')

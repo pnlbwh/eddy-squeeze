@@ -139,6 +139,14 @@ class EddyRun(EddyOut):
         self.ep = ep
         self.eddy_dir = Path(ep).absolute().parent
 
+        if 'name_pattern' in kwargs:
+            name_pattern = '(' + kwargs.get('name_pattern') + ')'
+            try:
+                self.subject_name = re.search(name_pattern,
+                                              str(self.eddy_dir)).group(1)
+            except:
+                self.subject_name = self.ep
+
         # register files
         eddy_files_dict = get_eddy_files(self.ep)
         for name, file_loc in eddy_files_dict.items():
@@ -175,6 +183,8 @@ class EddyRun(EddyOut):
 
     def collect_all_info(self):
         df = pd.Series()
+
+        df['subject'] = self.subject_name
 
         df['ep'] = self.ep
         df['eddy_dir'] = self.eddy_dir
