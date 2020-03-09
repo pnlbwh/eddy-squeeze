@@ -129,7 +129,7 @@ class EddyOut:
 
 class EddyRun(EddyOut):
     '''Class for FSL eddy output directory'''
-    def __init__(self, ep):
+    def __init__(self, ep, **kwargs):
         """EddyRun initialization
 
         Key Arguments:
@@ -170,6 +170,9 @@ class EddyRun(EddyOut):
         # print(tabulate(self.post_eddy_shell_PE_translation_parameters_df, headers='keys', tablefmt='psql'))
         self.collect_all_info()
 
+        if 'name' in kwargs:
+            self.df['name_set'] = kwargs.get('name')
+
     def collect_all_info(self):
         df = pd.Series()
 
@@ -205,9 +208,9 @@ class EddyRun(EddyOut):
 
 
 class EddyDirectory(EddyRun):
-    def __init__(self, eddy_dir):
+    def __init__(self, eddy_dir, **kwargs):
         self.ep = get_unique_eddy_prefixes(eddy_dir)
-        EddyRun.__init__(self, self.ep)
+        EddyRun.__init__(self, self.ep, **kwargs)
 
 
 class EddyStudy:
