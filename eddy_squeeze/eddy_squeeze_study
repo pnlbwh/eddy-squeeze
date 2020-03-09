@@ -76,7 +76,12 @@ if __name__ == '__main__':
               ': {args.eddy_pattern}')
         # TODO: change here later to use subject_name patterns rather than
         # the name kwarg
-        eddyDirectories = kcho_eddy.EddyStudy(args.eddy_pattern)
+        if args.name_pattern:
+            eddyDirectories = kcho_eddy.EddyStudy(
+                args.eddy_pattern,
+                name_pattern=args.name_pattern)
+        else:
+            eddyDirectories = kcho_eddy.EddyStudy(args.eddy_pattern)
     else:
         sys.exit('Please specify either --study_dir or --eddy_pattern')
 
