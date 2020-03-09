@@ -252,9 +252,13 @@ class EddyStudy:
             axis=0)
 
     def clean_up_data_frame(self):
-        self.df.index = self.df.ep.apply(
-            lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
-        self.df.index.name = 'subject'
+        if 'name_set' in self.df.columns:
+            self.df.index = self.df.name_set
+            self.df.index.name = 'subject'
+        else:
+            self.df.index = self.df.ep.apply(
+                lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+            self.df.index.name = 'subject'
         self.df = self.df.reset_index()
 
         self.post_eddy_shell_alignment_df.index = \
@@ -437,7 +441,7 @@ class EddyDirectories(EddyStudy):
             try:
                 eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
                 self.ep_list.append(eddy_dir_ep)
-                eddyRun = EddyRun(eddy_dir_ep)
+                eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
                 self.eddyRuns.append(eddyRun)
             except:
                 pass
