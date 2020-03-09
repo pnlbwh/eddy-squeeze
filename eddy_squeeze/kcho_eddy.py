@@ -220,7 +220,7 @@ class EddyRun(EddyOut):
 class EddyDirectory(EddyRun):
     def __init__(self, eddy_dir, **kwargs):
         self.ep = get_unique_eddy_prefixes(eddy_dir)
-        EddyRun.__init__(self, self.ep, **kwargs)
+        EddyRun.__init__(self, self.ep, kwargs)
 
 
 class EddyStudy:
@@ -229,7 +229,7 @@ class EddyStudy:
         study_dir: str, glob input like patterns for eddy directories
         eg) /data/pnl/kcho/*eddy
     '''
-    def __init__(self, glob_pattern):
+    def __init__(self, glob_pattern, **kwargs):
         if Path(glob_pattern).is_absolute():
             self.eddy_dirs = list(Path('/').glob(glob_pattern[1:]))
         else:
@@ -244,7 +244,7 @@ class EddyStudy:
         for eddy_dir in self.eddy_dirs:
             eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
             self.ep_list.append(eddy_dir_ep)
-            eddyRun = EddyRun(eddy_dir_ep)
+            eddyRun = EddyRun(eddy_dir_ep, kwargs)
             # eddyRun = eddy_plots.EddyFigure(
                 # eddy_dir,
                 # eddy_dir / 'outlier_figure')
