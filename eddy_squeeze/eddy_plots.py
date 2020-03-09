@@ -3,9 +3,11 @@
 from kcho_eddy import EddyDirectory
 import pandas as pd
 from pathlib import Path
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-import matplotlib
 import sys
 import numpy as np
 import nibabel as nb

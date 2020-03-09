@@ -424,10 +424,13 @@ class EddyDirectories(EddyStudy):
         self.ep_list = []
         self.eddyRuns = []
         for eddy_dir in self.eddy_dirs:
-            eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
-            self.ep_list.append(eddy_dir_ep)
-            eddyRun = EddyRun(eddy_dir_ep)
-            self.eddyRuns.append(eddyRun)
+            try:
+                eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
+                self.ep_list.append(eddy_dir_ep)
+                eddyRun = EddyRun(eddy_dir_ep)
+                self.eddyRuns.append(eddyRun)
+            except:
+                pass
 
         self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
         self.post_eddy_shell_alignment_df = pd.concat(
