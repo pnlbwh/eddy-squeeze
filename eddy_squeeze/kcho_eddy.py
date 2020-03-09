@@ -265,30 +265,30 @@ class EddyStudy:
             axis=0)
 
     def clean_up_data_frame(self):
-        if 'name_set' in self.df.columns:
-            self.df.index = self.df.name_set
-        else:
-            self.df.index = self.df.ep.apply(
-                lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+        pass
+        # if 'name_set' in self.df.columns:
+            # self.df.index = self.df.name_set
+        # else:
+            # self.df.index = self.df.ep.apply(
+                # lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
 
-        self.df.index.name = 'subject'
-        self.df = self.df.reset_index()
+        # self.df.index.name = 'subject'
+        # self.df = self.df.reset_index()
 
-        self.post_eddy_shell_alignment_df.index = \
-            self.post_eddy_shell_alignment_df.ep.apply(
-                lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+        # self.post_eddy_shell_alignment_df.index = \
+            # self.post_eddy_shell_alignment_df.subject
 
-        self.post_eddy_shell_alignment_df.index.name = 'subject'
-        self.post_eddy_shell_alignment_df = \
-            self.post_eddy_shell_alignment_df.reset_index()
+        # self.post_eddy_shell_alignment_df.index.name = 'subject'
+        # self.post_eddy_shell_alignment_df = \
+            # self.post_eddy_shell_alignment_df.reset_index()
 
-        self.post_eddy_shell_PE_translation_parameters_df.index = \
-            self.post_eddy_shell_PE_translation_parameters_df.ep.apply(
-                lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
-        self.post_eddy_shell_PE_translation_parameters_df.index.name = \
-                'subject'
-        self.post_eddy_shell_PE_translation_parameters_df = \
-            self.post_eddy_shell_PE_translation_parameters_df.reset_index()
+        # self.post_eddy_shell_PE_translation_parameters_df.index = \
+            # self.post_eddy_shell_PE_translation_parameters_df.ep.apply(
+                # lambda x: Path(x).name.split('-eddy_out')[0]).to_list()
+        # self.post_eddy_shell_PE_translation_parameters_df.index.name = \
+                # 'subject'
+        # self.post_eddy_shell_PE_translation_parameters_df = \
+            # self.post_eddy_shell_PE_translation_parameters_df.reset_index()
 
     def get_basic_diff_info(self):
         self.df.groupby(
