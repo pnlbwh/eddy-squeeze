@@ -56,7 +56,13 @@ if __name__ == '__main__':
     if args.eddy_directories:
         print('Summarizing the eddy output directories :')
         print('\n'.join(args.eddy_directories))
-        eddyDirectories = kcho_eddy.EddyDirectories(args.eddy_directories)
+        # TODO: change here later to use subject_name patterns rather than
+        # the name kwarg
+        # add ing name kwargs forces the index of the dataframe to be 
+        # the directory name
+        eddyDirectories = kcho_eddy.EddyDirectories(
+                args.eddy_directories, 
+                name=True)
     elif args.eddy_pattern:
         print('Looking for eddy output directories that matches the pattern '
               ': {args.eddy_pattern}')

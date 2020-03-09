@@ -429,7 +429,7 @@ class EddyStudy:
         # fig.show()
 
 class EddyDirectories(EddyStudy):
-    def __init__(self, eddy_dirs):
+    def __init__(self, eddy_dirs, **kwargs):
         self.eddy_dirs = eddy_dirs
         print(f'Summarizing {len(self.eddy_dirs)} subjects')
 
@@ -441,7 +441,12 @@ class EddyDirectories(EddyStudy):
             try:
                 eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
                 self.ep_list.append(eddy_dir_ep)
-                eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
+
+                if 'name' in kwargs:
+                    eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
+                else:
+                    eddyRun = EddyRun(eddy_dir_ep)
+
                 self.eddyRuns.append(eddyRun)
             except:
                 pass
