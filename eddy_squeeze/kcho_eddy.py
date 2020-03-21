@@ -140,12 +140,16 @@ class EddyRun(EddyOut):
         self.eddy_dir = Path(ep).absolute().parent
 
         if 'name_pattern' in kwargs:
+            print('namesearch run')
             name_pattern = '(' + kwargs.get('name_pattern') + ')'
             try:
+                print('namesearch run')
                 self.subject_name = re.search(name_pattern,
                                               str(self.eddy_dir)).group(1)
             except:
                 self.subject_name = self.ep
+        else:
+            self.subject_name = self.ep
 
         # register files
         eddy_files_dict = get_eddy_files(self.ep)
@@ -452,18 +456,19 @@ class EddyDirectories(EddyStudy):
         self.ep_list = []
         self.eddyRuns = []
         for eddy_dir in self.eddy_dirs:
-            try:
-                eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
-                self.ep_list.append(eddy_dir_ep)
+            # try:
+            eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
+            self.ep_list.append(eddy_dir_ep)
 
-                if 'name' in kwargs:
-                    eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
-                else:
-                    eddyRun = EddyRun(eddy_dir_ep)
+            if 'name' in kwargs:
+                eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
+            else:
+                eddyRun = EddyRun(eddy_dir_ep)
 
-                self.eddyRuns.append(eddyRun)
-            except:
-                pass
+            self.eddyRuns.append(eddyRun)
+            # except:
+                # print(f'passing {eddy_dir}')
+                # pass
 
         self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
         self.post_eddy_shell_alignment_df = pd.concat(
