@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from kcho_eddy import EddyDirectory
+import kcho_eddy
 import pandas as pd
 from pathlib import Path
 import matplotlib
@@ -118,6 +119,22 @@ class EddyFigure(EddyDirectory):
                 s, v, bvalue, r,
                 std, sqr_std, self.outlier_std_array,
                 self.restricted_movement_array)
+
+
+# class EddyFigureAlone(EddyDirectory, EddyFigure):
+    # def __init__(self, eddyDirectory):
+        # # get detailed information of outlier slices
+        # self.get_outlier_info()
+
+        # # load mask, pre and post-replace data
+        # self.load_data()
+
+        # self.fig_outdir = Path(fig_outdir)
+        # self.fig_outdir.mkdir(exist_ok=True)
+
+        # # get mid point of data x-axis
+        # self.mid_point = int(self.post_data.shape[0] / 2)
+
 
 
 def plot_pre_post_correction_slice(
@@ -606,7 +623,6 @@ if __name__ == '__main__':
                            type=str,
                            nargs='+',
                            help='specify directories of the eddy folder')
-    args = argparser.parse_args()
 
     argparser.add_argument("--std","-s",
                            type=int,
@@ -617,7 +633,6 @@ if __name__ == '__main__':
                            type=str,
                            default=os.getcwd(),
                            help='Directory to save outputs')
-    args = argparser.parse_args()
 
     args = argparser.parse_args()
 
@@ -639,7 +654,7 @@ if __name__ == '__main__':
 
     # Make output directory if it does not exist
     if not os.path.isdir(args.out_dir):
-        os.mkdirs(args.out_dir)
+        os.mkdir(args.out_dir)
 
     # Motion graphs
     fig, axes = motion_summary_figure(study_eddy_runs,

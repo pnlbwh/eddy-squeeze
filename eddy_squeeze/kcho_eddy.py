@@ -227,7 +227,7 @@ class EddyRun(EddyOut):
 class EddyDirectory(EddyRun):
     def __init__(self, eddy_dir, **kwargs):
         self.ep = get_unique_eddy_prefixes(eddy_dir)
-        EddyRun.__init__(self, self.ep, kwargs)
+        EddyRun.__init__(self, self.ep, **kwargs)
 
 
 class EddyStudy:
@@ -456,19 +456,23 @@ class EddyDirectories(EddyStudy):
         self.ep_list = []
         self.eddyRuns = []
         for eddy_dir in self.eddy_dirs:
-            # try:
-            eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
-            self.ep_list.append(eddy_dir_ep)
+            try:
+                eddy_dir_ep = get_unique_eddy_prefixes(eddy_dir)
+                self.ep_list.append(eddy_dir_ep)
 
-            if 'name' in kwargs:
-                eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
-            else:
-                eddyRun = EddyRun(eddy_dir_ep)
+                if 'name' in kwargs:
+                    eddyRun = EddyRun(eddy_dir_ep, name=eddy_dir)
+                else:
+                    eddyRun = EddyRun(eddy_dir_ep)
 
-            self.eddyRuns.append(eddyRun)
-            # except:
-                # print(f'passing {eddy_dir}')
-                # pass
+                # eddyRun = eddy_plots.EddyFigure(
+                    # eddy_dir,
+                    # eddy_dir / 'outlier_figure')
+                # eddyRun.save_all_outlier_slices()
+                self.eddyRuns.append(eddyRun)
+            except:
+                print(f'passing {eddy_dir}')
+                pass
 
         self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
         self.post_eddy_shell_alignment_df = pd.concat(
