@@ -85,7 +85,7 @@ def create_html(eddyOut, **kwargs):
     time_now = time.strftime('%Y-%m-%d', time.localtime(mtime))
     print(time_now)
 
-    filename = out_dir / 'eddy_summary.html'
+    filename = out_dir.absolute() / 'eddy_summary.html'
 
     with open(filename, 'w') as fh:
         fh.write(template.render(
