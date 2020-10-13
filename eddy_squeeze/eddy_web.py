@@ -52,6 +52,25 @@ def create_study_html(eddyStudy, **kwargs):
             bwh_fig_loc=bwh_fig_loc
             ))
 
+    # Read in the file
+    with open(filename, 'r') as file :
+      filedata = file.readlines()
+
+    # Replace the target string
+    new_lines = []
+    for line in filedata:
+        if 'img src' in line:
+            new_line = re.sub(f'{out_dir.absolute()}/', '', line)
+            new_lines.append(new_line)
+        else:
+            new_lines.append(line)
+
+    # Write the file out again
+    with open(filename, 'w') as file:
+        for new_line in new_lines:
+          file.write(new_line)
+
+
 def create_html(eddyOut, **kwargs):
     """Create html that summarizes randomise_summary.py outputs"""
 
@@ -94,3 +113,21 @@ def create_html(eddyOut, **kwargs):
             subject=eddyOut.ep,
             bwh_fig_loc=bwh_fig_loc,
             jkhaha='hoho'))
+
+    # Read in the file
+    with open(filename, 'r') as file :
+      filedata = file.readlines()
+
+    # Replace the target string
+    new_lines = []
+    for line in filedata:
+        if 'img src' in line:
+            new_line = re.sub(f'{out_dir.absolute()}/', '', line)
+            new_lines.append(new_line)
+        else:
+            new_lines.append(line)
+
+    # Write the file out again
+    with open(filename, 'w') as file:
+        for new_line in new_lines:
+          file.write(new_line)
