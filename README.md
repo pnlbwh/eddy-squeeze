@@ -76,7 +76,7 @@ cd eddy-squeeze/bin
 ./eddy_squeeze -h
 ```
 
-<br><br>
+<br>
 
 ## Dependencies
 
@@ -128,7 +128,7 @@ eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 \
     --out_dir prac_eddy_summary
 ```
 
-<br><br>
+<br>
 
 ## Example outputs
 
@@ -184,7 +184,6 @@ Motion information
 ```
 
 
-<br>
 <br>
 
 #### Save summary html
