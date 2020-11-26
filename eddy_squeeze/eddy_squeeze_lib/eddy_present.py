@@ -79,16 +79,61 @@ def plot_pre_post_correction_slice(
                      figsize=(15, 10))
     gs0 = gridspec.GridSpec(5, 6, figure=fig)
 
+    # three graphs at the top
     pre_ax = fig.add_subplot(gs0[0:3, 0:2])
     post_ax = fig.add_subplot(gs0[0:3, 2:4])
     diff_ax = fig.add_subplot(gs0[0:3, 4:6])
 
+    # std and motion graphs
     etc_ax = fig.add_subplot(gs0[3, :5])
-    sagittal_ax = fig.add_subplot(gs0[3, 5])
     motion_ax = fig.add_subplot(gs0[4, :5])
+
+    # two sagittal slices - to show signal drops
+    sagittal_ax = fig.add_subplot(gs0[3, 5])
     sagittal_fixed_ax = fig.add_subplot(gs0[4, 5])
     sagittal_ax.set_axis_off()
 
+    # std graph
+    add_eddy_std_array_to_ax(etc_ax, std_array, slice_number, volume_number)
+
+    # motion
+    add_motion_graph_to_ax(motion_ax, motion_array, volume_number,
+                           etc_ax.get_xlim())
+
+    # two sagital slices
+    add_sagital_slices_to_ax(sagittal_ax, sagittal_fixed_ax,
+                             sagittal_data,
+                             sagittal_data_fixed,
+                             slice_number)
+
+    diff_ax_img = add_pre_vs_post_eddy_slices(pre_ax, post_ax, diff_ax,
+                                              pre_data, post_data)
+
+    # colorbar to the diff map
+    # [left, bottom, width, height]
+    cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
+    fig.colorbar(diff_ax_img, cax=cbar_ax)
+    # diff_ax.set_title('sqrt(diff_map^2)')
+
+    fig.subplots_adjust(left=0.05,
+                        right=0.95,
+                        bottom=0.07,
+                        top=0.80)
+
+    fig.suptitle(
+        f'{subject}\n'
+        f'Rank by sqr_stds: {rank} Bvalue: {bvalue:.0f} ' \
+        f'Volume: {volume_number} Slice: {slice_number}\n'
+        f'std: {outlier_std:.2f}, sqr_std: {outlier_sqr_std:.2f}',
+        y=0.97, fontsize=15)
+
+    #plt.tight_layout()
+    fig.savefig(outfile, dpi=fig.dpi)
+    plt.close()
+
+
+def add_eddy_std_array_to_ax(etc_ax:plt.Axes, std_array:np.array,
+                             slice_number:int, volume_number:int) -> None:
     # str matrix
     # graph at the bottom
     all_std_img = etc_ax.imshow(std_array.T,
@@ -103,15 +148,24 @@ def plot_pre_post_correction_slice(
     etc_ax.set_ylabel('Slices')
     etc_ax.set_xticks([])
 
-    # motion
+
+def add_motion_graph_to_ax(motion_ax:plt.Axes, motion_array:np.array,
+                           volume_number:int, xlim:np.array) -> None:
     motion_ax.plot(motion_array[:, 0], label='Absolute')
     motion_ax.plot(motion_array[:, 1], label='Relative')
     motion_ax.axvline(volume_number, linestyle='--', c='r')
     motion_ax.set_title('Restricted motion')
     motion_ax.set_xlabel('Volumes')
     motion_ax.set_ylabel('Motion')
-    motion_ax.set_xlim(etc_ax.get_xlim())
+    motion_ax.set_xlim(xlim)
     legend = motion_ax.legend(loc='upper left')
+
+
+def add_sagital_slices_to_ax(sagittal_ax:plt.Axes,
+                             sagittal_fixed_ax:plt.Axes,
+                             sagittal_data:np.array,
+                             sagittal_data_fixed:np.array,
+                             slice_number:int) -> None:
 
     # slice pointer
     sagittal_ax.set_title('Sagittal slice')
@@ -149,6 +203,12 @@ def plot_pre_post_correction_slice(
                                arrowprops=dict(facecolor='white',
                                                shrink=0.05),)
 
+
+def add_pre_vs_post_eddy_slices(pre_ax:plt.Axes,
+                                post_ax:plt.Axes,
+                                diff_ax:plt.Axes,
+                                pre_data:np.array,
+                                post_data:np.array):
     post_ax_img = post_ax.imshow(post_data, cmap='gray')
     post_ax.set_title('After Eddy outlier replacement\n'
                       '(before motion correction)')
@@ -163,32 +223,12 @@ def plot_pre_post_correction_slice(
     diff_map = np.sqrt((post_data - pre_data)**2)
     diff_ax_img = diff_ax.imshow(diff_map)
 
-    # colorbar to the diff map
-    # [left, bottom, width, height]
-    cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
-    fig.colorbar(diff_ax_img, cax=cbar_ax)
-    # diff_ax.set_title('sqrt(diff_map^2)')
     diff_ax.set_title('√(post_data-pre_data)²')
 
     for ax in post_ax, pre_ax, diff_ax:
         ax.set_axis_off()
 
-    fig.subplots_adjust(left=0.05,
-                        right=0.95,
-                        bottom=0.07,
-                        top=0.80)
-
-    fig.suptitle(
-        f'{subject}\n'
-        f'Rank by sqr_stds: {rank} Bvalue: {bvalue:.0f} ' \
-        f'Volume: {volume_number} Slice: {slice_number}\n'
-        f'std: {outlier_std:.2f}, sqr_std: {outlier_sqr_std:.2f}',
-        y=0.97, fontsize=15)
-
-
-    #plt.tight_layout()
-    fig.savefig(outfile, dpi=fig.dpi)
-    plt.close()
+    return diff_ax_img
 
 
 def outlier_df_plot(outlier_df, std_threshold=3):
@@ -242,6 +282,7 @@ def outlier_df_plot(outlier_df, std_threshold=3):
     )
 
     return fig, ax
+
 
 def motion_summary_figure(study_eddy_runs, std_threshold=3):
     '''
@@ -443,24 +484,30 @@ def motion_summary_dist(study_eddy_runs, std_threshold=3):
     fig.show()
 
 
+
 class EddyStudyFigures:
     '''
     Args:
         study_dir: str, glob input like patterns for eddy directories
         eg) /data/pnl/kcho/*eddy
     '''
-    def plot_subjects(self, var, std_outlier=2):
+    def set_group_figure_settings(self):
+        self.dpi = 100
 
+    def plot_subjects(self, var, std_outlier=2):
+        '''Create graphs for motion, outlier and etc for all eddy outputs'''
         # width for one number of subjects
         width_per_subject = 0.5
 
         g = sns.catplot(x='subject', y=var, data=self.df)
+
         if len(self.df) < 10:
             g.fig.set_size_inches(5, 5)
         else:
             g.fig.set_size_inches(width_per_subject * len(self.df), 5)
             g.ax.set_xticklabels(g.ax.get_xticklabels(), rotation=90)
-        g.fig.set_dpi(200)
+
+        g.fig.set_dpi(self.dpi)
         g.ax.set_xlabel('Subjects')
 
         g.fig.tight_layout()
@@ -468,14 +515,12 @@ class EddyStudyFigures:
 
         threshold = self.df[var].mean() + (self.df[var].std() * std_outlier)
         g.ax.axhline(y=threshold, color='red', alpha=0.4)
-        g.ax.text(
-            x=len(self.df) - 0.5,
-            y=threshold+0.1,
-            s=f'mean + std * {std_outlier}',
-            ha='right', color='red', alpha=0.9)
+        g.ax.text(x=len(self.df) - 0.5,
+                  y=threshold+0.1,
+                  s=f'mean + std * {std_outlier}',
+                  ha='right', color='red', alpha=0.9)
 
         setattr(self, f'plot_{var}', g)
-        # g.fig.show()
 
         # plot outliers only
         df_tmp = self.df[self.df[var] > threshold]
@@ -484,17 +529,19 @@ class EddyStudyFigures:
         if len(df_tmp) > 0:
             g = sns.catplot(x='subject', y=var, data=df_tmp)
             g.fig.set_size_inches(x_size, 5)
-            g.fig.set_dpi(200)
+            g.fig.set_dpi(self.dpi)
             g.ax.set_xticklabels(g.ax.get_xticklabels())
             g.ax.set_xlabel('Subjects')
 
             g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
                            'than (mean + 2*std)', y=1.02)
             setattr(self, f'plot_outlier_only_{var}', g)
-        # g.fig.show()
 
 
     def create_group_figures(self, out_dir):
+        '''Create group figures'''
+        self.set_group_figure_settings()
+
         out_dir = Path(out_dir)
         # save figures
         vars = ['absolute restricted movement', 'relative restricted movement',
@@ -560,12 +607,12 @@ class EddyStudyFigures:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
-                dpi=200)
+                dpi=self.dpi)
         else:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(10, 10),
-                dpi=200)
+                dpi=self.dpi)
 
         for ax, shell_info in zip(np.ravel(axes), shell_infos):
             t_tmp = t.groupby('shell_info').get_group(shell_info)
@@ -603,12 +650,12 @@ class EddyStudyFigures:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
-                dpi=200)
+                dpi=self.dpi)
         else:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(10, 10),
-                dpi=200)
+                dpi=self.dpi)
 
         for ax, shell_info in zip(np.ravel(axes), shell_infos):
             t_tmp = t.groupby('shell_info').get_group(shell_info)
