@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+from pathlib import Path
+import os
+import argparse
+from tabulate import tabulate
+
+import sys
+sys.path.append('/Users/kevin/eddy-squeeze')
+from eddy_squeeze.eddy_squeeze import eddy_squeeze_study
+
+
+if __name__ == '__main__':
+    argparser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description='''\
+        eddy_squeeze.
+        Visualize extra information from FSL eddy outputs.
+        ''')
+
+    argparser.add_argument("--eddy_directories", "-ed",
+                           type=str,
+                           nargs='+',
+                           default=[os.getcwd()],
+                           help='Eddy output directories. Default = current '
+                                'directory')
+
+    argparser.add_argument("--eddy_prefix_pattern", "-ep",
+                           type=str,
+                           help='Prefix of eddy outputs to summarize. ' \
+                                'Providing eddy_prefix will make eddy_dir '\
+                                'ignored.')
+
+    argparser.add_argument("--out_dir", "-od",
+                           type=str,
+                           help='Eddy summary output directory. Default = '
+                                'PWD/eddy_summary')
+
+    argparser.add_argument("--print_table", "-pt",
+                           action='store_true',
+                           help='Print Eddy output summary tables')
+
+    argparser.add_argument("--save_html", "-sh",
+                           action='store_true',
+                           help='Save Eddy output information to html file')
+
+    argparser.add_argument("--figures", "-f",
+                           action='store_true',
+                           help='Create figures to be included ' \
+                                'in the html file')
+
+    args = argparser.parse_args()
+    args.out_dir = Path(args.out_dir).absolute()
+    eddy_squeeze_study(args)
+

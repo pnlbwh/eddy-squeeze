@@ -1,98 +1,24 @@
-#!/usr/bin/env python
-
-from kcho_eddy import EddyDirectory
-import kcho_eddy
-import pandas as pd
 from pathlib import Path
+from typing import List
+import re, sys
+import pandas as pd
+import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Patch
-import sys
-import numpy as np
-import nibabel as nb
-import argparse
-import os
 import matplotlib.gridspec as gridspec
+import seaborn as sns
 
-
-class EddyFigure(EddyDirectory):
+class EddyFigure(object):
     """Eddy Figure class"""
-    def __init__(self, eddy_dir, fig_outdir):
-        # initialize with EddyDirectory class
-        EddyDirectory.__init__(self, eddy_dir)
-
-        # get detailed information of outlier slices
-        self.get_outlier_info()
-
+    def save_all_outlier_slices(self, fig_outdir:str):
         # load mask, pre and post-replace data
         self.load_data()
 
         self.fig_outdir = Path(fig_outdir)
         self.fig_outdir.mkdir(exist_ok=True)
 
-        # get mid point of data x-axis
-        self.mid_point = int(self.post_data.shape[0] / 2)
-
-    def get_outlier_info(self):
-        #TODO add bvalue information to the outlier information
-        # find a list of outlier slices
-        self.outlier_vol, self.outlier_slice = \
-            np.where(self.outlier_array == 1)
-
-        # find a list of std in the outlier slices
-        self.stds = self.outlier_std_array[
-            self.outlier_vol, self.outlier_slice]
-
-        # find a list of sqr of std in the outlier slices
-        self.sqr_stds = self.outlier_sqr_std_array[
-            self.outlier_vol,
-            self.outlier_slice]
-
-        # get bvalues
-        self.outlier_bvalues = self.bvalue_arr[self.outlier_vol]
-
-        # get a order of stds
-        # get a order of sqr_stds
-        self.rank = (-np.absolute(self.sqr_stds)).argsort().argsort()
-
-    def load_data(self):
-        # load data
-        self.mask_data = nb.load(self.mask).get_fdata()
-        self.pre_data = nb.load(self.nifti_input).get_fdata()
-        self.post_data = nb.load(self.outlier_free_data).get_fdata()
-
-    def summary_df(self):
-        """Create summary dataframes
-        self.df: details of outlier slices
-        self.df_motion: average motion parameter
-        """
-        df = pd.DataFrame()
-
-        df['Volume'] = self.outlier_vol
-        df['Slice'] = self.outlier_slice
-        df['B value'] = self.outlier_bvalues
-        df['Stds'] = self.stds
-        df['Sqr_stds'] = self.sqr_stds
-        df['rank'] = self.rank
-
-        self.df = df.sort_values(by='rank').reset_index().drop(
-            'index',
-            axis=1)
-        self.df.index.name = 'Outlier slices'
-
-        df_motion = pd.DataFrame()
-        df_motion['restricted_absolute_motion'] = \
-            [self.restricted_movement_avg[0]]
-        df_motion['restricted_relative_motion'] = \
-            [self.restricted_movement_avg[1]]
-        for var in [
-                'number_of_outlier_slices',
-                'outlier_std_total', 'outlier_std_mean', 'outlier_std_std']:
-            df_motion[var] = getattr(self, var)
-        self.df_motion = df_motion
-
-    def save_all_outlier_slices(self):
         # plot them
         for v, s, std, sqr_std, r in zip(self.outlier_vol,
                                          self.outlier_slice,
@@ -111,6 +37,7 @@ class EddyFigure(EddyDirectory):
             sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
 
             outfile = self.fig_outdir / f'{r:03}_vol_{v}_slice_{s}.png'
+
             plot_pre_post_correction_slice(
                 self.eddy_dir,
                 pre_data_tmp, post_data_tmp,
@@ -121,54 +48,92 @@ class EddyFigure(EddyDirectory):
                 self.restricted_movement_array)
 
 
-# class EddyFigureAlone(EddyDirectory, EddyFigure):
-    # def __init__(self, eddyDirectory):
-        # # get detailed information of outlier slices
-        # self.get_outlier_info()
-
-        # # load mask, pre and post-replace data
-        # self.load_data()
-
-        # self.fig_outdir = Path(fig_outdir)
-        # self.fig_outdir.mkdir(exist_ok=True)
-
-        # # get mid point of data x-axis
-        # self.mid_point = int(self.post_data.shape[0] / 2)
-
-
-
 def plot_pre_post_correction_slice(
-        subject,
-        pre_data, post_data, sagittal_data, sagittal_data_fixed, outfile,
-        slice_number, volume_number, bvalue, rank,
-        outlier_std, outlier_sqr_std,
-        std_array, motion_array):
-    '''
-    Plot pre and post correction slices
+        subject: Path,
+        pre_data: np.array, post_data: np.array,
+        sagittal_data: np.array, sagittal_data_fixed: np.array,
+        outfile: Path,
+        slice_number: float, volume_number: int, bvalue: float, rank: int,
+        outlier_std: float, outlier_sqr_std: float,
+        std_array: np.array, motion_array: np.array):
+    '''Plot pre vsnd post correction slices
 
-    Args:
-        pre_data : numpy array of data for the slice
-        post_data : numpy array of data for the slice
-        out_img : string
+    Key Arguments:
+        subject : eddy output directory
+        pre_data : numpy array of data for the slice, pre-repol
+        post_data : numpy array of data for the slice, post-repol
+        sagittal_data : numpy array of data for the slice, pre-repol
+        sagittal_data_fixed : numpy array of data for the slice, post-repol
+        outfile : output png file location, Path
+        slice_number : outlier slice number, int
+        volume_number: outlier volume number, int
+        bvalue: bvalue, float
+        rank: rank of the outlier volume, int
+        std_array: array of the deviation from gaussian model, np.array
+        motion_array: array of the motion (restricted), np.array
 
     To do:
         set the vmax and vmin equal for both axes
     '''
-
     fig = plt.figure(constrained_layout=True,
                      figsize=(15, 10))
     gs0 = gridspec.GridSpec(5, 6, figure=fig)
 
+    # three graphs at the top
     pre_ax = fig.add_subplot(gs0[0:3, 0:2])
     post_ax = fig.add_subplot(gs0[0:3, 2:4])
     diff_ax = fig.add_subplot(gs0[0:3, 4:6])
 
+    # std and motion graphs
     etc_ax = fig.add_subplot(gs0[3, :5])
-    sagittal_ax = fig.add_subplot(gs0[3, 5])
     motion_ax = fig.add_subplot(gs0[4, :5])
+
+    # two sagittal slices - to show signal drops
+    sagittal_ax = fig.add_subplot(gs0[3, 5])
     sagittal_fixed_ax = fig.add_subplot(gs0[4, 5])
     sagittal_ax.set_axis_off()
 
+    # std graph
+    add_eddy_std_array_to_ax(etc_ax, std_array, slice_number, volume_number)
+
+    # motion
+    add_motion_graph_to_ax(motion_ax, motion_array, volume_number,
+                           etc_ax.get_xlim())
+
+    # two sagital slices
+    add_sagital_slices_to_ax(sagittal_ax, sagittal_fixed_ax,
+                             sagittal_data,
+                             sagittal_data_fixed,
+                             slice_number)
+
+    diff_ax_img = add_pre_vs_post_eddy_slices(pre_ax, post_ax, diff_ax,
+                                              pre_data, post_data)
+
+    # colorbar to the diff map
+    # [left, bottom, width, height]
+    cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
+    fig.colorbar(diff_ax_img, cax=cbar_ax)
+    # diff_ax.set_title('sqrt(diff_map^2)')
+
+    fig.subplots_adjust(left=0.05,
+                        right=0.95,
+                        bottom=0.07,
+                        top=0.80)
+
+    fig.suptitle(
+        f'{subject}\n'
+        f'Rank by sqr_stds: {rank} Bvalue: {bvalue:.0f} ' \
+        f'Volume: {volume_number} Slice: {slice_number}\n'
+        f'std: {outlier_std:.2f}, sqr_std: {outlier_sqr_std:.2f}',
+        y=0.97, fontsize=15)
+
+    #plt.tight_layout()
+    fig.savefig(outfile, dpi=fig.dpi)
+    plt.close()
+
+
+def add_eddy_std_array_to_ax(etc_ax:plt.Axes, std_array:np.array,
+                             slice_number:int, volume_number:int) -> None:
     # str matrix
     # graph at the bottom
     all_std_img = etc_ax.imshow(std_array.T,
@@ -183,15 +148,24 @@ def plot_pre_post_correction_slice(
     etc_ax.set_ylabel('Slices')
     etc_ax.set_xticks([])
 
-    # motion
+
+def add_motion_graph_to_ax(motion_ax:plt.Axes, motion_array:np.array,
+                           volume_number:int, xlim:np.array) -> None:
     motion_ax.plot(motion_array[:, 0], label='Absolute')
     motion_ax.plot(motion_array[:, 1], label='Relative')
     motion_ax.axvline(volume_number, linestyle='--', c='r')
     motion_ax.set_title('Restricted motion')
     motion_ax.set_xlabel('Volumes')
     motion_ax.set_ylabel('Motion')
-    motion_ax.set_xlim(etc_ax.get_xlim())
+    motion_ax.set_xlim(xlim)
     legend = motion_ax.legend(loc='upper left')
+
+
+def add_sagital_slices_to_ax(sagittal_ax:plt.Axes,
+                             sagittal_fixed_ax:plt.Axes,
+                             sagittal_data:np.array,
+                             sagittal_data_fixed:np.array,
+                             slice_number:int) -> None:
 
     # slice pointer
     sagittal_ax.set_title('Sagittal slice')
@@ -229,6 +203,12 @@ def plot_pre_post_correction_slice(
                                arrowprops=dict(facecolor='white',
                                                shrink=0.05),)
 
+
+def add_pre_vs_post_eddy_slices(pre_ax:plt.Axes,
+                                post_ax:plt.Axes,
+                                diff_ax:plt.Axes,
+                                pre_data:np.array,
+                                post_data:np.array):
     post_ax_img = post_ax.imshow(post_data, cmap='gray')
     post_ax.set_title('After Eddy outlier replacement\n'
                       '(before motion correction)')
@@ -243,115 +223,12 @@ def plot_pre_post_correction_slice(
     diff_map = np.sqrt((post_data - pre_data)**2)
     diff_ax_img = diff_ax.imshow(diff_map)
 
-    # colorbar to the diff map
-    # [left, bottom, width, height]
-    cbar_ax = fig.add_axes([0.95, 0.3746, 0.02, 0.797-0.3746])
-    fig.colorbar(diff_ax_img, cax=cbar_ax)
-    # diff_ax.set_title('sqrt(diff_map^2)')
     diff_ax.set_title('√(post_data-pre_data)²')
 
     for ax in post_ax, pre_ax, diff_ax:
         ax.set_axis_off()
 
-    fig.subplots_adjust(left=0.05,
-                        right=0.95,
-                        bottom=0.07,
-                        top=0.80)
-
-    fig.suptitle(
-        f'{subject}\n'
-        f'Rank by sqr_stds: {rank} Bvalue: {bvalue:.0f} Volume: {volume_number} Slice: {slice_number}\n'
-        f'std: {outlier_std:.2f}, sqr_std: {outlier_sqr_std:.2f}',
-        y=0.97, fontsize=15)
-
-
-
-    #plt.tight_layout()
-    fig.savefig(outfile, dpi=fig.dpi)
-    plt.close()
-
-def get_movement_df(study_eddy_runs):
-    '''
-    Reads values from list of study_eddy_run classes.
-
-    Args:
-        study_eddy_runs: list of Eddy_run classes. list.
-
-    Returns:
-        movement_df: table of information for eacch Eddy_run classes.
-                     Pandas dataframe.
-    '''
-
-    # Ofer measure is removed - Wednesday, July 31, 2019
-    #'Ofer measure': [x.ofer_movement_avg for x in study_eddy_runs],
-
-    movement_df = pd.DataFrame()
-
-    for er in study_eddy_runs:
-        tmp_dict = {
-            'eddy_path': [er.ep],
-            'Absolute Restricted Movement': [er.restricted_movement_avg[0]],
-            'Relative Restricted Movement': [er.restricted_movement_avg[1]],
-            'Absolute Movement': [er.movement_avg[0]],
-            'Relative Movement': [er.movement_avg[1]],
-            'Number of outlier slice': [er.number_of_outlier_slices]
-        }
-        movement_df_tmp = pd.DataFrame(tmp_dict)
-        movement_df = pd.concat([movement_df, movement_df_tmp])
-
-    return movement_df
-
-
-def get_outlier_df(study_eddy_runs, std_threshold=3):
-    '''
-    Define which eddy runs are outliers
-
-    Args:
-        study_eddy_runs: list of Eddy_run classes. list.
-        std_threshold: integer, to be multiplied to the
-                       standard deviation to select outliers.
-                       Default:3
-
-    Returns:
-        pandas dataframe of outlier information
-    '''
-    # Load data from each eddy run into a dataframe
-    movement_df = get_movement_df(study_eddy_runs)
-
-    # Sort by
-    movement_df = movement_df.sort_values([
-        'Relative Restricted Movement',
-        'Number of outlier slice'],
-        ascending=False)
-
-    outlier_df = movement_df.copy()
-
-    # For each measure (columns in the movement_df)
-    for col in [x for x in outlier_df.columns if x != 'eddy_path']:
-        avg = outlier_df[col].mean()
-        std = outlier_df[col].std()
-
-        # Create an array that marks outliers
-        # True marks outlier
-        outlier_df.loc[
-                outlier_df[col] > avg + std * std_threshold,
-                col] = 'outlier'
-
-        # False marks "almost outlier"
-        # Select top 3 nearest subjects to the threshold
-        outlier_df.loc[
-            (outlier_df.loc[outlier_df[col] != 'outlier', col].sort_values(
-                ascending=False)[:3].index),
-            col] = 'almost outlier'
-
-    # Drop lines with no True or False
-    outlier_df = outlier_df.set_index('eddy_path')
-    outlier_df = outlier_df[
-        outlier_df.isin(['outlier', 'almost outlier']).any(axis=1)]
-
-    outlier_df[~outlier_df.isin(['outlier', 'almost outlier'])] = '-'
-
-    return outlier_df
+    return diff_ax_img
 
 
 def outlier_df_plot(outlier_df, std_threshold=3):
@@ -405,6 +282,7 @@ def outlier_df_plot(outlier_df, std_threshold=3):
     )
 
     return fig, ax
+
 
 def motion_summary_figure(study_eddy_runs, std_threshold=3):
     '''
@@ -544,6 +422,7 @@ def shell_PE_translation_summary(list_of_eddy_runs, std_threshold=3):
             fig.tight_layout()
             fig.show()
 
+
 def motion_summary_dist(study_eddy_runs, std_threshold=3):
 
     fig, axes = plt.subplots(ncols=3, nrows=2, figsize=(20, 20))
@@ -605,77 +484,204 @@ def motion_summary_dist(study_eddy_runs, std_threshold=3):
     fig.show()
 
 
-if __name__ == '__main__':
-    argparser = argparse.ArgumentParser(prog='Lupus project script',
-            formatter_class=argparse.RawDescriptionHelpFormatter,
-            description='''\
-    eddy_squeeze -ed eddy/out/dir
-''',epilog="Kevin Cho Monday, May 6, 2019")
 
-    argparser.add_argument("--eddy_path_pattern","-ep",
-                           type=str,
-                           help='specify pattern of the subject'\
-                               'eddy folder, '\
-                               'eg)\'/data/pnl/projects/NAPLS/DATA/'\
-                               'fsleddy_results_2/*/*\' ')
+class EddyStudyFigures:
+    '''
+    Args:
+        study_dir: str, glob input like patterns for eddy directories
+        eg) /data/pnl/kcho/*eddy
+    '''
+    def set_group_figure_settings(self):
+        self.dpi = 100
 
-    argparser.add_argument("--eddy_dirs","-ed",
-                           type=str,
-                           nargs='+',
-                           help='specify directories of the eddy folder')
+    def plot_subjects(self, var, std_outlier=2):
+        '''Create graphs for motion, outlier and etc for all eddy outputs'''
+        # width for one number of subjects
+        width_per_subject = 0.5
 
-    argparser.add_argument("--std","-s",
-                           type=int,
-                           default=3,
-                           help='Number multiplied by std to grab outliers')
+        g = sns.catplot(x='subject', y=var, data=self.df)
 
-    argparser.add_argument("--out_dir","-o",
-                           type=str,
-                           default=os.getcwd(),
-                           help='Directory to save outputs')
+        if len(self.df) < 10:
+            g.fig.set_size_inches(5, 5)
+        else:
+            g.fig.set_size_inches(width_per_subject * len(self.df), 5)
+            g.ax.set_xticklabels(g.ax.get_xticklabels(), rotation=90)
 
-    args = argparser.parse_args()
+        g.fig.set_dpi(self.dpi)
+        g.ax.set_xlabel('Subjects')
 
-    if args.eddy_path_pattern:
-        print('Reading all eddy directories that '\
-              'match the pattern : {}'.format(args.eddy_path_pattern))
-        eddy_study = kcho_eddy.EddyStudy(args.eddy_path_pattern)
-        study_eddy_runs = eddy_study.study_eddy_runs
+        g.fig.tight_layout()
+        g.fig.suptitle(f'{var[0].upper()}{var[1:]}')
 
-    elif args.eddy_dirs:
-        print('Reading eddy directories')
-        study_eddy_runs = []
-        for eddy_path in args.eddy_dirs:
-            print('\t{}'.format(eddy_path))
-            study_eddy_runs.append(kcho_eddy.EddyRun(eddy_path))
-    else:
-        print("Give --eddy_path_pattern or --eddy_dirs")
-        sys.exit()
+        threshold = self.df[var].mean() + (self.df[var].std() * std_outlier)
+        g.ax.axhline(y=threshold, color='red', alpha=0.4)
+        g.ax.text(x=len(self.df) - 0.5,
+                  y=threshold+0.1,
+                  s=f'mean + std * {std_outlier}',
+                  ha='right', color='red', alpha=0.9)
 
-    # Make output directory if it does not exist
-    if not os.path.isdir(args.out_dir):
-        os.mkdir(args.out_dir)
+        setattr(self, f'plot_{var}', g)
 
-    # Motion graphs
-    fig, axes = motion_summary_figure(study_eddy_runs,
-                                      args.std)
-    fig.savefig('{}/eddy_motion_summary.png'.format(args.out_dir), dpi=fig.dpi)
-    plt.close()
+        # plot outliers only
+        df_tmp = self.df[self.df[var] > threshold]
+        x_size = len(df_tmp) * 1.2
 
-    # Raw dataframe
-    movement_df = get_movement_df(study_eddy_runs)
-    movement_df.to_csv('{}/eddy_movement_and_outlier_slices.csv'.format(args.out_dir))
+        if len(df_tmp) > 0:
+            g = sns.catplot(x='subject', y=var, data=df_tmp)
+            g.fig.set_size_inches(x_size, 5)
+            g.fig.set_dpi(self.dpi)
+            g.ax.set_xticklabels(g.ax.get_xticklabels())
+            g.ax.set_xlabel('Subjects')
 
-    # outlier
-    outlier_df = get_outlier_df(study_eddy_runs,
-                                args.std)
-    outlier_df.to_csv('{}/eddy_outlier_marker.csv'.format(args.out_dir))
+            g.fig.suptitle(f'Subjects with greater {var[0].lower()}{var[1:]} '
+                           'than (mean + 2*std)', y=1.02)
+            setattr(self, f'plot_outlier_only_{var}', g)
 
-    fig, ax = outlier_df_plot(outlier_df,
-                              args.std)
-    plt.tight_layout()
-    fig.savefig('{}/eddy_outlier.png'.format(args.out_dir), dpi=fig.dpi)
-    plt.close()
-    
-    print('Done. Summary output directory : {}'.format(args.out_dir))
 
+    def create_group_figures(self, out_dir):
+        '''Create group figures'''
+        self.set_group_figure_settings()
+
+        out_dir = Path(out_dir)
+        # save figures
+        vars = ['absolute restricted movement', 'relative restricted movement',
+                'number of outlier slices',
+                'Sum of standard deviations in outlier slices',
+                'Mean of standard deviations in outlier slices',
+                'Standard deviation of standard deviations in outlier slices']
+        for var in vars:
+            self.plot_subjects(var)
+            g = getattr(self, f'plot_{var}')
+            g.fig.savefig(out_dir / f'plot_{var}.png')
+
+            # if there is outlier
+            try:
+                g = getattr(self, f'plot_outlier_only_{var}')
+                g.fig.savefig(out_dir / f'plot_outlier_only_{var}.png')
+            except:
+                pass
+
+        # Eddy shell alignment
+        self.figure_post_eddy_shell()
+        post_eddy_shell_graph_list = [x for x in dir(self)
+                                      if 'plot_post_eddy_shell' in x]
+        for post_eddy_shell_graph in post_eddy_shell_graph_list:
+            fig = getattr(self, post_eddy_shell_graph)
+            fig.savefig(out_dir / f'{post_eddy_shell_graph}.png')
+
+
+        self.figure_post_eddy_shell_PE()
+        post_eddy_shell_PE_graph_list = [x for x in dir(self)
+                                         if 'plot_post_eddy_shell_PE' in x]
+        for post_eddy_shell_PE_graph in post_eddy_shell_PE_graph_list:
+            fig = getattr(self, post_eddy_shell_PE_graph)
+            fig.savefig(out_dir / f'{post_eddy_shell_PE_graph}.png')
+
+        # dataframe clean up
+        self.df = self.df.sort_values(
+            ['number of outlier slices',
+             'Sum of standard deviations in outlier slices',
+             'absolute restricted movement',
+             'relative restricted movement'], ascending=False).drop(
+                 ['eddy_prefix', 'eddy_dir', 'eddy_input'],
+                 axis=1).reset_index().drop('index', axis=1)
+
+        self.df.to_csv(out_dir / 'eddy_study_summary.csv')
+
+
+    def figure_post_eddy_shell_PE(self):
+        for (title, subtitle), table in \
+            self.post_eddy_shell_PE_translation_parameters_df.groupby(
+                ['title', 'subtitle']):
+            self.figure_post_eddy_shell_PE_suptitle(title, subtitle, table)
+
+    def figure_post_eddy_shell(self):
+        for (title, subtitle), table in \
+            self.post_eddy_shell_alignment_df.groupby(
+                ['title', 'subtitle']):
+            self.figure_post_eddy_shell_suptitle(title, subtitle, table)
+
+    def figure_post_eddy_shell_suptitle(self, title, subtitle, t):
+        shell_infos = t['shell_info'].unique()
+        if len(t) > 30:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
+                dpi=self.dpi)
+        else:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(10, 10),
+                dpi=self.dpi)
+
+        for ax, shell_info in zip(np.ravel(axes), shell_infos):
+            t_tmp = t.groupby('shell_info').get_group(shell_info)
+            t_tmp = t_tmp.reset_index()
+
+            std = t_tmp['sum'].std()
+            mean = t_tmp['sum'].mean()
+
+            ax.plot(np.arange(len(t_tmp)), t_tmp['sum'], 'ro',
+                    alpha=0.3, label='z-rot (deg)')
+            ax.axhline(y=mean+2*std, color='r', alpha=0.4)
+            ax.text(x=len(t_tmp), y=mean+2*std, s='mean + 2 * std',
+                    ha='right', va='top', color='r', alpha=0.4)
+
+            outlier_df = t_tmp[t_tmp['sum'] > (mean + 2*std)]
+            for num, row in outlier_df.iterrows():
+                ax.text(num, row['sum'],
+                        row['subject'],
+                        ha='center', fontsize=7)
+            print(' '.join(outlier_df.subject.tolist()))
+            ax.set_title(shell_info)
+
+        try:
+            axes[0].set_ylabel('Sum of xyz translations and rotations')
+        except:
+            axes.set_ylabel('Sum of xyz translations and rotations')
+        fig.suptitle(f'{title}\n{subtitle}', y=1)
+
+        setattr(self, f'plot_post_eddy_shell_{subtitle}', fig)
+        # fig.show()
+
+    def figure_post_eddy_shell_PE_suptitle(self, title, subtitle, t):
+        shell_infos = t['shell_info'].unique()
+        if len(t) > 30:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
+                dpi=self.dpi)
+        else:
+            fig, axes = plt.subplots(
+                ncols=len(shell_infos),
+                figsize=(10, 10),
+                dpi=self.dpi)
+
+        for ax, shell_info in zip(np.ravel(axes), shell_infos):
+            t_tmp = t.groupby('shell_info').get_group(shell_info)
+            t_tmp = t_tmp.reset_index()
+
+            std = t_tmp[0].std()
+            mean = t_tmp[0].mean()
+
+            ax.plot(np.arange(len(t_tmp)), t_tmp[0], 'ro',
+                    alpha=0.3, label='z-rot (deg)')
+            ax.axhline(y=mean+2*std, color='r', alpha=0.4)
+            ax.text(x=len(t_tmp), y=mean+2*std, s='mean + 2 * std',
+                    ha='right', va='top', color='r', alpha=0.4)
+
+            outlier_df = t_tmp[t_tmp[0] > (mean + 2*std)]
+            for num, row in outlier_df.iterrows():
+                ax.text(num, row[0],
+                        row['subject'],
+                        ha='center', fontsize=7)
+            print(' '.join(outlier_df.subject.tolist()))
+            ax.set_title(shell_info)
+
+        try:
+            axes[0].set_ylabel('PE translation in mm')
+        except:
+            axes.set_ylabel('PE translation in mm')
+        fig.suptitle(f'{title}\n{subtitle}', y=1)
+        setattr(self, f'plot_post_eddy_shell_PE_{subtitle}', fig)
+        # fig.show()

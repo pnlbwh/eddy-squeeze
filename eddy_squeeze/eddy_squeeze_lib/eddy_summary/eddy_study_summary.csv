@@ -1,0 +1,3 @@
+,subject,number of volumes,max b value,min b value,unique b values,number of b0s,number of outlier slices,Sum of standard deviations in outlier slices,Mean of standard deviations in outlier slices,Standard deviation of standard deviations in outlier slices,absolute restricted movement,relative restricted movement,absolute movement,relative movement
+0,subject01,74,3000.0,0.0,[   0.  200.  500. 1000. 2950. 3000.],5,80,894.3987300000001,11.179984125,6.301069734245863,0.19040383706567568,0.11207416887229729,0.5445671351724325,0.8763930301094595
+1,subject02,74,3000.0,0.0,[   0.  200.  500. 1000. 2950. 3000.],5,80,894.3987300000001,11.179984125,6.301069734245863,0.19040383706567568,0.11207416887229729,0.5445671351724325,0.8763930301094595

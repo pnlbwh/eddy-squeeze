@@ -1,0 +1,1944 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../../../favicon.ico">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</title>
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="../../../../dist/css/bootstrap.min.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+  </head>
+
+  <body>
+
+    /* Move down content because we have a fixed navbar that is 3.5rem tall */
+    body {
+      padding-top: 3.5rem;
+    }
+
+    hr {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      border: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Project summary</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+              <a class="nav-link" href="#">Projects</a>
+          </li>
+          <li class="nav-item active">
+              <a class="nav-link" href="#">New project</a>
+          </li>
+          <li class="nav-item active">
+              <a class="nav-link" href="#">Pipeline</a>
+          </li>
+              <a class="nav-link" href="#">Contact us</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">The framework</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">The team</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" href="#">About the framework</a>
+              <a class="dropdown-item" href="#">Server usage check</a>
+              <a class="dropdown-item" href="#">About our team</a>
+              <a class="dropdown-item" href="#">PNL github</a>
+              <a class="dropdown-item" href="#">Citations</a>
+            </div>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+
+    <main role="main">
+
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">
+Eddy summary
+</h1>
+          <p>
+<h3><code>/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02</code></h4>
+<p>Eddy out file name prefix: subject02-eddy_out</p>
+</p>
+          <p>
+<a class="btn btn-primary btn-lg" href="/Users/kevin/eddy-squeeze/eddy_squeeze/eddy_squeeze_lib/eddy_summary/eddy_study_summary.html" role="button">Back to study level summary &raquo;</a>
+</p>
+        </div>
+      </div>
+      
+<div class="container">
+<!-- Example row of columns -->
+<div class="row">
+  <div class="col-md-12">
+    <h2>Motion summary</h2>
+    <p class="font-weight-bold">Motion parameters extracted from the Eddy output.</p> 
+    <p>Restricted : "This doesn't matter for the correction of the images, it makes no difference if we estimate a large constant EC components and small movement or if we estimate a small EC component and large movement. The corrected images will be (close to) identical. But it matters if one wants to know how much the subject moved. We therefore supplies this file that estimates the movement RMS as above, but which disregards translation in the PE direction."</p>
+
+        <table class="table">
+            <tr>
+                <th scope="col">Restricted absolute motion</th>
+                <th scope="col">Restricted relative motion</th>
+                <th scope="col">Number of outlier slices</th>
+                <th scope="col">Sum of standard deviations<br>in each outlier slice</th>
+                <th scope="col">Mean of standard deviations<br>in each outlier slice</th>
+                <th scope="col">Standard deviation of standard deviations<br>in each outlier slice</th>
+            </tr>
+            <tr>
+            
+                
+                    <td scope="col">0.19</td>
+                
+            
+                
+                    <td scope="col">0.11</td>
+                
+            
+                
+                    <td scope="col">80</td>
+                
+            
+                
+                    <td scope="col">894.40</td>
+                
+            
+                
+                    <td scope="col">11.18</td>
+                
+            
+                
+                    <td scope="col">6.30</td>
+                
+            
+            </tr>
+        </table>
+
+        <br>
+        <h3>Outlier slice count for each B shell</h3>
+        <table class="table">
+            <tr>
+                <th scope="col">B-shells</th>
+                <th scope="col">Number of outlier slices</th>
+                <th scope="col">Number of affected volumes</th>
+                <th scope="col">Affected volume</th>
+                <th scope="col">Number of total volumes in the shell</th>
+            </tr>
+            
+            <tr>
+                <td scope="col">200.0</td>
+                <td scope="col">39</td>
+                <td scope="col">3</td>
+                <td scope="col">
+                    
+                    1 : 
+                        
+                            35
+                        
+                            49
+                        
+                            32
+                        
+                            46
+                        
+                            21
+                        
+                            29
+                        
+                            63
+                        
+                            15
+                        
+                            12
+                        
+                            26
+                        
+                        <br>
+                    
+                    2 : 
+                        
+                            39
+                        
+                            40
+                        
+                            60
+                        
+                            28
+                        
+                            33
+                        
+                            59
+                        
+                            14
+                        
+                            46
+                        
+                            27
+                        
+                            19
+                        
+                            41
+                        
+                            22
+                        
+                        <br>
+                    
+                    3 : 
+                        
+                            30
+                        
+                            31
+                        
+                            56
+                        
+                            38
+                        
+                            17
+                        
+                            45
+                        
+                            50
+                        
+                            16
+                        
+                            39
+                        
+                            59
+                        
+                            24
+                        
+                            11
+                        
+                            10
+                        
+                            44
+                        
+                            64
+                        
+                            61
+                        
+                            25
+                        
+                        <br>
+                    
+                </td>
+                <td scope="col">3</td>
+            </tr>
+            
+            <tr>
+                <td scope="col">500.0</td>
+                <td scope="col">36</td>
+                <td scope="col">6</td>
+                <td scope="col">
+                    
+                    4 : 
+                        
+                            49
+                        
+                            35
+                        
+                            54
+                        
+                            40
+                        
+                            57
+                        
+                        <br>
+                    
+                    5 : 
+                        
+                            64
+                        
+                            38
+                        
+                            47
+                        
+                            61
+                        
+                            58
+                        
+                            18
+                        
+                            44
+                        
+                            13
+                        
+                        <br>
+                    
+                    6 : 
+                        
+                            47
+                        
+                            40
+                        
+                            41
+                        
+                            14
+                        
+                            21
+                        
+                        <br>
+                    
+                    7 : 
+                        
+                            49
+                        
+                            37
+                        
+                            36
+                        
+                            29
+                        
+                            28
+                        
+                            16
+                        
+                            65
+                        
+                            55
+                        
+                            23
+                        
+                            22
+                        
+                            10
+                        
+                        <br>
+                    
+                    8 : 
+                        
+                            64
+                        
+                            39
+                        
+                            48
+                        
+                            34
+                        
+                        <br>
+                    
+                    9 : 
+                        
+                            36
+                        
+                            45
+                        
+                            23
+                        
+                        <br>
+                    
+                </td>
+                <td scope="col">6</td>
+            </tr>
+            
+            <tr>
+                <td scope="col">1000.0</td>
+                <td scope="col">5</td>
+                <td scope="col">5</td>
+                <td scope="col">
+                    
+                    27 : 
+                        
+                            66
+                        
+                        <br>
+                    
+                    32 : 
+                        
+                            66
+                        
+                        <br>
+                    
+                    46 : 
+                        
+                            59
+                        
+                        <br>
+                    
+                    50 : 
+                        
+                            63
+                        
+                        <br>
+                    
+                    67 : 
+                        
+                            65
+                        
+                        <br>
+                    
+                </td>
+                <td scope="col">30</td>
+            </tr>
+            
+        </table>
+
+    <br>
+    <h2>Outlier slices</h2>
+    <p class="font-weight-bold">Information about the slices that were marked as outliers by Eddy.</p> 
+    <p><code>Standard deviation</code> : denotes how many standard deviations off the mean difference between observation and prediction is. </p>
+    <p><code>standard deviation of the square root</code>: denote how many standard deviations off the square root of the mean squared difference between observation and prediction is.</p>
+    <p>The table has been order to show the slice with the highest standard deviation of the square root.</p>
+
+
+        <table class="table">
+            <tr>
+                <th scope="col">Volume Number</th>
+                <th scope="col">Slice number</th>
+                <th scope="col">B-value</th>
+                <th scope="col">Standard deviation</th>
+                <th scope="col">Square root standard deviation</th>
+                <th scope="col">Rank</th>
+            </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">30</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-29.36</td>
+                    <td scope="col">130.26</td>
+                    <td scope="col">0</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">31</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-27.67</td>
+                    <td scope="col">115.65</td>
+                    <td scope="col">1</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">35</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-25.67</td>
+                    <td scope="col">102.08</td>
+                    <td scope="col">2</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">64</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-19.49</td>
+                    <td scope="col">97.25</td>
+                    <td scope="col">3</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">49</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-22.61</td>
+                    <td scope="col">92.49</td>
+                    <td scope="col">4</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">56</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-20.29</td>
+                    <td scope="col">81.23</td>
+                    <td scope="col">5</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">39</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-17.86</td>
+                    <td scope="col">74.12</td>
+                    <td scope="col">6</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">32</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-19.55</td>
+                    <td scope="col">73.46</td>
+                    <td scope="col">7</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">46</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-17.04</td>
+                    <td scope="col">70.66</td>
+                    <td scope="col">8</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">38</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-13.45</td>
+                    <td scope="col">66.87</td>
+                    <td scope="col">9</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">40</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-16.36</td>
+                    <td scope="col">65.95</td>
+                    <td scope="col">10</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">60</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-15.18</td>
+                    <td scope="col">65.90</td>
+                    <td scope="col">11</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">17</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-21.96</td>
+                    <td scope="col">64.23</td>
+                    <td scope="col">12</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">45</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-17.43</td>
+                    <td scope="col">62.53</td>
+                    <td scope="col">13</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">50</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-19.14</td>
+                    <td scope="col">60.23</td>
+                    <td scope="col">14</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">28</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-14.57</td>
+                    <td scope="col">56.74</td>
+                    <td scope="col">15</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">16</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-21.57</td>
+                    <td scope="col">54.04</td>
+                    <td scope="col">16</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">33</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-17.31</td>
+                    <td scope="col">53.75</td>
+                    <td scope="col">17</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">21</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-20.75</td>
+                    <td scope="col">51.08</td>
+                    <td scope="col">18</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">59</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-16.88</td>
+                    <td scope="col">47.67</td>
+                    <td scope="col">19</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">39</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-12.06</td>
+                    <td scope="col">47.40</td>
+                    <td scope="col">20</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">59</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-16.58</td>
+                    <td scope="col">45.03</td>
+                    <td scope="col">21</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">14</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-16.69</td>
+                    <td scope="col">44.62</td>
+                    <td scope="col">22</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">24</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-12.58</td>
+                    <td scope="col">44.61</td>
+                    <td scope="col">23</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">46</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-12.65</td>
+                    <td scope="col">43.96</td>
+                    <td scope="col">24</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">8</td>
+                    <td scope="col">64</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-9.90</td>
+                    <td scope="col">42.99</td>
+                    <td scope="col">25</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">11</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-12.44</td>
+                    <td scope="col">39.32</td>
+                    <td scope="col">26</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">27</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-12.63</td>
+                    <td scope="col">37.82</td>
+                    <td scope="col">27</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">10</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-17.24</td>
+                    <td scope="col">36.54</td>
+                    <td scope="col">28</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">44</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-11.01</td>
+                    <td scope="col">31.85</td>
+                    <td scope="col">29</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">64</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-15.09</td>
+                    <td scope="col">28.62</td>
+                    <td scope="col">30</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">61</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-11.70</td>
+                    <td scope="col">23.72</td>
+                    <td scope="col">31</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">19</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-12.09</td>
+                    <td scope="col">23.50</td>
+                    <td scope="col">32</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">38</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-12.64</td>
+                    <td scope="col">22.72</td>
+                    <td scope="col">33</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">4</td>
+                    <td scope="col">49</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-12.83</td>
+                    <td scope="col">21.76</td>
+                    <td scope="col">34</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">6</td>
+                    <td scope="col">47</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-12.13</td>
+                    <td scope="col">21.61</td>
+                    <td scope="col">35</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">47</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-12.73</td>
+                    <td scope="col">21.37</td>
+                    <td scope="col">36</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">61</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-11.47</td>
+                    <td scope="col">20.65</td>
+                    <td scope="col">37</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">8</td>
+                    <td scope="col">39</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-12.93</td>
+                    <td scope="col">20.47</td>
+                    <td scope="col">38</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">4</td>
+                    <td scope="col">35</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-11.93</td>
+                    <td scope="col">20.11</td>
+                    <td scope="col">39</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">49</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-11.31</td>
+                    <td scope="col">17.92</td>
+                    <td scope="col">40</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">9</td>
+                    <td scope="col">36</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-11.46</td>
+                    <td scope="col">17.19</td>
+                    <td scope="col">41</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">37</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-11.10</td>
+                    <td scope="col">14.50</td>
+                    <td scope="col">42</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">41</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.56</td>
+                    <td scope="col">13.33</td>
+                    <td scope="col">43</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">27</td>
+                    <td scope="col">66</td>
+                    <td scope="col">1000</td>
+                    <td scope="col">-8.21</td>
+                    <td scope="col">11.81</td>
+                    <td scope="col">44</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">36</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-8.72</td>
+                    <td scope="col">10.98</td>
+                    <td scope="col">45</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">50</td>
+                    <td scope="col">63</td>
+                    <td scope="col">1000</td>
+                    <td scope="col">-7.89</td>
+                    <td scope="col">10.05</td>
+                    <td scope="col">46</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">4</td>
+                    <td scope="col">54</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-7.56</td>
+                    <td scope="col">9.98</td>
+                    <td scope="col">47</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">29</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.46</td>
+                    <td scope="col">9.67</td>
+                    <td scope="col">48</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">58</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-8.08</td>
+                    <td scope="col">9.56</td>
+                    <td scope="col">49</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">29</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-8.29</td>
+                    <td scope="col">9.45</td>
+                    <td scope="col">50</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">28</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-8.18</td>
+                    <td scope="col">8.65</td>
+                    <td scope="col">51</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">63</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.54</td>
+                    <td scope="col">8.18</td>
+                    <td scope="col">52</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">18</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-8.56</td>
+                    <td scope="col">7.65</td>
+                    <td scope="col">53</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">16</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-8.92</td>
+                    <td scope="col">7.11</td>
+                    <td scope="col">54</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">8</td>
+                    <td scope="col">48</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-5.79</td>
+                    <td scope="col">5.97</td>
+                    <td scope="col">55</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">15</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.63</td>
+                    <td scope="col">5.62</td>
+                    <td scope="col">56</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">9</td>
+                    <td scope="col">45</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-5.58</td>
+                    <td scope="col">5.33</td>
+                    <td scope="col">57</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">2</td>
+                    <td scope="col">22</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.07</td>
+                    <td scope="col">5.05</td>
+                    <td scope="col">58</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">3</td>
+                    <td scope="col">25</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.32</td>
+                    <td scope="col">4.97</td>
+                    <td scope="col">59</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">32</td>
+                    <td scope="col">66</td>
+                    <td scope="col">1000</td>
+                    <td scope="col">-4.72</td>
+                    <td scope="col">4.88</td>
+                    <td scope="col">60</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">12</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.71</td>
+                    <td scope="col">4.81</td>
+                    <td scope="col">61</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">67</td>
+                    <td scope="col">65</td>
+                    <td scope="col">1000</td>
+                    <td scope="col">-4.64</td>
+                    <td scope="col">4.80</td>
+                    <td scope="col">62</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">1</td>
+                    <td scope="col">26</td>
+                    <td scope="col">200</td>
+                    <td scope="col">-4.30</td>
+                    <td scope="col">4.77</td>
+                    <td scope="col">63</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">65</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.83</td>
+                    <td scope="col">4.76</td>
+                    <td scope="col">64</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">55</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.63</td>
+                    <td scope="col">4.60</td>
+                    <td scope="col">65</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">6</td>
+                    <td scope="col">40</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.77</td>
+                    <td scope="col">4.30</td>
+                    <td scope="col">66</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">4</td>
+                    <td scope="col">40</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-5.05</td>
+                    <td scope="col">4.18</td>
+                    <td scope="col">67</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">8</td>
+                    <td scope="col">34</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-5.66</td>
+                    <td scope="col">4.09</td>
+                    <td scope="col">68</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">46</td>
+                    <td scope="col">59</td>
+                    <td scope="col">1000</td>
+                    <td scope="col">-6.59</td>
+                    <td scope="col">3.66</td>
+                    <td scope="col">69</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">4</td>
+                    <td scope="col">57</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.07</td>
+                    <td scope="col">3.25</td>
+                    <td scope="col">70</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">9</td>
+                    <td scope="col">23</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.33</td>
+                    <td scope="col">3.09</td>
+                    <td scope="col">71</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">6</td>
+                    <td scope="col">41</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.25</td>
+                    <td scope="col">3.06</td>
+                    <td scope="col">72</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">44</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.00</td>
+                    <td scope="col">2.79</td>
+                    <td scope="col">73</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">5</td>
+                    <td scope="col">13</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-5.69</td>
+                    <td scope="col">2.77</td>
+                    <td scope="col">74</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">6</td>
+                    <td scope="col">14</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.76</td>
+                    <td scope="col">2.24</td>
+                    <td scope="col">75</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">23</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.42</td>
+                    <td scope="col">2.22</td>
+                    <td scope="col">76</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">22</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.33</td>
+                    <td scope="col">1.94</td>
+                    <td scope="col">77</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">6</td>
+                    <td scope="col">21</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.58</td>
+                    <td scope="col">1.93</td>
+                    <td scope="col">78</td>
+                </tr>
+            
+                <tr>
+                    <td scope="col">7</td>
+                    <td scope="col">10</td>
+                    <td scope="col">500</td>
+                    <td scope="col">-4.37</td>
+                    <td scope="col">1.33</td>
+                    <td scope="col">79</td>
+                </tr>
+            
+        </table>
+    <br>
+
+    
+        <h2>Outlier slice & replacement images</h2>
+        <p class="font-weight-bold">Show how each outlier slice was replaced by Eddy</p> 
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/000_vol_3_slice_30.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/001_vol_3_slice_31.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/002_vol_1_slice_35.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/003_vol_5_slice_64.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/004_vol_1_slice_49.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/005_vol_3_slice_56.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/006_vol_2_slice_39.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/007_vol_1_slice_32.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/008_vol_1_slice_46.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/009_vol_3_slice_38.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/010_vol_2_slice_40.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/011_vol_2_slice_60.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/012_vol_3_slice_17.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/013_vol_3_slice_45.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/014_vol_3_slice_50.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/015_vol_2_slice_28.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/016_vol_3_slice_16.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/017_vol_2_slice_33.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/018_vol_1_slice_21.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/019_vol_2_slice_59.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/020_vol_3_slice_39.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/021_vol_3_slice_59.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/022_vol_2_slice_14.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/023_vol_3_slice_24.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/024_vol_2_slice_46.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/025_vol_8_slice_64.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/026_vol_3_slice_11.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/027_vol_2_slice_27.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/028_vol_3_slice_10.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/029_vol_3_slice_44.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/030_vol_3_slice_64.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/031_vol_3_slice_61.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/032_vol_2_slice_19.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/033_vol_5_slice_38.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/034_vol_4_slice_49.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/035_vol_6_slice_47.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/036_vol_5_slice_47.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/037_vol_5_slice_61.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/038_vol_8_slice_39.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/039_vol_4_slice_35.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/040_vol_7_slice_49.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/041_vol_9_slice_36.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/042_vol_7_slice_37.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/043_vol_2_slice_41.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/044_vol_27_slice_66.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/045_vol_7_slice_36.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/046_vol_50_slice_63.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/047_vol_4_slice_54.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/048_vol_1_slice_29.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/049_vol_5_slice_58.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/050_vol_7_slice_29.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/051_vol_7_slice_28.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/052_vol_1_slice_63.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/053_vol_5_slice_18.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/054_vol_7_slice_16.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/055_vol_8_slice_48.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/056_vol_1_slice_15.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/057_vol_9_slice_45.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/058_vol_2_slice_22.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/059_vol_3_slice_25.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/060_vol_32_slice_66.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/061_vol_1_slice_12.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/062_vol_67_slice_65.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/063_vol_1_slice_26.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/064_vol_7_slice_65.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/065_vol_7_slice_55.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/066_vol_6_slice_40.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/067_vol_4_slice_40.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/068_vol_8_slice_34.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/069_vol_46_slice_59.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/070_vol_4_slice_57.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/071_vol_9_slice_23.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/072_vol_6_slice_41.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/073_vol_5_slice_44.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/074_vol_5_slice_13.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/075_vol_6_slice_14.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/076_vol_7_slice_23.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/077_vol_7_slice_22.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/078_vol_6_slice_21.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+            <div class="col-md-12">
+                <img src="/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/eddy_squeeze_qc/079_vol_7_slice_10.png" class="img-fluid" alt="Responsive image">  </img> 
+            </div>
+        
+        <br>
+    
+
+    <h2>Post eddy shell alignment information</h2>
+         
+        <p class="font-weight-bold">These are the movement parameters that have been applied to the data</p> 
+            <table class="table">
+                <tr>
+                    <th scope="col">x-tr (mm)</th>
+                    <th scope="col">y-tr (mm)</th>
+                    <th scope="col">z-tr (mm)</th>
+                    <th scope="col">x-rot (deg)</th>
+                    <th scope="col">y-rot (deg)</th>
+                    <th scope="col">z-rot (deg)</th>
+                    <th scope="col">Sum</th>
+                    <th scope="col">Shell info</th>
+                </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.04</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 200 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.04</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 500 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0.10</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 1e+03 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">1</td>
+                        <td scope="col">0.06</td>
+                        <td scope="col">0.09</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 3e+03 to b0-shell</td>
+                    </tr>
+                
+            </table>
+         
+        <p class="font-weight-bold">These between shell parameters were calculated using MI between shell means</p> 
+            <table class="table">
+                <tr>
+                    <th scope="col">x-tr (mm)</th>
+                    <th scope="col">y-tr (mm)</th>
+                    <th scope="col">z-tr (mm)</th>
+                    <th scope="col">x-rot (deg)</th>
+                    <th scope="col">y-rot (deg)</th>
+                    <th scope="col">z-rot (deg)</th>
+                    <th scope="col">Sum</th>
+                    <th scope="col">Shell info</th>
+                </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.04</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 200 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.04</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 500 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0.10</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 1e+03 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">1</td>
+                        <td scope="col">0.06</td>
+                        <td scope="col">0.09</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 3e+03 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.03</td>
+                        <td scope="col">0.00</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 500 to shell 200</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.00</td>
+                        <td scope="col">0.01</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 1e+03 to shell 200</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">1</td>
+                        <td scope="col">0.01</td>
+                        <td scope="col">0.01</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 3e+03 to shell 200</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.04</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 200 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.04</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 500 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.07</td>
+                        <td scope="col">0.10</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 1e+03 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">1</td>
+                        <td scope="col">0.06</td>
+                        <td scope="col">0.09</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 3e+03 to b0-shell</td>
+                    </tr>
+                
+            </table>
+         
+        <p class="font-weight-bold">These between shell parameters were calculated using interspersed b0-volumes</p> 
+            <table class="table">
+                <tr>
+                    <th scope="col">x-tr (mm)</th>
+                    <th scope="col">y-tr (mm)</th>
+                    <th scope="col">z-tr (mm)</th>
+                    <th scope="col">x-rot (deg)</th>
+                    <th scope="col">y-rot (deg)</th>
+                    <th scope="col">z-rot (deg)</th>
+                    <th scope="col">Sum</th>
+                    <th scope="col">Shell info</th>
+                </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.00</td>
+                        <td scope="col">0.00</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 200 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.02</td>
+                        <td scope="col">0.05</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 500 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.01</td>
+                        <td scope="col">0.05</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 1e+03 to b0-shell</td>
+                    </tr>
+                
+                    <tr>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0.12</td>
+                        <td scope="col">0.11</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">0</td>
+                        <td scope="col">Shell 3e+03 to b0-shell</td>
+                    </tr>
+                
+            </table>
+        
+    <br>
+
+    <h2>Post eddy shell PE translation information</h2>
+         
+            <p class="font-weight-bold">Deduced PE-translations (mm) relative b0-shell</p> 
+            <table class="table">
+            
+                <tr>
+                
+                    <td scope="col">0.203</td>
+                
+                    <td scope="col">Shell 200 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Deduced PE-translations (mm) relative b0-shell</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.233</td>
+                
+                    <td scope="col">Shell 500 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Deduced PE-translations (mm) relative b0-shell</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.227</td>
+                
+                    <td scope="col">Shell 1e+03 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Deduced PE-translations (mm) relative b0-shell</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.894</td>
+                
+                    <td scope="col">Shell 3e+03 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Deduced PE-translations (mm) relative b0-shell</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+            </table>
+         
+            <p class="font-weight-bold">PE-translations (mm) relative b0-shell from direct registration to mean b0</p> 
+            <table class="table">
+            
+                <tr>
+                
+                    <td scope="col">0.203</td>
+                
+                    <td scope="col">Shell 200 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">PE-translations (mm) relative b0-shell from direct registration to mean b0</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.233</td>
+                
+                    <td scope="col">Shell 500 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">PE-translations (mm) relative b0-shell from direct registration to mean b0</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.227</td>
+                
+                    <td scope="col">Shell 1e+03 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">PE-translations (mm) relative b0-shell from direct registration to mean b0</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.894</td>
+                
+                    <td scope="col">Shell 3e+03 to b0-shell</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">PE-translations (mm) relative b0-shell from direct registration to mean b0</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+            </table>
+         
+            <p class="font-weight-bold">Relative PE-translations (mm) between the shells</p> 
+            <table class="table">
+            
+                <tr>
+                
+                    <td scope="col">0.0463</td>
+                
+                    <td scope="col">Shell 500 to shell 200</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Relative PE-translations (mm) between the shells</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.0439</td>
+                
+                    <td scope="col">Shell 1e+03 to shell 200</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Relative PE-translations (mm) between the shells</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+                <tr>
+                
+                    <td scope="col">0.838</td>
+                
+                    <td scope="col">Shell 3e+03 to shell 200</td>
+                
+                    <td scope="col">These between shell PE-translations were calculated using MI between shell means</td>
+                
+                    <td scope="col">Relative PE-translations (mm) between the shells</td>
+                
+                    <td scope="col">/Users/kevin/eddy-squeeze/tests/prac_study_dir/subject02/subject02-eddy_out</td>
+                
+                    <td scope="col">subject02</td>
+                
+                </tr>
+            
+            </table>
+        
+  </div>
+</div>
+
+
+    </main>
+
+    <hr>
+
+    <br>
+    <footer class="container">
+        <img src="/Users/kevin/eddy-squeeze/docs/pnl-bwh-hms.png" alt="image here"> </img>
+      <p>&copy; Kang Ik Kevin Cho & Ofer Pasternak, Department of Psychiatry, Psychiatry Neuroimaging Laboratory, Brigham and Women's Hospital, Harvard Medical School, Boston, MA</p>
+      <p>Next Generation Diffusion MRI Biomarkers for Prodromal Schizophrenia (1R01MH108574-01A1)</p>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+
