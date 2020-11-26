@@ -16,7 +16,7 @@ if __name__ == '__main__':
         description='''\
         eddy_squeeze.
         Visualize extra information from FSL eddy outputs.
-        ''', epilog="Kevin Cho November 30, 2019")
+        ''')
 
     argparser.add_argument("--eddy_directories", "-ed",
                            type=str,

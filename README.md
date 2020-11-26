@@ -1,45 +1,82 @@
-![icon](docs/icon_20.png) 
-
-# eddy-squeeze
-
+![](docs/pnl-bwh-hms.png)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3600531.svg)](https://doi.org/10.5281/zenodo.3600531)
 
 
+# eddy-squeeze
 
-Summarize and Visualize Information from FSL Eddy Outputs
+![icon](docs/icon_20.png) 
 
-```sh
-eddy-squeeze/bin/eddy_squeeze \
-    --eddy_directories \
-        /eddy/study/dir/subject01 \
-        /eddy/study/dir/subject02 \
-        /eddy/study/dir/subject03 \
-    --out_dir prac_eddy_summary \
-    --print_table \
-    --figure \
-    --save_html
-```
+
+
+### Summarize and Visualize FSL Eddy Outlier Replacements
 
 
 
 ## Contents
-
+- Introduction
 - Installation
 - Dependencies
 - How to use the script
 
 
+
+## Introduction
+
+
+### eddy-squeeze
+
+**eddy-squeeze is a tool that visualizes the signal replacements by FSL Eddy with `--repol` option.** In addition to the visualization, it also collects measures like motions, number of outliers and post-eddy translations rom multiple eddy outputs into a csv and html file, for easier QC of FSL Eddy outputs.
+
+- Eddy QC interested users should also check out
+    - *eddyqc* (`eddy_squad` and `eddy_quad`) by FSL that creates nice summary of a subject or a study wise summary of the Eddy outputs.
+        - https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddyqc/UsersGuide
+
+
+### FSL Eddy
+
+- Eddy is a eddy-current, and head movement correction tool, from FSL, for the diffusion weighted images (DWI).
+
+
+#### Eddy outlier replacement
+
+- Using a Gaussian Process, Eddy builds a model of DWI data for each shell. And using this model, the prediction of DWI data for different B-shells becomes available, which is then used to make a comparison to the acquired data.
+- If the comparison between the predicted signal and the actual signal is larger than anticipated, Eddy marks the signal (the slice in the volume) an outlier.
+- It can also replace the signals in the outlier slices with that of predicted signal, reducing the large deviations from these outliers.
+    - Jesper L. R. Andersson and Stamatios N. Sotiropoulos. An integrated approach to correction for off-resonance effects and subject movement in diffusion MR imaging. NeuroImage, 125:1063-1078, 2016.
+    - Jesper L. R. Andersson, Mark S. Graham, Eniko Zsoldos and Stamatios N. Sotiropoulos. Incorporating outlier detection and replacement into a non-parametric framework for movement and distortion correction of diffusion MR images. NeuroImage, 141:556-572, 2016.
+
+
+
+
+<br><br>
 ## Installation
+
+##### Download the repository
 
 ```sh
 git clone https://github.com/pnlbwh/eddy-squeeze
 ```
 
+##### Testing the eddy-squeeze using `pytest`
+
 ```sh
+cd eddy-squeeze/tests
+pytest test_eddy_squeeze.py
+
+cd eddy-squeeze/tests/eddy_squeeze_lib
+pytest test_eddy_files.py
+pytest test_eddy_present.py
+pytest test_eddy_utils.py
+```
+
+##### Testing the eddy-squeeze
+
+```
 cd eddy-squeeze/bin
 ./eddy_squeeze -h
 ```
 
+<br><br>
 
 ## Dependencies
 
@@ -54,14 +91,14 @@ numpy==1.16.2
 pathlib2==2.3.3
 matplotlib==3.0.3
 tabulate==0.8.5
+pytest
 ```
 
 
 
-## Summary of the eddy outputs
+## How to run eddy-squeeze
 
-
-### Print only
+#### Collect output measures created by Eddy and prints them on screen
 ```sh
 # one eddy output
 eddy_squeeze --eddy_directories /test/eddy_out --print_table
@@ -71,7 +108,7 @@ eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 --print_table
 ```
 
 
-### Save html summary
+#### Save html summary
 
 ```sh
 eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 \
@@ -81,7 +118,7 @@ eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 \
 ```
 
 
-### Save html summary with figures
+#### Save html summary with figures
 
 ```sh
 eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 \
@@ -91,16 +128,18 @@ eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 \
     --out_dir prac_eddy_summary
 ```
 
+<br><br>
 
+## Example outputs
 
-### Example outputs
 
 ```sh
-eddy_squeeze --eddy_directories ../test/eddy_out --print_table
+eddy_squeeze \
+    --eddy_directories /prac_study_dir/subject01 /prac_study_dir/subject02 \
+    --print_table
 ```
 
-```sh
-
+```
 Output directory : /Users/kevin/eddy-squeeze/tests/bin/prac_eddy_summary
 --------------------------------------------------
 
@@ -117,12 +156,12 @@ n=2 eddy outputs detected
 
 Basic information
 --------------------------------------------------
-+----+-----------+-----------------------------------------------------------------+---------------------+---------------+---------------+---------------------------------------+-----------------+
-|    | subject   | eddy_dir                                                        |   number of volumes |   max b value |   min b value | unique b values                       |   number of b0s |
-|----+-----------+-----------------------------------------------------------------+---------------------+---------------+---------------+---------------------------------------+-----------------|
-|  0 | subject01 | /Users/kevin/eddy-squeeze/tests/bin/../prac_study_dir/subject01 |                  74 |          3000 |             0 | [   0.  200.  500. 1000. 2950. 3000.] |               5 |
-|  1 | subject02 | /Users/kevin/eddy-squeeze/tests/bin/../prac_study_dir/subject02 |                  74 |          3000 |             0 | [   0.  200.  500. 1000. 2950. 3000.] |               5 |
-+----+-----------+-----------------------------------------------------------------+---------------------+---------------+---------------+---------------------------------------+-----------------+
++----+-----------+--------------------------------------+---------------------+---------------+---------------+---------------------------------------+-----------------+
+|    | subject   |              eddy_dir      |   number of volumes |   max b value |   min b value | unique b values                       |   number of b0s |
+|----+-----------+----------------------------+---------------------+---------------+---------------+---------------------------------------+-----------------|
+|  0 | subject01 |  /prac_study_dir/subject01 |                  74 |          3000 |             0 | [   0.  200.  500. 1000. 2950. 3000.] |               5 |
+|  1 | subject02 |  /prac_study_dir/subject02 |                  74 |          3000 |             0 | [   0.  200.  500. 1000. 2950. 3000.] |               5 |
++----+-----------+--------------------------------------+---------------------+---------------+---------------+---------------------------------------+-----------------+
 
 Outlier information
 --------------------------------------------------
