@@ -148,18 +148,25 @@ Motion information
 <br>
 <br>
 
-#### 
+#### Save summary html
+
 ```sh
-eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 --save_html
+eddy_squeeze \
+    --eddy_directories /test/eddy_out1 /test/eddy_out2
+    --out_dir eddy_summary \
+    --save_html
 ```
+<br>
 
 ![mainEddy](docs/eddy_summary_main.png)
 
 <br>
+
 ![subjectEddy](docs/eddy_summary_subject.png)
 
 <br>
 <br>
+
 ```sh
 eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 --save_html --figure
 ```
