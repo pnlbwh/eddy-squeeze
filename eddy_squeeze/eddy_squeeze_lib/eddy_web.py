@@ -40,6 +40,7 @@ def create_study_html(eddyStudy:EddyStudy, out_dir:str, **kwargs):
     out_dir.mkdir(exist_ok=True)
 
     study_out_html = out_dir / 'eddy_study_summary.html'
+    print(study_out_html)
 
 
     # eddyRun
@@ -51,8 +52,9 @@ def create_study_html(eddyStudy:EddyStudy, out_dir:str, **kwargs):
         eddyRun_out_dir = eddyRun.eddy_dir / 'eddy_squeeze_qc'
         image_list = list(sorted(eddyRun_out_dir.glob('*png'), key=sorter))
 
-        out_html = out_dir.absolute() / \
+        out_html = out_dir / \
                 f'{eddyRun.subject_name}_eddy_summary.html'
+        print(out_html)
 
         with open(out_html, 'w') as fh:
             fh.write(template.render(image_list=image_list,
@@ -69,6 +71,8 @@ def create_study_html(eddyStudy:EddyStudy, out_dir:str, **kwargs):
     # list of images in the output dir created by another function
     image_list = list(out_dir.glob('*png'))
     with open(study_out_html, 'w') as fh:
+        print('hahah')
+        print(study_out_html)
         fh.write(template.render(out_dir=out_dir,
                                  image_list=image_list,
                                  eddyStudy=eddyStudy,
@@ -78,8 +82,8 @@ def create_study_html(eddyStudy:EddyStudy, out_dir:str, **kwargs):
 
     replace_image_locations_to_relative_in_html(study_out_html, out_dir)
 
-    from weasyprint import HTML
-    HTML(study_out_html).write_pdf(out_dir.absolute() / 'Test.pdf')
+    # from weasyprint import HTML
+    # HTML(study_out_html).write_pdf(out_dir.absolute() / 'Test.pdf')
 
 
 def create_html(eddyOut, out_dir:str, **kwargs):

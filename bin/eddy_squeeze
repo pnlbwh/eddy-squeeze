@@ -50,5 +50,6 @@ if __name__ == '__main__':
                                 'in the html file')
 
     args = argparser.parse_args()
+    args.out_dir = Path(args.out_dir).absolute()
     eddy_squeeze_study(args)
 

@@ -50,6 +50,7 @@ def eddy_squeeze_study(args: 'argparse') -> None:
         out_dir = Path(os.getcwd()) / 'eddy_summary'
     else:
         out_dir = Path(args.out_dir)
+    
     print_header(f'Output directory : {out_dir}')
 
     # get eddy directory prefixes
