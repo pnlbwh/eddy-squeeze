@@ -11,6 +11,9 @@
 ### Summarize and Visualize FSL Eddy Outlier Replacements
 
 
+![output](docs/example_out_0_resize.png)
+
+
 
 ## Contents
 - Introduction
