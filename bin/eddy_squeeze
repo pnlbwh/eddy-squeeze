@@ -5,8 +5,6 @@ import os
 import argparse
 from tabulate import tabulate
 
-import sys
-sys.path.append('/Users/kevin/eddy-squeeze')
 from eddy_squeeze.eddy_squeeze import eddy_squeeze_study
 
 

@@ -7,7 +7,6 @@ import sys
 import argparse
 
 
-sys.path.append('/Users/kevin/eddy-squeeze/eddy_squeeze')
 from eddy_squeeze_lib.eddy_files import EddyDirectories
 from eddy_squeeze_lib.eddy_utils import print_header, print_table
 from eddy_squeeze_lib.eddy_web import create_study_html, create_html
