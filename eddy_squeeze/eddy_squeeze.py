@@ -7,9 +7,9 @@ import sys
 import argparse
 
 
-from eddy_squeeze_lib.eddy_files import EddyDirectories
-from eddy_squeeze_lib.eddy_utils import print_header, print_table
-from eddy_squeeze_lib.eddy_web import create_study_html, create_html
+from eddy_squeeze.eddy_squeeze_lib.eddy_files import EddyDirectories
+from eddy_squeeze.eddy_squeeze_lib.eddy_utils import print_header, print_table
+from eddy_squeeze.eddy_squeeze_lib.eddy_web import create_study_html, create_html
 
 from typing import List
 

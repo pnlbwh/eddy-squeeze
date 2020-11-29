@@ -4,11 +4,11 @@ import re, sys
 import pandas as pd
 import numpy as np
 
-from eddy_collect import EddyOut, EddyCollect
-from eddy_present import EddyFigure, EddyStudyFigures
-from eddy_utils import get_paths_with_suffixes
-from eddy_utils import get_absolute_when_there_are_dots_in_the_paths
-from eddy_web import create_html
+from eddy_squeeze.eddy_squeeze_lib.eddy_collect import EddyOut, EddyCollect
+from eddy_squeeze.eddy_squeeze_lib.eddy_present import EddyFigure, EddyStudyFigures
+from eddy_squeeze.eddy_squeeze_lib.eddy_utils import get_paths_with_suffixes
+from eddy_squeeze.eddy_squeeze_lib.eddy_utils import get_absolute_when_there_are_dots_in_the_paths
+from eddy_squeeze.eddy_squeeze_lib.eddy_web import create_html
 
 
 
