@@ -6,8 +6,8 @@ import re
 
 root = Path(os.path.abspath(__file__)).parent.parent
 static_dir = root.parent / 'docs'
-bwh_fig_loc = static_dir / 'pnl-bwh-hms.png'
 templates_dir = root / 'html_templates'
+bwh_fig_loc = templates_dir / 'pnl-bwh-hms.png'
 
 # jinja2 environment settings
 env = Environment(loader=FileSystemLoader(str(templates_dir)))
@@ -92,7 +92,7 @@ def create_html(eddyOut, out_dir:str, **kwargs):
     out_dir.mkdir(exist_ok=True)
     image_list = list(sorted(out_dir.glob('*png'), key=sorter))
 
-    git_hash = get_git_hash()
+    # git_hash = get_git_hash()
     env.filters['basename'] = basename
     template = env.get_template('base.html')
 

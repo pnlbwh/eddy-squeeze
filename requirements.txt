@@ -1,0 +1,8 @@
+tabulate>=0.8.7
+matplotlib>=3.0.3
+pandas>=0.24
+numpy>=1.1
+nibabel>=3.1
+Jinja2>=2.0
+pathlib2>=2.3
+seaborn>=0.9
