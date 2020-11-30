@@ -49,6 +49,11 @@ if __name__ == '__main__':
                            help='Create figures to be included ' \
                                 'in the html file')
 
+    argparser.add_argument("--collect_figures", "-co",
+                           action='store_true',
+                           help='Collect all subject figures into the ' \
+                                'output directory.')
+
     args = argparser.parse_args()
 
     if len(sys.argv)==1:

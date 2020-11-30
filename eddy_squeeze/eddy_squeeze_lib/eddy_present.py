@@ -25,20 +25,20 @@ class EddyFigure(object):
                                          self.stds,
                                          self.sqr_stds,
                                          self.rank):
-            bvalue = self.bvalue_arr[v]
-            pre_data_tmp = self.pre_data[:, :, s, v]
-            pre_data_tmp = np.where(self.mask_data[:, :, s] == 1,
-                                    pre_data_tmp, 0)
-            post_data_tmp = self.post_data[:, :, s, v]
-            post_data_tmp = np.where(self.mask_data[:, :, s] == 1,
-                                     post_data_tmp, 0)
-
-            sagittal_data = self.pre_data[self.mid_point, :, :, v].T
-            sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
-
             outfile = self.fig_outdir / f'{r:03}_vol_{v}_slice_{s}.png'
-
             if not outfile.is_file():
+                bvalue = self.bvalue_arr[v]
+                pre_data_tmp = self.pre_data[:, :, s, v]
+                pre_data_tmp = np.where(self.mask_data[:, :, s] == 1,
+                                        pre_data_tmp, 0)
+                post_data_tmp = self.post_data[:, :, s, v]
+                post_data_tmp = np.where(self.mask_data[:, :, s] == 1,
+                                         post_data_tmp, 0)
+
+                sagittal_data = self.pre_data[self.mid_point, :, :, v].T
+                sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
+
+
                 plot_pre_post_correction_slice(
                     self.eddy_dir,
                     pre_data_tmp, post_data_tmp,
@@ -47,6 +47,8 @@ class EddyFigure(object):
                     s, v, bvalue, r,
                     std, sqr_std, self.outlier_std_array,
                     self.restricted_movement_array)
+            else:
+                pass
 
 
 def plot_pre_post_correction_slice(
@@ -76,8 +78,9 @@ def plot_pre_post_correction_slice(
     To do:
         set the vmax and vmin equal for both axes
     '''
-    fig = plt.figure(constrained_layout=True,
-                     figsize=(15, 10))
+    # fig = plt.figure(constrained_layout=True,
+                     # figsize=(15, 10))
+    fig = plt.figure(figsize=(15, 10))
     gs0 = gridspec.GridSpec(5, 6, figure=fig)
 
     # three graphs at the top
@@ -633,7 +636,7 @@ class EddyStudyFigures:
                 ax.text(num, row['sum'],
                         row['subject'],
                         ha='center', fontsize=7)
-            print(' '.join(outlier_df.subject.tolist()))
+            # print(' '.join(outlier_df.subject.tolist()))
             ax.set_title(shell_info)
 
         try:
@@ -676,7 +679,7 @@ class EddyStudyFigures:
                 ax.text(num, row[0],
                         row['subject'],
                         ha='center', fontsize=7)
-            print(' '.join(outlier_df.subject.tolist()))
+            # print(' '.join(outlier_df.subject.tolist()))
             ax.set_title(shell_info)
 
         try:

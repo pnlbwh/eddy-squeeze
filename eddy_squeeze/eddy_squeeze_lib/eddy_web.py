@@ -44,29 +44,15 @@ def create_study_html(eddyStudy:EddyStudy, out_dir:str, **kwargs):
     
     html_addresses = []
     for eddyRun in eddyStudy.eddyRuns:
-        eddyRun_out_dir = eddyRun.eddy_dir / 'eddy_squeeze_qc'
-        image_list = list(sorted(eddyRun_out_dir.glob('*png'), key=sorter))
-
-        out_html = out_dir / \
-                f'{eddyRun.subject_name}_eddy_summary.html'
-        print(out_html)
-
-        with open(out_html, 'w') as fh:
-            fh.write(template.render(image_list=image_list,
-                                     eddyOut=eddyRun,
-                                     subject=eddyRun.eddy_prefix,
-                                     bwh_fig_loc=bwh_fig_loc,
-                                     study_out_html=study_out_html
-                                     ))
-
-        replace_image_locations_to_relative_in_html(out_html, out_dir)
+        eddyRun_out_dir = out_dir / eddyRun.subject_name 
+        out_html = eddyRun_out_dir / \
+                f'eddy_summary.html'
         html_addresses.append(out_html)
 
     template = env.get_template('base_study.html')
     # list of images in the output dir created by another function
     image_list = list(out_dir.glob('*png'))
     with open(study_out_html, 'w') as fh:
-        print('hahah')
         print(study_out_html)
         fh.write(template.render(out_dir=out_dir,
                                  image_list=image_list,
@@ -84,10 +70,10 @@ def create_study_html(eddyStudy:EddyStudy, out_dir:str, **kwargs):
 def create_html(eddyOut, out_dir:str, **kwargs):
     '''Create html that summarizes individual eddy outputs'''
 
-    if 'out_dir' in kwargs:
-        out_dir = Path(kwargs.get('out_dir'))
-    else:
-        out_dir = eddyOut.eddy_dir / 'outlier_figures'
+    # if 'out_dir' in kwargs:
+        # out_dir = Path(kwargs.get('out_dir'))
+    # else:
+        # out_dir = eddyOut.eddy_dir / 'outlier_figures'
 
     out_dir.mkdir(exist_ok=True)
     image_list = list(sorted(out_dir.glob('*png'), key=sorter))
@@ -110,6 +96,7 @@ def create_html(eddyOut, out_dir:str, **kwargs):
 def replace_image_locations_to_relative_in_html(
         html_loc:str, image_root: Path) -> None:
     '''Replace image locations to relative location'''
+
     # Read in the file
     with open(html_loc, 'r') as file :
       filedata = file.readlines()
@@ -117,7 +104,7 @@ def replace_image_locations_to_relative_in_html(
     # Replace the target string
     new_lines = []
     for line in filedata:
-        if 'img src' in line:
+        if 'src' in line or 'href' in line:
             new_line = re.sub(f'{image_root.absolute()}/', '', line)
             new_lines.append(new_line)
         else:

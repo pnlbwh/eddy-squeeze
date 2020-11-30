@@ -7,8 +7,8 @@ with open("README.md", "r") as fh:
 requirements= open('requirements.txt').read().split()
 
 setuptools.setup(
-    name="eddy-squeeze-kcho", # Replace with your own username
-    version="2.2.0",
+    name="eddy-squeeze", # Replace with your own username
+    version="1.0.4",
     author="Kevin Cho",
     author_email="kevincho@bwh.harvard.edu",
     description="Visualize extra information from FSL 6.0.1 eddy outputs",

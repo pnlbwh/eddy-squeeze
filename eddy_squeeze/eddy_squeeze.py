@@ -72,11 +72,12 @@ def eddy_squeeze_study(args: 'argparse') -> None:
     # create figure
     if args.figures:
         print_header(f'Creating summary figures for all eddy outputs')
+        eddyDirectories.save_all_outlier_slices(out_dir)
         eddyDirectories.create_group_figures(out_dir)
 
     if args.save_html:
         print_header(f'Creating html summary')
-        eddyDirectories.save_all_html()
+        eddyDirectories.save_all_html(out_dir)
         create_study_html(eddyDirectories, out_dir=out_dir)
 
 

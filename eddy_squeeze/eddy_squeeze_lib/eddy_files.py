@@ -254,16 +254,17 @@ class EddyDirectories(EddyStudyFigures):
                 in self.eddyRuns],
             axis=0)
 
-    def save_all_outlier_slices(self):
+    def save_all_outlier_slices(self, fig_root_dir):
         '''Run all_outlier_slices for all eddyRun objects'''
         for eddyRun in self.eddyRuns:
-            fig_outdir = eddyRun.eddy_dir / 'eddy_squeeze_qc'
+            fig_outdir = fig_root_dir / eddyRun.subject_name 
             eddyRun.save_all_outlier_slices(fig_outdir)
 
-    def save_all_html(self):
+    def save_all_html(self, fig_root_dir):
         '''Run all_outlier_slices for all eddyRun objects'''
         for eddyRun in self.eddyRuns:
-            create_html(eddyRun, out_dir=eddyRun.eddy_dir)
+            fig_outdir = fig_root_dir / eddyRun.subject_name 
+            create_html(eddyRun, out_dir=fig_outdir)
 
     def get_unique_bvalues(self):
         unique_b_values = np.stack(self.df['unique b values'])
