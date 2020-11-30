@@ -17,7 +17,7 @@ class EddyFigure(object):
         self.load_data()
 
         self.fig_outdir = Path(fig_outdir)
-        self.fig_outdir.mkdir(exist_ok=True)
+        self.fig_outdir.mkdir(exist_ok=True, parents=True)
 
         # plot them
         for v, s, std, sqr_std, r in zip(self.outlier_vol,
@@ -38,14 +38,15 @@ class EddyFigure(object):
 
             outfile = self.fig_outdir / f'{r:03}_vol_{v}_slice_{s}.png'
 
-            plot_pre_post_correction_slice(
-                self.eddy_dir,
-                pre_data_tmp, post_data_tmp,
-                sagittal_data, sagittal_data_fixed,
-                outfile,
-                s, v, bvalue, r,
-                std, sqr_std, self.outlier_std_array,
-                self.restricted_movement_array)
+            if not outfile.is_file():
+                plot_pre_post_correction_slice(
+                    self.eddy_dir,
+                    pre_data_tmp, post_data_tmp,
+                    sagittal_data, sagittal_data_fixed,
+                    outfile,
+                    s, v, bvalue, r,
+                    std, sqr_std, self.outlier_std_array,
+                    self.restricted_movement_array)
 
 
 def plot_pre_post_correction_slice(
