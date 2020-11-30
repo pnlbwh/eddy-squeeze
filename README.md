@@ -54,7 +54,15 @@
 <br><br>
 ## Installation
 
-##### Download the repository
+
+### Install through Pypi
+```sh
+pip install eddy-squeeze
+eddy_squeeze -h
+```
+
+
+### or download the repository
 
 ```sh
 git clone https://github.com/pnlbwh/eddy-squeeze
