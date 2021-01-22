@@ -229,7 +229,19 @@ class EddyDirectories(EddyStudyFigures):
                 else:
                     eddyRun = EddyRun(eddy_dir_ep)
 
-                eddyRun.read_file_locations_from_command()
+                eddyRun.subject_name = eddyRun.eddy_dir.parent.name
+
+                try:
+                    eddyRun.read_file_locations_from_command()
+                except:
+                    eddyRun.nifti_input = eddyRun.eddy_dir / \
+                            Path(eddyRun.nifti_input).name
+                    eddyRun.bvalue_txt = eddyRun.eddy_dir / \
+                            Path(eddyRun.bvalue_txt).name
+                    eddyRun.mask = eddyRun.eddy_dir / \
+                            Path(eddyRun.mask).name
+                    eddyRun.bvalue_arr = np.loadtxt(str(eddyRun.bvalue_txt))
+
                 eddyRun.load_eddy_information()
                 eddyRun.get_outlier_info()
                 eddyRun.estimate_eddy_information()
@@ -254,16 +266,10 @@ class EddyDirectories(EddyStudyFigures):
                 in self.eddyRuns],
             axis=0)
 
-    def save_all_outlier_slices(self, fig_root_dir):
-        '''Run all_outlier_slices for all eddyRun objects'''
-        for eddyRun in self.eddyRuns:
-            fig_outdir = fig_root_dir / eddyRun.subject_name 
-            eddyRun.save_all_outlier_slices(fig_outdir)
-
     def save_all_html(self, fig_root_dir):
         '''Run all_outlier_slices for all eddyRun objects'''
         for eddyRun in self.eddyRuns:
-            fig_outdir = fig_root_dir / eddyRun.subject_name 
+            fig_outdir = fig_root_dir / eddyRun.subject_name
             create_html(eddyRun, out_dir=fig_outdir)
 
     def get_unique_bvalues(self):
