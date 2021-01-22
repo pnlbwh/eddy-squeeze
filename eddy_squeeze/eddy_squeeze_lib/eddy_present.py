@@ -498,6 +498,12 @@ class EddyStudyFigures:
     def set_group_figure_settings(self):
         self.dpi = 100
 
+    def save_all_outlier_slices(self, fig_outdir):
+        '''Run all_outlier_slices for all eddyRun objects'''
+        for eddyRun in self.eddyRuns:
+            subject_fig_outdir = fig_outdir /eddyRun.subject_name
+            eddyRun.save_all_outlier_slices(subject_fig_outdir)
+
     def plot_subjects(self, var, std_outlier=2):
         '''Create graphs for motion, outlier and etc for all eddy outputs'''
         # width for one number of subjects
