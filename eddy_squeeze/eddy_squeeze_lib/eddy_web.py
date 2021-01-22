@@ -4,7 +4,7 @@ import os
 import re
 
 
-root = Path(os.path.abspath(__file__)).parent.parent
+root = Path(os.path.abspath(__file__)).parent.parent.parent
 static_dir = root.parent / 'docs'
 templates_dir = root / 'html_templates'
 bwh_fig_loc = templates_dir / 'pnl-bwh-hms.png'

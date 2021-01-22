@@ -221,3 +221,30 @@ eddy_squeeze --eddy_directories /test/eddy_out1 /test/eddy_out2 --save_html --fi
 ```
 
 ![output](docs/example_out.png)
+
+
+
+#### From another python script
+
+
+```py
+
+from eddy_squeeze import eddy_squeeze
+
+# eddy output prefix list
+eddy_prefix_list = ['/test/eddy_out1/subject01-eddy_out',
+                    '/test/eddy_out1/subject02-eddy_out']
+
+out_dir = '/data/pnl/prac/eddy_summary'
+
+eddyDirectories = eddy_squeeze.EddyDirectories(eddy_prefix_list)
+
+eddyDirectories.save_all_outlier_slices(out_dir)
+eddyDirectories.create_group_figures(out_dir)
+
+eddyDirectories.save_all_html(out_dir)
+eddy_squeeze.create_study_html(eddyDirectories, out_dir=out_dir)
+
+```
+
+<br>

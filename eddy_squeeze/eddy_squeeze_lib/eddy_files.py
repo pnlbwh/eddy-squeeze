@@ -139,7 +139,7 @@ def get_subject_name_from_eddy_prefix(eddy_prefix:Path, pattern=None):
     if pattern is not None:
         subject_name = re.search(pattern, str(eddy_prefix.parent)).group(1)
     else:
-        subject_name = eddy_prefix.parent.name
+        subject_name = eddy_prefix.parent.parent.name
 
     return subject_name
 
