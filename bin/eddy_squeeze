@@ -30,6 +30,10 @@ if __name__ == '__main__':
                                 'Providing eddy_prefix will make eddy_dir '\
                                 'ignored.')
 
+    argparser.add_argument("--pnl", "-p",
+                           action='store_true',
+                           help='Option to use for PNL pipeline structure')
+
     argparser.add_argument("--out_dir", "-od",
                            type=str,
                            default='.',

@@ -62,8 +62,9 @@ def eddy_squeeze_study(args: 'argparse') -> None:
     # 4. clean up movement information
     # 5. collects all information into eddyDirectories.df
     print_header('Extracting information from all eddy outputs')
-    eddyDirectories = EddyDirectories(eddy_prefix_list)
+    eddyDirectories = EddyDirectories(eddy_prefix_list, pnl=args.pnl)
     print_header(f'n={len(eddyDirectories.eddyRuns)} eddy outputs detected')
+
 
     # print output
     if args.print_table:

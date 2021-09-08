@@ -242,6 +242,20 @@ class EddyDirectories(EddyStudyFigures):
                             Path(eddyRun.mask).name
                     eddyRun.bvalue_arr = np.loadtxt(str(eddyRun.bvalue_txt))
 
+                # if PNL structure
+                if kwargs.get('pnl'):
+                    eddyRun.dwi_dir = eddyRun.eddy_dir.parent
+                    eddyRun.session_dir = eddyRun.dwi_dir.parent
+                    eddyRun.session_name = eddyRun.session_dir.name
+                    eddyRun.subject_root = eddyRun.session_dir.parent
+                    eddyRun.subject_name = eddyRun.subject_root.name
+
+                    eddyRun.eddy_out_data = eddyRun.eddy_dir.parent / \
+                        eddyRun.eddy_out_data.name
+
+                    eddyRun.eddy_out_data = eddyRun.eddy_dir.parent / \
+                        f'{eddyRun.subject_name}_{eddyRun.session_name}_desc-XcUnEd_dwi.nii.gz'
+
                 eddyRun.load_eddy_information()
                 eddyRun.get_outlier_info()
                 eddyRun.estimate_eddy_information()

@@ -6,7 +6,7 @@ import re
 
 root = Path(os.path.abspath(__file__)).parent.parent.parent
 static_dir = root.parent / 'docs'
-templates_dir = root / 'html_templates'
+templates_dir = root / 'eddy_squeeze' / 'html_templates'
 bwh_fig_loc = templates_dir / 'pnl-bwh-hms.png'
 
 # jinja2 environment settings
@@ -75,7 +75,7 @@ def create_html(eddyOut, out_dir:str, **kwargs):
     # else:
         # out_dir = eddyOut.eddy_dir / 'outlier_figures'
 
-    out_dir.mkdir(exist_ok=True)
+    out_dir.mkdir(exist_ok=True, parents=True)
     image_list = list(sorted(out_dir.glob('*png'), key=sorter))
 
     # git_hash = get_git_hash()
