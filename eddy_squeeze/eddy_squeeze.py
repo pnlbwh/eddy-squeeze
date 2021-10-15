@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from pathlib import Path
 import os
 import argparse
@@ -5,7 +6,6 @@ from tabulate import tabulate
 # development
 import sys
 import argparse
-
 
 from eddy_squeeze.eddy_squeeze_lib.eddy_files import EddyDirectories
 from eddy_squeeze.eddy_squeeze_lib.eddy_utils import print_header, print_table
