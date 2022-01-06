@@ -234,13 +234,19 @@ class EddyDirectories(EddyStudyFigures):
                 try:
                     eddyRun.read_file_locations_from_command()
                 except:
+                    orig_bvalue_txt = eddyRun.bvalue_txt
                     eddyRun.nifti_input = eddyRun.eddy_dir / \
                             Path(eddyRun.nifti_input).name
                     eddyRun.bvalue_txt = eddyRun.eddy_dir / \
                             Path(eddyRun.bvalue_txt).name
                     eddyRun.mask = eddyRun.eddy_dir / \
                             Path(eddyRun.mask).name
-                    eddyRun.bvalue_arr = np.loadtxt(str(eddyRun.bvalue_txt))
+
+                    if not eddyRun.bvalue_txt.is_file():
+                        sys.exit('There is no bval files. The script tried '
+                                 f'loading: \n\t-{eddyRun.bvalue_txt}\n'
+                                 f'\t-{orig_bvalue_txt}\n')
+                    eddyRun.bvalue_arr = np.loadtxt(eddyRun.bvalue_txt)
 
                 # if PNL structure
                 if kwargs.get('pnl'):
@@ -260,13 +266,19 @@ class EddyDirectories(EddyStudyFigures):
                 eddyRun.get_outlier_info()
                 eddyRun.estimate_eddy_information()
                 eddyRun.outlier_summary_df()
+                eddyRun.prepared = True
 
                 self.eddyRuns.append(eddyRun)
+
 
             except SystemExit:
                 pass
                 # pass
         # self.df = pd.concat([x.df.to_frame() for x in self.eddyRuns], axis=1).T
+
+        if all([x.prepared == False for x in self.eddyRuns]):
+            sys.exit('Errors in all input error directories')
+
         self.df = pd.concat([x.df for x in self.eddyRuns], axis=1).T
         self.create_sub_df_for_each_information()
 
