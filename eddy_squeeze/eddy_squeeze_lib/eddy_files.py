@@ -61,7 +61,7 @@ class EddyRun(EddyOut, EddyCollect, EddyFigure):
             self.mask = Path(kwargs.get('dwi'))
 
         self.bvalue_arr = np.loadtxt(str(self.bvalue_txt))
-
+        self.bvalue_arr = np.around(self.bvalue_arr, decimals=-2)
     # def read_and_register_raw_files(self):
         # '''Read eddy command.txt file to load raw data information'''
 
@@ -241,6 +241,9 @@ class EddyDirectories(EddyStudyFigures):
                             Path(eddyRun.bvalue_txt).name
                     eddyRun.mask = eddyRun.eddy_dir / \
                             Path(eddyRun.mask).name
+                    eddyRun.bvalue_arr = np.loadtxt(str(eddyRun.bvalue_txt))
+                    eddyRun.bvalue_arr = np.around(eddyRun.bvalue_arr,
+                                                   decimals=-2)
 
                     if not eddyRun.bvalue_txt.is_file():
                         sys.exit('There is no bval files. The script tried '

@@ -10,9 +10,10 @@ from matplotlib.patches import Patch
 import matplotlib.gridspec as gridspec
 import seaborn as sns
 
+
 class EddyFigure(object):
     """Eddy Figure class"""
-    def save_all_outlier_slices(self, fig_outdir:str):
+    def save_all_outlier_slices(self, fig_outdir: str):
         # load mask, pre and post-replace data
         self.load_data()
 
@@ -50,6 +51,40 @@ class EddyFigure(object):
             else:
                 pass
 
+    def save_all_outlier_slices_in_detail(self, fig_outdir: str):
+        '''Create outlier slices for all slices for the shell'''
+        self.load_data()
+
+        self.fig_outdir = Path(fig_outdir)
+        self.fig_outdir.mkdir(exist_ok=True, parents=True)
+
+        # plot them
+        for v, s, std, sqr_std, r in zip(self.outlier_vol,
+                                         self.outlier_slice,
+                                         self.stds,
+                                         self.sqr_stds,
+                                         self.rank):
+            bvalue = self.bvalue_arr[v]
+            pre_data_tmp = self.pre_data[:, :, s, v]
+            pre_data_tmp = np.where(self.mask_data[:, :, s] == 1,
+                                    pre_data_tmp, 0)
+            post_data_tmp = self.post_data[:, :, s, v]
+            post_data_tmp = np.where(self.mask_data[:, :, s] == 1,
+                                     post_data_tmp, 0)
+
+            sagittal_data = self.pre_data[self.mid_point, :, :, v].T
+            sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
+
+            outfile = self.fig_outdir / f'{r:03}_vol_{v}_slice_{s}_detail.png'
+            plot_pre_post_correction_slice(
+                self.eddy_dir,
+                pre_data_tmp, post_data_tmp,
+                sagittal_data, sagittal_data_fixed,
+                outfile,
+                s, v, bvalue, r,
+                std, sqr_std, self.outlier_std_array,
+                self.restricted_movement_array)
+
 
 def plot_pre_post_correction_slice(
         subject: Path,
@@ -58,8 +93,8 @@ def plot_pre_post_correction_slice(
         outfile: Path,
         slice_number: float, volume_number: int, bvalue: float, rank: int,
         outlier_std: float, outlier_sqr_std: float,
-        std_array: np.array, motion_array: np.array):
-    '''Plot pre vsnd post correction slices
+        std_array: np.array, motion_array: np.array, **kwargs) -> None:
+    '''Plots and saves pre vs post correction slices
 
     Key Arguments:
         subject : eddy output directory
@@ -102,7 +137,7 @@ def plot_pre_post_correction_slice(
 
     # motion
     add_motion_graph_to_ax(motion_ax, motion_array, volume_number,
-                           etc_ax.get_xlim())
+                           etc_ax.get_xlim(), **kwargs)
 
     # two sagital slices
     add_sagital_slices_to_ax(sagittal_ax, sagittal_fixed_ax,
@@ -154,9 +189,18 @@ def add_eddy_std_array_to_ax(etc_ax:plt.Axes, std_array:np.array,
 
 
 def add_motion_graph_to_ax(motion_ax:plt.Axes, motion_array:np.array,
-                           volume_number:int, xlim:np.array) -> None:
+                           volume_number:int, xlim:np.array, **kwargs) -> None:
     motion_ax.plot(motion_array[:, 0], label='Absolute')
     motion_ax.plot(motion_array[:, 1], label='Relative')
+
+    outlier_vols = kwargs.get('outlier_vols', [])
+    for num, outlier_vol in enumerate(outlier_vols):
+        if num == 0:
+            motion_ax.axvline(outlier_vol, linestyle='--', c='b', alpha=0.2,
+                              label='outlier volume')
+        else:
+            motion_ax.axvline(outlier_vol, linestyle='--', c='b', alpha=0.2)
+
     motion_ax.axvline(volume_number, linestyle='--', c='r')
     motion_ax.set_title('Restricted motion')
     motion_ax.set_xlabel('Volumes')
@@ -225,6 +269,7 @@ def add_pre_vs_post_eddy_slices(pre_ax:plt.Axes,
     pre_ax.set_title('Before Eddy outlier replacement')
 
     diff_map = np.sqrt((post_data - pre_data)**2)
+    diff_map = np.where(diff_map > 0.001, diff_map, 0)
     diff_ax_img = diff_ax.imshow(diff_map)
 
     diff_ax.set_title('√(post_data-pre_data)²')
