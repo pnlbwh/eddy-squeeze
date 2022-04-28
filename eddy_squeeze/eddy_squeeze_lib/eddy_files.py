@@ -130,7 +130,7 @@ def check_if_eddy_ran(user_given_dir:str):
     return is_eddy_ran
 
 
-def get_subject_name_from_eddy_prefix(eddy_prefix:Path, pattern=None):
+def get_subject_name_from_eddy_prefix(eddy_prefix: Path, pattern: str = None):
     '''Return subject name from eddy prefix'''
 
     # to absolute path
@@ -297,6 +297,8 @@ class EddyDirectories(EddyStudyFigures):
         for eddyRun in self.eddyRuns:
             fig_outdir = fig_root_dir / eddyRun.subject_name
             create_html(eddyRun, out_dir=fig_outdir)
+
+            # save csv
 
     def get_unique_bvalues(self):
         unique_b_values = np.stack(self.df['unique b values'])
