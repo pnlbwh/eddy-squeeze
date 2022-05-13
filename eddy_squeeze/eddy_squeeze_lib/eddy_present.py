@@ -14,6 +14,7 @@ import seaborn as sns
 class EddyFigure(object):
     """Eddy Figure class"""
     def save_all_outlier_slices(self, fig_outdir: str):
+        self.image_list = []
         # load mask, pre and post-replace data
         self.load_data()
 
@@ -51,39 +52,47 @@ class EddyFigure(object):
             else:
                 pass
 
-    def save_all_outlier_slices_in_detail(self, fig_outdir: str):
+            self.image_list.append(outfile)
+
+    def save_all_outlier_slices_in_detail(self, fig_outdir: str, force):
         '''Create outlier slices for all slices for the shell'''
-        self.load_data()
+        self.image_list = []
 
         self.fig_outdir = Path(fig_outdir)
         self.fig_outdir.mkdir(exist_ok=True, parents=True)
 
+        img_load = False
         # plot them
         for v, s, std, sqr_std, r in zip(self.outlier_vol,
                                          self.outlier_slice,
                                          self.stds,
                                          self.sqr_stds,
                                          self.rank):
-            bvalue = self.bvalue_arr[v]
-            pre_data_tmp = self.pre_data[:, :, s, v]
-            pre_data_tmp = np.where(self.mask_data[:, :, s] == 1,
-                                    pre_data_tmp, 0)
-            post_data_tmp = self.post_data[:, :, s, v]
-            post_data_tmp = np.where(self.mask_data[:, :, s] == 1,
-                                     post_data_tmp, 0)
-
-            sagittal_data = self.pre_data[self.mid_point, :, :, v].T
-            sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
-
             outfile = self.fig_outdir / f'{r:03}_vol_{v}_slice_{s}_detail.png'
-            plot_pre_post_correction_slice(
-                self.eddy_dir,
-                pre_data_tmp, post_data_tmp,
-                sagittal_data, sagittal_data_fixed,
-                outfile,
-                s, v, bvalue, r,
-                std, sqr_std, self.outlier_std_array,
-                self.restricted_movement_array)
+            if force or not outfile.is_file():
+                if not img_load:
+                    self.load_data()
+                    img_load = True
+                bvalue = self.bvalue_arr[v]
+                pre_data_tmp = self.pre_data[:, :, s, v]
+                pre_data_tmp = np.where(self.mask_data[:, :, s] == 1,
+                                        pre_data_tmp, 0)
+                post_data_tmp = self.post_data[:, :, s, v]
+                post_data_tmp = np.where(self.mask_data[:, :, s] == 1,
+                                         post_data_tmp, 0)
+
+                sagittal_data = self.pre_data[self.mid_point, :, :, v].T
+                sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
+
+                plot_pre_post_correction_slice(
+                    self.eddy_dir,
+                    pre_data_tmp, post_data_tmp,
+                    sagittal_data, sagittal_data_fixed,
+                    outfile,
+                    s, v, bvalue, r,
+                    std, sqr_std, self.outlier_std_array,
+                    self.restricted_movement_array)
+            self.image_list.append(outfile)
 
 
 def plot_pre_post_correction_slice(

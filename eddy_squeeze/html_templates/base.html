@@ -18,6 +18,40 @@ Eddy summary
 <!-- Example row of columns -->
 <div class="row">
   <div class="col-md-12">
+
+    <div class="row">
+        {% if eddyOut.dicom_header_series is defined %}
+            <div class="col-sm">
+              <h2>Dicom header summary</h2>
+              <p class="font-weight-bold">Information extracted from a dicom file.</p> 
+                <table class="table">
+                {% for key, value in eddyOut.dicom_header_series.items() %}
+                    <tr>
+                        <th scope="col">{{ key }}</th>
+                        <td scope="col">{{ value }}</th>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+
+        {% if eddyOut.nifti_header_series is defined %}
+            <div class="col-sm">
+              <h2>Nifti header summary</h2>
+              <p class="font-weight-bold">Information extracted from dcm2niix outputs.</p> 
+                <table class="table">
+                {% for key, value in eddyOut.nifti_header_series.items() %}
+                    <tr>
+                        <th scope="col">{{ key }}</th>
+                        <td scope="col">{{ value }}</th>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+    <br><br>
     <h2>Motion summary</h2>
     <p class="font-weight-bold">Motion parameters extracted from the Eddy output.</p> 
     <p>Restricted : "This doesn't matter for the correction of the images, it makes no difference if we estimate a large constant EC components and small movement or if we estimate a small EC component and large movement. The corrected images will be (close to) identical. But it matters if one wants to know how much the subject moved. We therefore supplies this file that estimates the movement RMS as above, but which disregards translation in the PE direction."</p>
@@ -102,12 +136,11 @@ Eddy summary
     <br>
 
     <br><br>
-    {% if image_list %}
+    {% if image_list|length > 1 %}
         <h2>Outlier slice & replacement images</h2>
         <p class="font-weight-bold">Show how each outlier slice was replaced by Eddy</p> 
-    {% endif %}
 
-        <div class="col>
+        <div class="col">
         </div>
         <div class="col-6">
            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -120,7 +153,7 @@ Eddy summary
                <div class="carousel-item active">
                  <img class="d-block w-100" src="{{ image_list[0] }}" alt="First slide">
                </div>
-                {% for img_path in image_list %}
+               {% for img_path in image_list %}
                    <div class="carousel-item">
                        <img class="d-block w-100" src="{{ img_path }}" alt="{{ loop }} slide">
                    </div>
@@ -139,6 +172,7 @@ Eddy summary
         </div>
 
     <br><br><br>
+    {% endif %}
 
     <h2>Post eddy shell alignment information</h2>
         {% for subtitle, table in eddyOut.post_eddy_shell_alignment_df.groupby('subtitle') %} 
