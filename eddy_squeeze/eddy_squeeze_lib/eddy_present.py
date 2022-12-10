@@ -40,7 +40,6 @@ class EddyFigure(object):
                 sagittal_data = self.pre_data[self.mid_point, :, :, v].T
                 sagittal_data_fixed = self.post_data[self.mid_point, :, :, v].T
 
-
                 plot_pre_post_correction_slice(
                     self.eddy_dir,
                     pre_data_tmp, post_data_tmp,
@@ -124,7 +123,7 @@ def plot_pre_post_correction_slice(
     '''
     # fig = plt.figure(constrained_layout=True,
                      # figsize=(15, 10))
-    fig = plt.figure(figsize=(15, 10))
+    fig = plt.figure(figsize=(15, 10), clear=True)
     gs0 = gridspec.GridSpec(5, 6, figure=fig)
 
     # three graphs at the top
@@ -177,7 +176,7 @@ def plot_pre_post_correction_slice(
 
     #plt.tight_layout()
     fig.savefig(outfile, dpi=fig.dpi)
-    plt.close()
+    plt.close(fig)
 
 
 def add_eddy_std_array_to_ax(etc_ax:plt.Axes, std_array:np.array,
@@ -311,7 +310,7 @@ def outlier_df_plot(outlier_df, std_threshold=3):
     arr = np.array(outlier_df.applymap(lambda x: map_dict[x]))
     arr = np.where(arr == 0, np.nan, arr)
 
-    fig, ax = plt.subplots(ncols=1, figsize=(20, 10))
+    fig, ax = plt.subplots(ncols=1, figsize=(20, 10), clear=True)
     ax.imshow(arr, cmap='Reds', vmax=1, vmin=0)
 
     cmap = matplotlib.cm.get_cmap('Reds')
@@ -356,7 +355,7 @@ def motion_summary_figure(study_eddy_runs, std_threshold=3):
     '''
 
     movement_df = get_movement_df(study_eddy_runs)
-    fig, axes = plt.subplots(ncols=3, nrows=2, figsize=(20, 20))
+    fig, axes = plt.subplots(ncols=3, nrows=2, figsize=(20, 20), clear=True)
 
     # for each data column in movement_df
     for ax, data, title in zip(
@@ -436,7 +435,7 @@ def shell_alignment_summary(list_of_eddy_runs, std_threshold=3):
             fig, axes = plt.subplots(
                     ncols=ncols,
                     nrows=nrows,
-                    figsize=(ncols*10, nrows*3))
+                    figsize=(ncols*10, nrows*3), clear=True)
 
             for ax, (gb_id, df_tmp) in zip(np.ravel(axes, order='F'), gb):
                 for axis, table in df_tmp.groupby('axis'):
@@ -467,7 +466,8 @@ def shell_PE_translation_summary(list_of_eddy_runs, std_threshold=3):
             # axes
             gb = df_for_subtitle_title.groupby('shell_info')
             nrows = len(df_for_subtitle_title['shell_info'].unique())
-            fig, axes = plt.subplots(nrows=nrows, figsize=(5*nrows, 10))
+            fig, axes = plt.subplots(nrows=nrows, figsize=(5*nrows, 10),
+                                     clear=True)
 
             for ax, (gb_id, df_tmp) in zip(np.ravel(axes, order='F'), gb):
                 df_tmp = df_tmp.set_index('subject')
@@ -483,7 +483,7 @@ def shell_PE_translation_summary(list_of_eddy_runs, std_threshold=3):
 
 def motion_summary_dist(study_eddy_runs, std_threshold=3):
 
-    fig, axes = plt.subplots(ncols=3, nrows=2, figsize=(20, 20))
+    fig, axes = plt.subplots(ncols=3, nrows=2, figsize=(20, 20), clear=True)
 
     outlier_df = pd.DataFrame(columns=['subjects'])
 
@@ -529,7 +529,7 @@ def motion_summary_dist(study_eddy_runs, std_threshold=3):
     outlier_df = outlier_df.fillna(0)
 
 
-    fig, ax = plt.subplots(ncols=1, figsize=(10, 10))
+    fig, ax = plt.subplots(ncols=1, figsize=(10, 10), clear=True)
     ax.imshow(outlier_df.fillna(0).set_index('subjects'))
     ax.set_yticks(np.arange(len(outlier_df)))
     ax.set_yticklabels(outlier_df.subjects)#.str.extract('eddy\/(\d{2}_S\S+)_eddy_corrected')[0])
@@ -624,6 +624,7 @@ class EddyStudyFigures:
                 g.fig.savefig(out_dir / f'plot_outlier_only_{var}.png')
             except:
                 pass
+            plt.close(g.fig)
 
         # Eddy shell alignment
         self.figure_post_eddy_shell()
@@ -632,6 +633,7 @@ class EddyStudyFigures:
         for post_eddy_shell_graph in post_eddy_shell_graph_list:
             fig = getattr(self, post_eddy_shell_graph)
             fig.savefig(out_dir / f'{post_eddy_shell_graph}.png')
+            plt.close(g.fig)
 
 
         self.figure_post_eddy_shell_PE()
@@ -640,6 +642,7 @@ class EddyStudyFigures:
         for post_eddy_shell_PE_graph in post_eddy_shell_PE_graph_list:
             fig = getattr(self, post_eddy_shell_PE_graph)
             fig.savefig(out_dir / f'{post_eddy_shell_PE_graph}.png')
+            plt.close(g.fig)
 
         # dataframe clean up
         self.df = self.df.sort_values(
@@ -671,12 +674,12 @@ class EddyStudyFigures:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
-                dpi=self.dpi)
+                dpi=self.dpi, clear=True)
         else:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(10, 10),
-                dpi=self.dpi)
+                dpi=self.dpi, clear=True)
 
         for ax, shell_info in zip(np.ravel(axes), shell_infos):
             t_tmp = t.groupby('shell_info').get_group(shell_info)
@@ -714,12 +717,12 @@ class EddyStudyFigures:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(3.2*len(shell_infos), 2*len(shell_infos)),
-                dpi=self.dpi)
+                dpi=self.dpi, clear=True)
         else:
             fig, axes = plt.subplots(
                 ncols=len(shell_infos),
                 figsize=(10, 10),
-                dpi=self.dpi)
+                dpi=self.dpi, clear=True)
 
         for ax, shell_info in zip(np.ravel(axes), shell_infos):
             t_tmp = t.groupby('shell_info').get_group(shell_info)
