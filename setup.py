@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="eddy-squeeze",  # Replace with your own username
-    version="1.0.8",
+    version="1.0.9",
     author="Kevin Cho",
     author_email="kevincho@bwh.harvard.edu",
     description="Visualize extra information from FSL 6.0.1 eddy outputs",
