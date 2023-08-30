@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import pandas as pd
 import numpy as np
 import sys
 import pytest
@@ -14,7 +15,7 @@ sys.path.append(str(root_dir))
 
 from eddy_squeeze.eddy_squeeze_lib.eddy_files import is_there_any_eddy_output
 from eddy_squeeze.eddy_squeeze_lib.eddy_files import get_unique_eddy_prefixes
-from eddy_squeeze.eddy_squeeze_lib.eddy_files import EddyRun
+from eddy_squeeze.eddy_squeeze_lib.eddy_files import EddyRun, EddyRunDPACC
 from eddy_squeeze.eddy_squeeze_lib.eddy_files import EddyDirectories
 
 eddy_postfixes = ['post_eddy_shell_alignment_parameters',
@@ -198,3 +199,66 @@ def test_EddyDirectories_one_dir_with_no_eddy():
     eddyDirectories = EddyDirectories(eddy_dirs)
     eddyDirectories.save_all_outlier_slices()
 
+
+def test_EddyDirectories_nda_upload():
+    eddy_dirs = []
+    mri_root = Path('/data/predict1/data_from_nda/MRI_ROOT')
+    deriv_root = mri_root / 'derivatives'
+    dwi_root = deriv_root / 'dwipreproc'
+    for ses_dir in dwi_root.glob('sub*/ses*'):
+        if (ses_dir / 'eddy_out.nii.gz').is_file():
+            eddy_dirs.append(ses_dir)
+    # eddy_dirs = [
+            # ('/derivatives/dwipreproc/sub-MT13133/ses-202305041'),
+            # ]
+    eddyDirectories = EddyDirectories(eddy_dirs)
+    eddyRun = eddyDirectories.eddyRuns[0]
+    print(eddyDirectories.eddyRuns)
+    print(eddyDirectories.df_motion.to_csv('motion_summary'))
+
+    print(eddyRun.outlier_summary_df)
+
+
+
+
+def test_one_eddyRun():
+    dwi_root = Path('/data/predict1/data_from_nda/MRI_ROOT/derivatives/dwipreproc')
+    eddy_prefixes = list(dwi_root.glob('sub-*/ses-*/eddy_out.nii.gz'))
+    eddy_prefixes = [x.parent / 'eddy_out' for x in eddy_prefixes]
+
+    df = pd.DataFrame()
+    n = 0
+    for eddy_prefix in eddy_prefixes:
+    # eddy_prefix = dwi_root / 'sub-GA11092/ses-202306021/eddy_out'
+    # eddy
+    # eddyOut = EddyRun(eddy_prefix, name='ha')
+        eddyOut = EddyRunDPACC(eddy_prefix, name='ha')
+        eddyOut.bvalue_arr = np.loadtxt(str(eddyOut.bvalue_txt))
+
+        print(eddyOut.bvalue_arr)
+        # print(eddyOut.bvalue_txt)
+        # eddyOut.load_outlier_arrays()
+
+        try:
+            eddyOut.load_eddy_information()
+        except OSError:
+            continue
+        eddyOut.get_info_movement_arrays()
+
+        try:
+            eddyOut.estimate_eddy_information()
+        except IndexError:
+            continue
+
+        print(eddyOut.df)
+        df = pd.concat([df, pd.DataFrame(eddyOut.df).T])
+        n += 1
+        if n == 3:
+            pass
+            # break
+
+
+    # print(eddyOut.absolute_movement_array)
+    # print(eddyOut.relative_movement_array)
+    pass
+    df.to_csv('eddy_out_summary.csv')
